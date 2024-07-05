@@ -8,13 +8,13 @@ import ru.practicum.android.diploma.di.interactorModule
 import ru.practicum.android.diploma.di.repositoryModule
 import ru.practicum.android.diploma.di.uiModule
 
-class App : Application() {
+class FindJobApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         startKoin {
-            androidContext(this@App)
+            androidContext(this@FindJobApplication)
             modules(dataModule, interactorModule, repositoryModule, uiModule)
         }
 
