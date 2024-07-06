@@ -10,7 +10,7 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     buildFeatures {
-      viewBinding = true
+        viewBinding = true
     }
 
     defaultConfig {
