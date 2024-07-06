@@ -16,4 +16,8 @@ class CrewFragment : Fragment() {
         _binding = FragmentCrewBinding.inflate(inflater, container, false)
         return binding.root
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
