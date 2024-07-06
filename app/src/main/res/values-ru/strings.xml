@@ -6,4 +6,7 @@
     <string name="worker_second">Подлесных Иван</string>
     <string name="worker_third">Бухолов Дмитрий</string>
     <string name="worker_fourth">Табаев Егор</string>
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="crew">Команда</string>
 </resources>
