@@ -69,6 +69,6 @@
         android:label="IndustryFragment" />
     <fragment
         android:id="@+id/vacancyDetailsFragment"
-        android:name="ru.practicum.android.diploma.ui.vacancy_details.VacancyDetailsFragment"
+        android:name="ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment"
         android:label="VacancyDetailsFragment" />
 </navigation>
