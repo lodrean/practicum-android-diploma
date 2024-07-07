@@ -14,7 +14,7 @@ data class FavoriteVacancyEntity(
     @ColumnInfo(name = "experience_name") val experienceName: String,
     @ColumnInfo(name = "key_skills") val keySkills: String,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "salary_currency_id") val salaryCurrencyId: String?,
+    @ColumnInfo(name = "salary_currency_name") val salaryCurrencyName: String?,
     @ColumnInfo(name = "salary_from") val salaryFrom: Int?,
     @ColumnInfo(name = "salary_gross") val salaryGross: Boolean?,
     @ColumnInfo(name = "salary_to") val salaryTo: Int?,
