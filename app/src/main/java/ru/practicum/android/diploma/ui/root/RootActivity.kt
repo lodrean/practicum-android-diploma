@@ -28,15 +28,15 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.searchFragment -> {
+                R.id.search_fragment -> {
                     changeBottomNavigationVisibility(true)
                 }
 
-                R.id.favoritesFragment -> {
+                R.id.favorites_fragment -> {
                     changeBottomNavigationVisibility(true)
                 }
 
-                R.id.crewFragment -> {
+                R.id.crew_fragment -> {
                     changeBottomNavigationVisibility(true)
                 }
 
