@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.NetworkClient
@@ -22,25 +23,46 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
-            return Response().apply { resultCode = -1 }
+            return Response().apply { resultCode = HTTP_NO_CONNECTION }
         }
 
+        return when (dto) {
+            is VacanciesRequest -> getVacancies(dto)
+            is CountriesRequest -> getCountries(dto)
+            is AreasRequest -> getAreas(dto)
+            else -> Response().apply { resultCode = HTTP_CLIENT_ERROR }
+        }
+    }
+
+    private suspend fun getVacancies(request: VacanciesRequest): Response {
         return withContext(Dispatchers.IO) {
             try {
-                when (dto) {
-                    is VacanciesRequest -> hhService.getVacancies(dto.toMap())
-                        .apply { resultCode = 200 }
+                hhService.getVacancies(request.toMap())
+                    .apply { resultCode = HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
+    }
 
-                    is CountriesRequest -> CountriesResponse(hhService.getCountries())
-                        .apply { resultCode = 200 }
+    private suspend fun getCountries(request: CountriesRequest): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                CountriesResponse(hhService.getCountries())
+                    .apply { resultCode = HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
+    }
 
-                    is AreasRequest -> AreasResponse(hhService.getAreas(dto.areaId))
-                        .apply { resultCode = 200 }
-
-                    else -> Response().apply { resultCode = 400 }
-                }
-            } catch (e: Throwable) {
-                Response().apply { resultCode = 500 }
+    private suspend fun getAreas(request: AreasRequest): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                AreasResponse(hhService.getAreas(request.areaId))
+                    .apply { resultCode = HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
             }
         }
     }
@@ -66,13 +88,18 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
-            when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
-            }
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            ) return true
         }
         return false
+    }
+
+    companion object {
+        private const val HTTP_NO_CONNECTION = -1
+        private const val HTTP_CLIENT_ERROR = 400
+        private const val HTTP_SUCCESS = 400
     }
 
 }
