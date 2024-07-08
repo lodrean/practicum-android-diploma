@@ -12,6 +12,7 @@ data class FavoriteVacancyEntity(
     @ColumnInfo(name = "call_tracking_enabled") @Nullable val callTrackingEnabled: Boolean?,
     @ColumnInfo(name = "contacts_email") @Nullable val contactsEmail: String?,
     @ColumnInfo(name = "contacts_name") @Nullable val contactsName: String?,
+    @ColumnInfo(name = "contacts_phones") @Nullable val contactsPhones: String?,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "employer_name") val employerName: String,
     @ColumnInfo(name = "employer_logo_path") val employerLogoPath: String,
