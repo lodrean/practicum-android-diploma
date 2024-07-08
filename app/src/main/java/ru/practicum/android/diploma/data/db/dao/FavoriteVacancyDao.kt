@@ -11,10 +11,10 @@ import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyEntity
 @Dao
 interface FavoriteVacancyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertVacancy(vacancy: FavoriteVacancyEntity)
+    fun insertVacancy(vacancy: FavoriteVacancyEntity)
 
     @Query("select * from favorite_vacancies_table")
-    fun getFavoriteVacancies(): Flow<FavoriteVacancyEntity>
+    fun getFavoriteVacancies(): Flow<List<FavoriteVacancyEntity>>
 
     @Delete
     fun deleteFromFavorite(vacancy: FavoriteVacancyEntity)
