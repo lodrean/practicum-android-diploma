@@ -7,4 +7,4 @@ data class VacanciesRequest(
     val page: Int,
     @SerializedName("per_page")
     val perPage: Int,
-) : Response()
+)

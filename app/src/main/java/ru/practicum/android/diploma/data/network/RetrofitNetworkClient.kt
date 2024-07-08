@@ -99,7 +99,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
     companion object {
         private const val HTTP_NO_CONNECTION = -1
         private const val HTTP_CLIENT_ERROR = 400
-        private const val HTTP_SUCCESS = 400
+        private const val HTTP_SUCCESS = 200
     }
 
 }
