@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.crew.CrewFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/crew_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/AndroidDiploma.ToolBar"
+            app:title="@string/crew_title" />
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="@dimen/size_xxl"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/size_xxl">
+
+        <TextView
+            android:id="@+id/workers_list"
+            style="@style/FontYSDisplay.Bold32"
+            android:layout_width="wrap_content"
+            android:layout_height="92dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/workers_list" />
+
+        <TextView
+            android:id="@+id/worker_first"
+            style="@style/FontYSDisplay.Medium16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/image_m"
+            android:text="@string/worker_first" />
+
+        <TextView
+            android:id="@+id/worker_second"
+            style="@style/FontYSDisplay.Medium16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_xxl"
+            android:text="@string/worker_second" />
+
+        <TextView
+            android:id="@+id/worker_third"
+            style="@style/FontYSDisplay.Medium16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_xxl"
+            android:text="@string/worker_third" />
+
+        <TextView
+            android:id="@+id/worker_fourth"
+            style="@style/FontYSDisplay.Medium16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_xxl"
+            android:text="@string/worker_fourth" />
+
+    </LinearLayout>
+
+</LinearLayout>
