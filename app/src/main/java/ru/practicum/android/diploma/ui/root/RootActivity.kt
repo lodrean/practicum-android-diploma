@@ -18,6 +18,8 @@ import ru.practicum.android.diploma.data.network.VacanciesResponse
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.data.network.VacancyRequest
+import ru.practicum.android.diploma.data.network.VacancyResponse
 
 class RootActivity : AppCompatActivity() {
 
@@ -82,6 +84,16 @@ class RootActivity : AppCompatActivity() {
             if (response is VacanciesResponse) {
                 for (item in response.items) {
                     Log.d("DIPLOMA_DEBUG", "Vacancies $item")
+                }
+
+                if (response.items.isNotEmpty()) {
+                    val vacancyFullResponse = networkClient.doRequest(
+                        VacancyRequest(response.items.first().id)
+                    )
+
+                    if (vacancyFullResponse is VacancyResponse) {
+                        Log.d("DIPLOMA_DEBUG", "Vacancy full ${vacancyFullResponse.vacancy}")
+                    }
                 }
             }
 

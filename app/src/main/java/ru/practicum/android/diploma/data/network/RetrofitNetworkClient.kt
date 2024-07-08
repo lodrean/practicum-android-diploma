@@ -28,6 +28,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
         return when (dto) {
             is VacanciesRequest -> getVacancies(dto)
+            is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
             else -> Response().apply { resultCode = HTTP_CLIENT_ERROR }
@@ -60,6 +61,17 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         return withContext(Dispatchers.IO) {
             try {
                 AreasResponse(hhService.getAreas(request.areaId))
+                    .apply { resultCode = HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
+    }
+
+    private suspend fun getVacancyFull(request: VacancyRequest): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                VacancyResponse(hhService.getVacancyFull(request.vacancyId))
                     .apply { resultCode = HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
