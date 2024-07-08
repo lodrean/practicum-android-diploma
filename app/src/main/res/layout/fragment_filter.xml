@@ -17,8 +17,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             style="@style/AndroidDiploma.ToolBar"
-            app:title="@string/filter_settings_title"
-            app:navigationIcon="@drawable/arrow_back_icon"/>
+            app:navigationIcon="@drawable/arrow_back_icon"
+            app:title="@string/filter_settings_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
