@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 import org.jetbrains.annotations.Nullable
 
 @Entity(
-    tableName = "favorite_vacancy_phone_table", foreignKeys = [ForeignKey(
+    tableName = "favorite_vacancy_phone_table",
+    foreignKeys = [ForeignKey(
         entity = FavoriteVacancyEntity::class,
         parentColumns = ["vacancy_id"],
         childColumns = ["vacancy_id"],
