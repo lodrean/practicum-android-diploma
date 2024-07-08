@@ -19,7 +19,6 @@
             style="@style/AndroidDiploma.ToolBar"
             app:title="@string/crew_title" />
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
