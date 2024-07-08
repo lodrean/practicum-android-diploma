@@ -17,6 +17,10 @@
         <item name="android:fontWeight">500</item>
     </style>
 
+    <style name="AndroidDiploma.AppBar">
+        <item name="elevation">@dimen/size_zero</item>
+    </style>
+
     <style name="FontYSDisplay">
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>

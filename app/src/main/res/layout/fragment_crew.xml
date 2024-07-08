@@ -9,6 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/crew_title"
+        style="@style/AndroidDiploma.AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
