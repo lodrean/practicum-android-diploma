@@ -8,7 +8,8 @@ import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyEntity
 import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyPhoneEntity
 
 @Database(
-    version = 1, entities = [
+    version = 1,
+    entities = [
         FavoriteVacancyEntity::class,
         FavoriteVacancyPhoneEntity::class
     ]
