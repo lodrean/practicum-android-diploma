@@ -28,7 +28,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
         return when (dto) {
             is VacanciesRequest -> getVacancies(dto)
-            is CountriesRequest -> getCountries(dto)
+            is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
             else -> Response().apply { resultCode = HTTP_CLIENT_ERROR }
         }
@@ -45,7 +45,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         }
     }
 
-    private suspend fun getCountries(request: CountriesRequest): Response {
+    private suspend fun getCountries(): Response {
         return withContext(Dispatchers.IO) {
             try {
                 CountriesResponse(hhService.getCountries())
@@ -87,13 +87,10 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         ) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            ) return true
-        }
-        return false
+        return capabilities != null &&
+                (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
     }
 
     companion object {
