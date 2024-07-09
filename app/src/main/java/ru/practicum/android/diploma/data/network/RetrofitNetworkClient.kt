@@ -6,20 +6,12 @@ import android.net.NetworkCapabilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.NetworkClient
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
-
-    private val baseUrl = "https://api.hh.ru/"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val hhService = retrofit.create(HHApi::class.java)
+class RetrofitNetworkClient(
+    private val context: Context,
+    private val hhService: HHApi,
+) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
