@@ -6,20 +6,12 @@ import android.net.NetworkCapabilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.NetworkClient
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
-
-    private val baseUrl = "https://api.hh.ru/"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val hhService = retrofit.create(HHApi::class.java)
+class RetrofitNetworkClient(
+    private val context: Context,
+    private val hhService: HHApi,
+) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
@@ -28,6 +20,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
         return when (dto) {
             is VacanciesRequest -> getVacancies(dto)
+            is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
             else -> Response().apply { resultCode = HTTP_CLIENT_ERROR }
@@ -60,6 +53,17 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         return withContext(Dispatchers.IO) {
             try {
                 AreasResponse(hhService.getAreas(request.areaId))
+                    .apply { resultCode = HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
+    }
+
+    private suspend fun getVacancyFull(request: VacancyRequest): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                VacancyResponse(hhService.getVacancyFull(request.vacancyId))
                     .apply { resultCode = HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
