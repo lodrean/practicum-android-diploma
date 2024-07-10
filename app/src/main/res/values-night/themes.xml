@@ -3,10 +3,10 @@
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/black_universal</item>
         <item name="colorOnPrimary">@color/white_universal</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black_universal</item>
+        <item name="colorSecondary">@color/blue</item>
         <item name="colorOnSecondary">@color/white_universal</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black_universal</item>
@@ -14,6 +14,7 @@
         <item name="android:background">?attr/background_color</item>
         <item name="background_color">@color/black_universal</item>
         <item name="icon_color">@color/white_universal</item>
+        <item name="text_hint_color">@color/white_universal</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
