@@ -9,9 +9,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.UtilityFunctions
-import java.text.DecimalFormat
-import java.util.Currency
-import java.util.Locale
 
 class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
 
