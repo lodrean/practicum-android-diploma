@@ -65,6 +65,12 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
                 decimalFormat.format(vacancy.salaryFrom),
                 symbol
             )
+        } else {
+            formattedString = String.format(
+                context.getString(R.string.salary_range_to),
+                decimalFormat.format(vacancy.salaryTo),
+                symbol
+            )
         }
 
         return formattedString
