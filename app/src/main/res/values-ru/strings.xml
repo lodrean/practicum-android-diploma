@@ -21,4 +21,14 @@
     <string name="no_region">Такого региона нет</string>
     <string name="no_vacancies">Таких вакансий нет</string>
     <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
+    <string name="intetnet_is_not_available">Нет интернета</string>
+    <string name="server_error">Ошибка сервера</string>
+
+    <plurals name="count_of_vacancies">
+        <item quantity="one">%d вакансия</item>
+        <item quantity="few">%d вакансии</item>
+        <item quantity="many">%d вакансий</item>
+        <item quantity="other">%d вакансий</item>
+    </plurals>
+
 </resources>
