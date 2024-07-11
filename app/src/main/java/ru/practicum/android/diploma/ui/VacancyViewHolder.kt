@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.UtilityFunctions
 import java.text.DecimalFormat
 import java.util.Currency
 import java.util.Locale
@@ -33,46 +34,10 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
 
         companyName.text = vacancy.employerName
 
-        salaryRange.text = formatSalary(vacancy)
+        salaryRange.text = UtilityFunctions.formatSalary(vacancy, context)
     }
 
     private fun formatVacancyTitle(vacancy: Vacancy): String {
         return String.format(context.getString(R.string.vacancy_title_template), vacancy.name, vacancy.employerCity)
-    }
-
-    private fun formatSalary(vacancy: Vacancy): String {
-        val currency = Currency.getInstance(vacancy.salaryCurrencyName)
-
-        val symbol = currency.getSymbol(Locale.getDefault(Locale.Category.DISPLAY))
-
-        val decimalFormat = DecimalFormat("#,###.##")
-
-        var formattedString = ""
-
-        if (vacancy.salaryFrom == null && vacancy.salaryTo == null) {
-            formattedString =
-                context.getString(R.string.salary_not_specified)
-        } else if (vacancy.salaryFrom != null && vacancy.salaryTo != null) {
-            formattedString = String.format(
-                context.getString(R.string.salary_range_from_to),
-                decimalFormat.format(vacancy.salaryFrom),
-                decimalFormat.format(vacancy.salaryTo),
-                symbol
-            )
-        } else if (vacancy.salaryFrom != null) {
-            formattedString = String.format(
-                context.getString(R.string.salary_range_from),
-                decimalFormat.format(vacancy.salaryFrom),
-                symbol
-            )
-        } else {
-            formattedString = String.format(
-                context.getString(R.string.salary_range_to),
-                decimalFormat.format(vacancy.salaryTo),
-                symbol
-            )
-        }
-
-        return formattedString
     }
 }
