@@ -7,6 +7,8 @@ data class Vacancy(
     val name: String,
     val employerName: String,
     val employerLogoPath: String,
+    val employerCity: String,
+    val employment: String,
     val description: String,
     val contactsEmail: String?,
     val contactsName: String?,
