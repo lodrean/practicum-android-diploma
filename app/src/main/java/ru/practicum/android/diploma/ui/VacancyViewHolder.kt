@@ -22,7 +22,6 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
     fun bind(vacancy: Vacancy) {
-
         Glide.with(context)
             .load(vacancy.employerLogoPath)
             .placeholder(R.drawable.placeholder)
@@ -42,7 +41,6 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     private fun formatSalary(vacancy: Vacancy): String {
-
         val currency = Currency.getInstance(vacancy.salaryCurrencyName)
 
         val symbol = currency.getSymbol(Locale.getDefault(Locale.Category.DISPLAY))
@@ -51,19 +49,23 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
 
         var formattedString = ""
 
-        if (vacancy.salaryFrom == null && vacancy.salaryTo == null) formattedString =
-            context.getString(R.string.salary_not_specified)
-        else if (vacancy.salaryFrom != null && vacancy.salaryTo != null) formattedString = String.format(
-            context.getString(R.string.salary_range_from_to),
-            decimalFormat.format(vacancy.salaryFrom),
-            decimalFormat.format(vacancy.salaryTo),
-            symbol
-        )
-        else if (vacancy.salaryFrom != null) formattedString = String.format(
-            context.getString(R.string.salary_range_from),
-            decimalFormat.format(vacancy.salaryFrom),
-            symbol
-        )
+        if (vacancy.salaryFrom == null && vacancy.salaryTo == null) {
+            formattedString =
+                context.getString(R.string.salary_not_specified)
+        } else if (vacancy.salaryFrom != null && vacancy.salaryTo != null) {
+            formattedString = String.format(
+                context.getString(R.string.salary_range_from_to),
+                decimalFormat.format(vacancy.salaryFrom),
+                decimalFormat.format(vacancy.salaryTo),
+                symbol
+            )
+        } else if (vacancy.salaryFrom != null) {
+            formattedString = String.format(
+                context.getString(R.string.salary_range_from),
+                decimalFormat.format(vacancy.salaryFrom),
+                symbol
+            )
+        }
 
         return formattedString
     }
