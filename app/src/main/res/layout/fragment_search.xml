@@ -34,9 +34,9 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="@dimen/size_xxl"
             android:hint="@string/enter_request"
-            android:textCursorDrawable="@drawable/cursor_blue"
             android:paddingStart="@dimen/size_xxl"
-            android:paddingEnd="@dimen/size_xxl" />
+            android:paddingEnd="@dimen/size_xxl"
+            android:textCursorDrawable="@drawable/cursor_blue" />
 
         <ImageView
             android:id="@+id/clear_icon"
@@ -49,15 +49,61 @@
             android:src="@drawable/close_icon" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/central_image_holder"
+    <TextView
+        android:id="@+id/vacancy_count_text_view"
+        style="@style/FontYSDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:importantForAccessibility="no"
-        android:src="@drawable/empty_search_image"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/size_l"
+        android:background="@drawable/rounded_blue_rectangle"
+        android:gravity="top|center_horizontal"
+        android:paddingHorizontal="@dimen/size_l"
+        android:paddingVertical="@dimen/size_xxs"
+        android:text="@string/no_vacancies"
+        android:textColor="@color/white_universal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_frame" />
+
+    <LinearLayout
+        android:id="@+id/search_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_frame">
+
+
+        <ImageView
+            android:id="@+id/central_image_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/empty_search_image" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/state_text_view"
+            style="@style/FontYSDisplay.Medium22"
+            android:layout_width="268dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/size_xxl"
+            android:gravity="center_horizontal"
+            android:text="@string/no_region"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,4 +18,6 @@
     <string name="favorite_title">Избранное</string>
     <string name="workplace_choose_title">Выбор места работы</string>
     <string name="enter_request">Введите запрос</string>
+    <string name="no_region">Такого региона нет</string>
+    <string name="no_vacancies">Таких вакансий нет</string>
 </resources>
