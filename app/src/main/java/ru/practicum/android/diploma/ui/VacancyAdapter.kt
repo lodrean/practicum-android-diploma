@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.OnItemClickListener
 
-class VacancyAdapter(val listOfVacancies: List<Vacancy>, private val callback: Callback) :
+class VacancyAdapter(val listOfVacancies: List<Vacancy>, private val onItemClickListener: OnItemClickListener) :
     Adapter<VacancyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
@@ -21,11 +22,7 @@ class VacancyAdapter(val listOfVacancies: List<Vacancy>, private val callback: C
         holder.bind(listOfVacancies[position])
 
         holder.itemView.setOnClickListener {
-            callback.onClick(listOfVacancies[position])
+            onItemClickListener.onItemClick(listOfVacancies[position])
         }
-    }
-
-    fun interface Callback {
-        fun onClick(vacancy: Vacancy)
     }
 }
