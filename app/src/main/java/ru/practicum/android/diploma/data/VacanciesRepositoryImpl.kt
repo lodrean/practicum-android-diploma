@@ -24,7 +24,6 @@ class VacanciesRepositoryImpl(
         page: Int,
         perPage: Int,
     ): Flow<Resource<VacanciesSearchResult>> = flow {
-
         val response = networkClient.doRequest(
             VacanciesSearchRequest(
                 text = expression,
@@ -80,6 +79,5 @@ class VacanciesRepositoryImpl(
         )
 
     }
-
 
 }

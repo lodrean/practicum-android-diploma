@@ -71,15 +71,15 @@ class RootActivity : AppCompatActivity() {
             // Ищем вакансии
             interactor.searchVacancies("Android", 0, 2).collect { resource ->
                 if (resource is Resource.Error) {
-                    Log.d("DIPLOMA_DEBUG", "Got error: ${resource.message}")
+                    Log.d("DIPLOMA_DEBUG", "Search error: ${resource.message}")
                 } else {
                     resource.data?.vacancies?.forEach { vacancy ->
                         Log.d("DIPLOMA_DEBUG", "Item: $vacancy")
 
-                        //Получаем расширенную вакансию (с описанием)
+                        // Получаем расширенную вакансию (с описанием)
                         interactor.updateToFullVacancy(vacancy).collect { resourceFull ->
                             if (resourceFull is Resource.Error) {
-                                Log.d("DIPLOMA_DEBUG", "Got error 2: ${resourceFull.message}")
+                                Log.d("DIPLOMA_DEBUG", "Get full error: ${resourceFull.message}")
                             } else {
                                 Log.d("DIPLOMA_DEBUG", "Full item: ${resourceFull.data}")
                             }
@@ -90,6 +90,5 @@ class RootActivity : AppCompatActivity() {
             }
         }
     }
-
 
 }
