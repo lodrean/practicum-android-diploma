@@ -20,4 +20,5 @@
     <string name="enter_request">Введите запрос</string>
     <string name="no_region">Такого региона нет</string>
     <string name="no_vacancies">Таких вакансий нет</string>
+    <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
 </resources>

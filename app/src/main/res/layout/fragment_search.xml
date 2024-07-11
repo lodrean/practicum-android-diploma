@@ -100,8 +100,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/size_xxl"
             android:gravity="center_horizontal"
-            android:text="@string/no_region"
-            android:visibility="gone" />
+            android:text="@string/not_get_a_list_of_vacancies" />
 
 
     </LinearLayout>
