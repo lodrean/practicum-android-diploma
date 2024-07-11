@@ -9,7 +9,7 @@
     android:layout_marginEnd="@dimen/size_xxl"
     android:layout_marginBottom="@dimen/size_s">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/vacancy_icon_frame"
         android:layout_width="@dimen/image_l"
         android:layout_height="@dimen/image_l"
@@ -20,16 +20,12 @@
 
         <ImageView
             android:id="@+id/vacancy_icon"
-            android:layout_width="@dimen/size_zero"
-            android:layout_height="@dimen/size_zero"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@color/transparent"
             android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/vacancy_title"
