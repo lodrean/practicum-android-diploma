@@ -27,7 +27,5 @@ class VacancyAdapter(val listOfVacancies: List<Vacancy>, private val callback: C
 
     fun interface Callback {
         fun onClick(vacancy: Vacancy)
-
     }
-
 }

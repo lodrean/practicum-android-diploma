@@ -17,11 +17,8 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
     private val context = itemView.context
 
     private val vacancyIcon = itemView.findViewById<ImageView>(R.id.vacancy_icon)
-
     private val vacancyTitle = itemView.findViewById<TextView>(R.id.vacancy_title)
-
     private val companyName = itemView.findViewById<TextView>(R.id.company_name)
-
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
     fun bind(vacancy: Vacancy) {
