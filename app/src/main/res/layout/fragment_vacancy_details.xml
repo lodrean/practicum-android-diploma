@@ -43,8 +43,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/size_xxl"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vacancy_title">
@@ -67,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_xxl" />
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -146,6 +146,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/key_skills_title"
                 style="@style/FontYSDisplay.Medium22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
