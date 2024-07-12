@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
+import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacancyDetailsFragment : Fragment() {
 
@@ -29,4 +31,10 @@ class VacancyDetailsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        fun createArgs(vacancy: Vacancy): Bundle =
+            bundleOf(Vacancy.EXTRAS_KEY to vacancy)
+    }
 }
+

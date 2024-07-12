@@ -29,6 +29,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
+            vacanciesList.clear()
             latestSearchText = changedText
             trackSearchDebounce(changedText)
         }
@@ -52,7 +53,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     .collect { resource ->
                         processResult(
                             resource.data?.vacancies,
-                            resource.data?.page,
                             resource.message
                         )
                         maxPage = resource.data?.count
@@ -61,8 +61,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, page: Int?, errorMessage: String?) {
-
+    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?) {
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }
