@@ -15,23 +15,23 @@ class RetrofitNetworkClient(
 
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
-            return Response().apply { resultCode = HTTP_NO_CONNECTION }
+            return Response().apply { resultCode = NetworkClient.HTTP_NO_CONNECTION }
         }
 
         return when (dto) {
-            is VacanciesRequest -> getVacancies(dto)
+            is VacanciesSearchRequest -> getVacancies(dto)
             is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
-            else -> Response().apply { resultCode = HTTP_CLIENT_ERROR }
+            else -> Response().apply { resultCode = NetworkClient.HTTP_CLIENT_ERROR }
         }
     }
 
-    private suspend fun getVacancies(request: VacanciesRequest): Response {
+    private suspend fun getVacancies(request: VacanciesSearchRequest): Response {
         return withContext(Dispatchers.IO) {
             try {
                 hhService.getVacancies(request.toMap())
-                    .apply { resultCode = HTTP_SUCCESS }
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
             }
@@ -42,7 +42,7 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 CountriesResponse(hhService.getCountries())
-                    .apply { resultCode = HTTP_SUCCESS }
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
             }
@@ -53,7 +53,7 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 AreasResponse(hhService.getAreas(request.areaId))
-                    .apply { resultCode = HTTP_SUCCESS }
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
             }
@@ -64,14 +64,14 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 VacancyResponse(hhService.getVacancyFull(request.vacancyId))
-                    .apply { resultCode = HTTP_SUCCESS }
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
             }
         }
     }
 
-    private fun VacanciesRequest.toMap(): Map<String, String> {
+    private fun VacanciesSearchRequest.toMap(): Map<String, String> {
         val map: MutableMap<String, String> = HashMap()
         if (text.isNotEmpty()) {
             map["text"] = text
@@ -95,12 +95,6 @@ class RetrofitNetworkClient(
             (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
-    }
-
-    companion object {
-        private const val HTTP_NO_CONNECTION = -1
-        private const val HTTP_CLIENT_ERROR = 400
-        private const val HTTP_SUCCESS = 200
     }
 
 }
