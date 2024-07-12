@@ -33,6 +33,8 @@
     <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
     <string name="intetnet_is_not_available">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="Founded">Найдено</string>
+    <string name="empty_string" />
 
     <plurals name="count_of_vacancies">
         <item quantity="one">%d вакансия</item>

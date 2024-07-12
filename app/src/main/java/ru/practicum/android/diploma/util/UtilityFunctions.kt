@@ -10,13 +10,17 @@ import java.util.Locale
 object UtilityFunctions {
 
     fun formatSalary(vacancy: Vacancy, context: Context): String {
-        val currency = Currency.getInstance(vacancy.salaryCurrencyName)
+        var symbol = ""
+        if (vacancy.salaryCurrencyName != null) {
 
-        val symbol = currency.getSymbol(Locale.getDefault(Locale.Category.DISPLAY))
+            val currency = Currency.getInstance(vacancy.salaryCurrencyName)
+
+            symbol = currency.getSymbol(Locale.getDefault(Locale.Category.DISPLAY))
+        }
 
         val decimalFormat = DecimalFormat("#,###.##")
 
-        var formattedString = ""
+        val formattedString :String
 
         if (vacancy.salaryFrom == null && vacancy.salaryTo == null) {
             formattedString =

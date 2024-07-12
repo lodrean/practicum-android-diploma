@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,7 +18,17 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
-            app:title="@string/vacancy_search_title" />
+            app:title="@string/vacancy_search_title">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/size_xxl"
+                android:importantForAccessibility="no"
+                android:src="@drawable/filter_off_icon" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -47,29 +58,12 @@
             android:background="?attr/edit_text_color"
             android:importantForAccessibility="no"
             android:src="@drawable/close_icon"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/vacancy_count_text_view"
-        style="@style/FontYSDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="@dimen/size_l"
-        android:background="@drawable/rounded_blue_rectangle"
-        android:gravity="top|center_horizontal"
-        android:paddingHorizontal="@dimen/size_l"
-        android:paddingVertical="@dimen/size_xxs"
-        android:text="@string/no_vacancies"
-        android:textColor="@color/white_universal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_frame"
-        android:visibility="gone"/>
 
     <LinearLayout
-        android:id="@+id/search_field"
+        android:id="@+id/search_main_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -103,9 +97,39 @@
             android:layout_marginTop="@dimen/size_xxl"
             android:gravity="center_horizontal"
             android:text="@string/intetnet_is_not_available"
-            android:visibility="gone"/>
-
-
+            android:visibility="gone" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_count_text_view"
+        app:layout_constraintVertical_weight="1"
+        tools:itemCount="20"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/vacancy_list_item" />
+
+
+    <TextView
+        android:id="@+id/vacancy_count_text_view"
+        style="@style/FontYSDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/size_l"
+        android:background="@drawable/rounded_blue_rectangle"
+        android:gravity="top|center_horizontal"
+        android:paddingHorizontal="@dimen/size_l"
+        android:paddingVertical="@dimen/size_xxs"
+        android:text="@string/no_vacancies"
+        android:textColor="@color/white_universal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
