@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
 
 val uiModule = module {
-    viewModel {(vacancy: Vacancy) ->
+    viewModel { (vacancy: Vacancy) ->
         VacancyDetailsViewModel(vacancy = vacancy)
     }
 }
