@@ -7,7 +7,8 @@ sealed interface SearchState {
     data object Loading : SearchState
 
     data class Content(
-        val vacanciesList: List<Vacancy>
+        val vacanciesList: List<Vacancy>,
+        val countOfVacancies: Int?
     ) : SearchState
 
     data class Error(

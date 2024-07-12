@@ -53,7 +53,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     .collect { resource ->
                         processResult(
                             resource.data?.vacancies,
-                            resource.message
+                            resource.message,
+                            resource.data?.found
                         )
                         maxPage = resource.data?.count
                     }
@@ -61,7 +62,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?) {
+    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }
@@ -94,7 +95,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             else -> {
                 renderState(
                     SearchState.Content(
-                        vacanciesList
+                        vacanciesList,
+                        countOfVacancies
                     )
                 )
             }
