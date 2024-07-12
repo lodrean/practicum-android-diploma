@@ -15,19 +15,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
-import java.text.DecimalFormat
-import java.util.Currency
-import java.util.Locale
+import ru.practicum.android.diploma.util.UtilityFunctions
 import kotlin.math.roundToInt
 
 class VacancyDetailsFragment : Fragment() {
@@ -40,26 +34,31 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun render(result: Result<Vacancy>) {
         if (result.isSuccess) {
-            binding.vacancyNameTextView.text = result.getOrNull()?.name
-            binding.employerNameTextView.text = result.getOrNull()?.employerName
-            binding.employerCity.text = result.getOrNull()?.employerCity
-            binding.experienceTextView.text = result.getOrNull()?.experienceName
-            binding.employmentScheduleTextView.text =
-                "%s, %s".format(result.getOrNull()?.employment, result.getOrNull()?.schedule)
-            binding.vacancyDescriptionTextView.text = Html.fromHtml(result.getOrNull()?.description)
+            val vacancy = result.getOrNull()
+            if (vacancy != null) {
+                binding.vacancyNameTextView.text = vacancy.name
+                binding.employerNameTextView.text = vacancy.employerName
+                binding.employerCity.text = vacancy.employerCity
+                binding.experienceTextView.text = vacancy.experienceName
+                binding.employmentScheduleTextView.text =
+                    "%s, %s".format(vacancy.employment, vacancy.schedule)
+                binding.vacancyDescriptionTextView.text = Html.fromHtml(vacancy.description)
 
-            binding.keySkillsTitle.isVisible = result.getOrNull()?.keySkills != ""
-            binding.keySkills.isVisible = result.getOrNull()?.keySkills != ""
-            binding.keySkills.text = result.getOrNull()?.keySkills
-
-            Glide.with(binding.root).load(result.getOrNull()?.employerLogoPath)
-                .apply(RequestOptions().placeholder(R.drawable.placeholder))
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(
-                        resources.getDimension(R.dimen.size_l).roundToInt()
-                    )
-                ).into(binding.employerLogoImageView)
+                binding.keySkillsTitle.isVisible = vacancy.keySkills != ""
+                binding.keySkills.isVisible = vacancy.keySkills != ""
+                binding.keySkills.text = vacancy.keySkills
+                binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
+                Glide.with(binding.root).load(vacancy.employerLogoPath)
+                    .apply(RequestOptions().placeholder(R.drawable.placeholder))
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(
+                            resources.getDimension(R.dimen.size_l).roundToInt()
+                        )
+                    ).into(binding.employerLogoImageView)
+            } else {
+                return
+            }
         }
         if (result.isFailure) {
 
