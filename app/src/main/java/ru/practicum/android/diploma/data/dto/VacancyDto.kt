@@ -17,13 +17,13 @@ data class VacancyDto(
     val archived: Boolean,
     val area: AreaDto,
     val branding: BrandingDto,
-    val contacts: ContactsDto,
+    val contacts: ContactsDto?,
     @SerializedName("created_at")
     val createdAt: String,
     val department: DepartmentDto,
-    val employer: EmployerDto,
-    val employment: EmploymentDto,
-    val experience: ExperienceDto,
+    val employer: EmployerDto?,
+    val employment: EmploymentDto?,
+    val experience: ExperienceDto?,
     @SerializedName("has_test")
     val hasTest: Boolean,
     val id: String,
@@ -40,8 +40,8 @@ data class VacancyDto(
     @SerializedName("response_letter_required")
     val responseLetterRequired: Boolean,
     // val response_url: Any,
-    val salary: SalaryDto,
-    val schedule: ScheduleDto,
+    val salary: SalaryDto?,
+    val schedule: ScheduleDto?,
     @SerializedName("show_logo_in_search")
     val showLogoInSearch: Boolean,
     val snippet: SnippetDto,
@@ -52,5 +52,5 @@ data class VacancyDto(
     @SerializedName("working_time_intervals")
     val workingTimeIntervals: List<WorkingTimeIntervalDto>,
     @SerializedName("working_time_modes")
-    val workingTimeModes: List<WorkingTimeModeDto>
+    val workingTimeModes: List<WorkingTimeModeDto>,
 )
