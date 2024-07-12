@@ -11,7 +11,7 @@ data class VacancyDto(
     @SerializedName("adv_context")
     val advContext: Any,
     @SerializedName("adv_response_url")
-    val advResponse_url: Any,
+    val advResponseUrl: Any,
     @SerializedName("alternate_url")
     val alternateUrl: String,
     @SerializedName("apply_alternate_url")
