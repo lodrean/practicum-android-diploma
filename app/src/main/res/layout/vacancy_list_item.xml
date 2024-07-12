@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/size_xxl"
+    android:layout_marginTop="@dimen/size_s"
+    android:layout_marginEnd="@dimen/size_xxl"
+    android:layout_marginBottom="@dimen/size_s">
+
+    <LinearLayout
+        android:id="@+id/vacancy_icon_frame"
+        android:layout_width="@dimen/image_l"
+        android:layout_height="@dimen/image_l"
+        android:background="@drawable/vacancy_icon_frame"
+        android:padding="@dimen/size_4xs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/vacancy_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:scaleType="centerInside"
+            tools:src="@tools:sample/avatars" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/vacancy_title"
+        style="@style/FontYSDisplay.Medium22"
+        android:layout_width="@dimen/size_zero"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_l"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vacancy_icon_frame"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/company_name"
+        style="@style/FontYSDisplay"
+        android:layout_width="@dimen/size_zero"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/vacancy_title"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_title"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/salary_range"
+        style="@style/FontYSDisplay"
+        android:layout_width="@dimen/size_zero"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/vacancy_title"
+        app:layout_constraintTop_toBottomOf="@id/company_name"
+        tools:text="@tools:sample/lorem" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
