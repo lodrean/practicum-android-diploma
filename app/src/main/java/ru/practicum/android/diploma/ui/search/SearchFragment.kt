@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
@@ -49,13 +50,13 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun render(state: SearchState?): SearchState? {
+    private fun render(state: SearchState) {
         when (state) {
-            is SearchState.Content -> TODO()
-            is SearchState.Empty -> TODO()
-            is SearchState.Error -> TODO()
-            SearchState.Loading -> TODO()
-            null -> TODO()
+            is SearchState.Content -> showContent(state.vacanciesList)
+            is SearchState.Empty -> shortEmpty(state.message)
+            is SearchState.Error -> showError(state.errorMessage)
+            is SearchState.Loading -> showLoading()
+            is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
         }
     }
 

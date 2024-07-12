@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.domain.VacanciesInteractor
+import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
@@ -15,10 +15,13 @@ import ru.practicum.android.diploma.util.debounce
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
 
+    private var currentPage: Int = 1
+    private var maxPage: Int? = null
     private var latestSearchText: String? = null
+    private var vacanciesList = mutableListOf<Vacancy>()
     private val trackSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
-            searchRequest(changedText)
+            searchRequest(changedText, currentPage)
         }
     private val showToast = SingleLiveEvent<String>()
     private val stateLiveData = MutableLiveData<SearchState>()
@@ -31,31 +34,53 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    fun searchRequest(newSearchText: String) {
+    //Функция для пагинации
+    fun searchVacancies() {
+        if (currentPage == maxPage) return
+        else {
+            currentPage += 1
+            searchRequest(latestSearchText!!, currentPage)
+        }
+    }
+
+    private fun searchRequest(newSearchText: String, currentPage: Int) {
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
             viewModelScope.launch {
                 vacanciesInteractor
-                    .searchVacancies(newSearchText)
-                    .collect { pair ->
-                        processResult(pair.first, pair.second)
+                    .searchVacancies(newSearchText, currentPage, PER_PAGE_SIZE)
+                    .collect { resource ->
+                        processResult(
+                            resource.data?.vacancies,
+                            resource.data?.page,
+                            resource.message
+                        )
+                        maxPage = resource.data?.count
                     }
             }
         }
     }
 
-    private fun processResult(foundVacancies: ArrayList<Vacancy>?, errorMessage: String?) {
-        val vacanciesList = mutableListOf<Vacancy>()
+    private fun processResult(foundVacancies: List<Vacancy>?, page: Int?, errorMessage: String?) {
+
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }
         when {
             errorMessage != null -> {
-                renderState(
-                    SearchState.Error(
-                        errorMessage = getApplication<Application>().getString(R.string.server_error)
-                    ),
-                )
+                if (errorMessage == getApplication<Application>().getString(R.string.check_connection_message)) {
+                    renderState(
+                        SearchState.NoInternet(
+                            errorMessage = getApplication<Application>().getString(R.string.intetnet_is_not_available)
+                        ),
+                    )
+                } else {
+                    renderState(
+                        SearchState.Error(
+                            errorMessage = getApplication<Application>().getString(R.string.server_error)
+                        ),
+                    )
+                }
                 showToast(errorMessage)
             }
 
@@ -87,5 +112,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PER_PAGE_SIZE = 20
     }
 }

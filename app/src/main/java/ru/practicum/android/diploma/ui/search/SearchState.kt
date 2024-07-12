@@ -14,6 +14,11 @@ sealed interface SearchState {
         val errorMessage: String
     ) : SearchState
 
+    data class NoInternet(
+        val errorMessage: String
+    ) : SearchState
+
+
     data class Empty(
         val message: String
     ) : SearchState
