@@ -24,10 +24,10 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchFragment : Fragment() {
 
-    private lateinit var onItemClickListener: OnItemClickListener
-    private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
-    private lateinit var vacancyAdapter: VacancyAdapter
-    private lateinit var vacancyList: MutableList<Vacancy>
+    private var onItemClickListener: OnItemClickListener? = null
+    private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
+    private var vacancyAdapter: VacancyAdapter? = null
+    private var vacancyList: MutableList<Vacancy> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
@@ -57,14 +57,14 @@ class SearchFragment : Fragment() {
         binding.clearIcon.setOnClickListener {
             vacancyList.clear()
             binding.inputEditText.setText(getString(R.string.empty_string))
-            vacancyAdapter.notifyDataSetChanged()
+            vacancyAdapter?.notifyDataSetChanged()
             defaultState()
             val inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
         }
 
         vacancyList = mutableListOf()
-        vacancyAdapter = VacancyAdapter(vacancyList, onItemClickListener)
+        vacancyAdapter = VacancyAdapter(vacancyList, onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
 
@@ -90,7 +90,8 @@ class SearchFragment : Fragment() {
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
-            R.id.action_search_fragment_to_vacancy_details_fragment, VacancyDetailsFragment.createArgs(vacancy)
+            R.id.action_search_fragment_to_vacancy_details_fragment,
+            VacancyDetailsFragment.createArgs(vacancy)
         )
     }
 
@@ -166,7 +167,7 @@ class SearchFragment : Fragment() {
             )
         }
         vacancyList.addAll(vacanciesList)
-        vacancyAdapter.notifyDataSetChanged()
+        vacancyAdapter?.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

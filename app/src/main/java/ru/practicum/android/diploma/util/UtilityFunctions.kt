@@ -20,7 +20,7 @@ object UtilityFunctions {
 
         val decimalFormat = DecimalFormat("#,###.##")
 
-        val formattedString :String
+        val formattedString: String
 
         if (vacancy.salaryFrom == null && vacancy.salaryTo == null) {
             formattedString =

@@ -35,10 +35,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    //Функция для пагинации
+    // Функция для пагинации
     fun searchVacancies() {
-        if (currentPage == maxPage) return
-        else {
+        if (currentPage == maxPage) {
+            return
+        } else {
             currentPage += 1
             searchRequest(latestSearchText!!, currentPage)
         }
