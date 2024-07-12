@@ -24,6 +24,8 @@
     <string name="salary_range_to">до %1$s %2$s</string>
 
     <string name="vacancy_title_template">%1$s, %2$s</string>
+    <string name="server_error_message">Server error</string>
+    <string name="check_connection_message">No Internet connection</string>
     <string name="vacancy_description">Описание вакансии</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="key_skills">Ключевые навыки</string>
