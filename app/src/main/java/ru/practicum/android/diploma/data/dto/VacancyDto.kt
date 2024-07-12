@@ -8,8 +8,10 @@ data class VacancyDto(
     @SerializedName("accept_temporary")
     val acceptTemporary: Boolean,
     val address: AddressDto,
-    // val adv_context: Any,
-    // val adv_response_url: Any,
+    @SerializedName("adv_context")
+    val advContext: Any,
+    @SerializedName("adv_response_url")
+    val advResponse_url: Any,
     @SerializedName("alternate_url")
     val alternateUrl: String,
     @SerializedName("apply_alternate_url")
@@ -27,7 +29,8 @@ data class VacancyDto(
     @SerializedName("has_test")
     val hasTest: Boolean,
     val id: String,
-    // val insider_interview: Any,
+    @SerializedName("insider_interview")
+    val insiderInterview: Any,
     @SerializedName("is_adv_vacancy")
     val isAdvVacancy: Boolean,
     val name: String,
@@ -36,19 +39,22 @@ data class VacancyDto(
     val professionalRoles: List<ProfessionalRoleDto>,
     @SerializedName("published_at")
     val publishedAt: String,
-    // val relations: List<Any>,
+    val relations: List<Any>,
     @SerializedName("response_letter_required")
     val responseLetterRequired: Boolean,
-    // val response_url: Any,
+    @SerializedName("response_url")
+    val responseUrl: Any,
     val salary: SalaryDto,
     val schedule: ScheduleDto,
     @SerializedName("show_logo_in_search")
     val showLogoInSearch: Boolean,
     val snippet: SnippetDto,
-    // val sort_point_distance: Any,
+    @SerializedName("sort_point_distance")
+    val sortPointDistance: Any,
     val type: TypeDto,
     val url: String,
-    // val working_days: List<Any>,
+    @SerializedName("working_days")
+    val workingDays: List<Any>,
     @SerializedName("working_time_intervals")
     val workingTimeIntervals: List<WorkingTimeIntervalDto>,
     @SerializedName("working_time_modes")

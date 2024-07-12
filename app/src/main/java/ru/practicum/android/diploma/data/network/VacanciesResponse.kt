@@ -6,8 +6,8 @@ import ru.practicum.android.diploma.data.dto.VacancyDto
 data class VacanciesResponse(
     @SerializedName("alternate_url")
     val alternateUrl: String,
-    // val arguments: Any,
-    // val clusters: Any,
+    val arguments: Any,
+    val clusters: Any,
     val fixes: Any,
     val found: Int,
     val items: List<VacancyDto>,
@@ -15,6 +15,6 @@ data class VacanciesResponse(
     val pages: Int,
     @SerializedName("per_page")
     val perPage: Int,
-    // val suggests: Any
+    val suggests: Any
 ) : Response()
 
