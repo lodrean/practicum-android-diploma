@@ -16,4 +16,6 @@
     <dimen name="image_m">24dp</dimen>
     <dimen name="image_4xl">32dp</dimen>
 
+    <dimen name="image_l">48dp</dimen>
+
 </resources>

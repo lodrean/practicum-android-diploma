@@ -17,6 +17,13 @@
     <string name="vacancy_title">Вакансия</string>
     <string name="favorite_title">Избранное</string>
     <string name="workplace_choose_title">Выбор места работы</string>
+
+    <string name="salary_not_specified">Зарплата не указана</string>
+    <string name="salary_range_from_to">от %1$s до %2$s %3$s</string>
+    <string name="salary_range_from">от %1$s %2$s</string>
+    <string name="salary_range_to">до %1$s %2$s</string>
+
+    <string name="vacancy_title_template">%1$s, %2$s</string>
     <string name="enter_request">Введите запрос</string>
     <string name="no_region">Такого региона нет</string>
     <string name="no_vacancies">Таких вакансий нет</string>
