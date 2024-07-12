@@ -16,6 +16,8 @@ data class FavoriteVacancyEntity(
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "employer_name") val employerName: String,
     @ColumnInfo(name = "employer_logo_path") val employerLogoPath: String,
+    @ColumnInfo(name = "employer_city") val employerCity: String,
+    @ColumnInfo(name = "employment") val employment: String,
     @ColumnInfo(name = "experience_name") val experienceName: String,
     @ColumnInfo(name = "key_skills") val keySkills: String,
     @ColumnInfo(name = "name") val name: String,
