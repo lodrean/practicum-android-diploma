@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.util.debounce
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
 
-    private var currentPage: Int = 1
+    private var currentPage: Int = 0
     private var maxPage: Int? = null
     private var latestSearchText: String? = null
     private var vacanciesList = mutableListOf<Vacancy>()
@@ -110,6 +110,14 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     private fun showToast(message: String) {
         showToast.postValue(message)
+    }
+
+    fun clearSearch() {
+        renderState(SearchState.Default)
+        currentPage = 0
+        maxPage = null
+        latestSearchText = null
+        vacanciesList.clear()
     }
 
     companion object {

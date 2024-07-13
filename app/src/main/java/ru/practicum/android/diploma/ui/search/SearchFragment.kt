@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
             vacancyList.clear()
             binding.inputEditText.setText(getString(R.string.empty_string))
             vacancyAdapter?.notifyDataSetChanged()
-            defaultState()
+            viewModel.clearSearch()
             val inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
         }
@@ -102,6 +102,7 @@ class SearchFragment : Fragment() {
             is SearchState.Error -> showError(state.errorMessage)
             is SearchState.Loading -> showLoading()
             is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
+            is SearchState.Default -> defaultState()
         }
     }
 
@@ -160,6 +161,7 @@ class SearchFragment : Fragment() {
         binding.vacancyCountTextView.isVisible = true
         binding.vacancyCountTextView.text = buildString {
             append(getString(R.string.Founded))
+            append(getString(R.string.empty_pace))
             append(
                 context?.resources?.getQuantityString(
                     R.plurals.count_of_vacancies, countOfVacancies, countOfVacancies
