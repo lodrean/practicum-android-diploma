@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui
+package ru.practicum.android.diploma.ui.viewholder
 
 import android.view.View
 import android.widget.ImageView
@@ -8,9 +8,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.VacancyListItemUiModel
+import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.UtilityFunctions
 
-class VacancyViewHolder(itemView: View) : ListItemViewHolder(itemView) {
+class VacancyViewHolder(itemView: View, private val onClickListener: OnItemClickListener) :
+    ListItemViewHolder(itemView) {
 
     private val context = itemView.context
 
@@ -23,6 +25,7 @@ class VacancyViewHolder(itemView: View) : ListItemViewHolder(itemView) {
         require(listItem is VacancyListItemUiModel.VacancyItem)
         { "Expected VacancyListItemUiModel.VacancyItem" }
         val vacancy = listItem.vacancy
+        itemView.setOnClickListener { onClickListener.onItemClick(vacancy) }
         Glide.with(context)
             .load(vacancy.employerLogoPath)
             .placeholder(R.drawable.placeholder)

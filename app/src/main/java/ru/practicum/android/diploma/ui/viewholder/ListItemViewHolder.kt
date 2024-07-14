@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui
+package ru.practicum.android.diploma.ui.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder

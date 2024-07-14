@@ -64,7 +64,7 @@ class SearchFragment : Fragment() {
         }
 
         vacancyList = mutableListOf()
-        vacancyAdapter = VacancyAdapter(vacancyList, onItemClickListener!!)
+        vacancyAdapter = VacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
 

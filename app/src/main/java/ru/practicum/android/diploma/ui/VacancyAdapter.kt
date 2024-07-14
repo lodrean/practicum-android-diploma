@@ -4,25 +4,58 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.VacancyListItemUiModel
+import ru.practicum.android.diploma.ui.viewholder.EmptyViewHolder
+import ru.practicum.android.diploma.ui.viewholder.ListItemViewHolder
+import ru.practicum.android.diploma.ui.viewholder.LoadingViewHolder
+import ru.practicum.android.diploma.ui.viewholder.VacancyViewHolder
 import ru.practicum.android.diploma.util.OnItemClickListener
 
-class VacancyAdapter(val listOfVacancies: List<Vacancy>, private val onItemClickListener: OnItemClickListener) :
-    Adapter<VacancyViewHolder>() {
+private const val VIEW_TYPE_EMPTY = 0
+private const val VIEW_TYPE_VACANCY = 1
+private const val VIEW_TYPE_LOADING = 2
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
-        return VacancyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.vacancy_list_item, parent, false))
+class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Adapter<ListItemViewHolder>() {
+
+    private val listData = mutableListOf<VacancyListItemUiModel>()
+
+    fun setData(newListData: List<VacancyListItemUiModel>) {
+        listData.clear()
+        listData.addAll(newListData)
+        notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int {
-        return listOfVacancies.size
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        VIEW_TYPE_VACANCY -> {
+            VacancyViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.vacancy_list_item, parent, false)
+            ) { vacancy -> onItemClickListener.onItemClick(vacancy) }
+        }
 
-    override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
-        holder.bind(listOfVacancies[position])
+        VIEW_TYPE_EMPTY -> {
+            EmptyViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.empty_list_item, parent, false)
+            )
+        }
 
-        holder.itemView.setOnClickListener {
-            onItemClickListener.onItemClick(listOfVacancies[position])
+        VIEW_TYPE_LOADING -> {
+            LoadingViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.loading_list_item, parent, false)
+            )
+        }
+
+        else -> {
+            throw IllegalArgumentException("Unknown view type requested: $viewType")
         }
     }
+
+    override fun getItemCount()
+        : Int {
+        return listData.size
+    }
+
+    override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
+        holder.bind(listData[position])
+    }
+
 }
