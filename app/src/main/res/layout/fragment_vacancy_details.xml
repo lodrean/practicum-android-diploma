@@ -40,4 +40,167 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_title">
+
+        <ImageView
+            android:id="@+id/vacancy_error_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_vacancy_data"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/vacancy_error_text_view"
+            style="@style/FontYSDisplay.Medium22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_xxl"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_error_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/vacancy_details_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_title" />
+
+    <ScrollView
+        android:id="@+id/content_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/size_xxl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_title">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/vacancy_name_text_view"
+                style="@style/FontYSDisplay.Bold32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_s" />
+
+            <TextView
+                android:id="@+id/vacancy_salary_text_view"
+                style="@style/FontYSDisplay.Medium22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:background="@drawable/vacancy_icon_frame"
+                android:padding="@dimen/size_xxl">
+
+                <ImageView
+                    android:id="@+id/employer_logo_image_view"
+                    android:layout_width="@dimen/image_l"
+                    android:layout_height="@dimen/image_l"
+                    android:background="@color/transparent"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/employer_name_text_view"
+                    style="@style/FontYSDisplay.Medium22"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_s"
+                    android:background="@android:color/transparent"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black_universal"
+                    app:layout_constraintBottom_toTopOf="@id/employer_city"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/employer_logo_image_view" />
+
+                <TextView
+                    android:id="@+id/employer_city"
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_s"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black_universal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/employer_logo_image_view"
+                    app:layout_constraintTop_toBottomOf="@id/employer_name_text_view" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                style="@style/FontYSDisplay.Medium16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_xxl"
+                android:layout_marginBottom="@dimen/size_xxs"
+                android:text="@string/required_experience" />
+
+            <TextView
+                android:id="@+id/experience_text_view"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxs" />
+
+            <TextView
+                android:id="@+id/employment_schedule_text_view"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxs" />
+
+            <TextView
+                style="@style/FontYSDisplay.Medium22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:text="@string/vacancy_description" />
+
+            <TextView
+                android:id="@+id/vacancy_description_text_view"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/key_skills_title"
+                style="@style/FontYSDisplay.Medium22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:text="@string/key_skills" />
+
+            <TextView
+                android:id="@+id/key_skills"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
