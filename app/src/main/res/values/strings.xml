@@ -49,4 +49,10 @@
     <string name="required_experience">Требуемый опыт</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
+    <string name="share_app_text_plain" translatable="false">text/plain</string>
+    <string name="message_email">" "</string>
+    <string name="share_vacancy_url" translatable="false">https://hh.ru/vacancy/%s</string>
+    <string name="contacts">Контакты</string>
+    <string name="mailto" translatable="false">mailto:%s</string>
+    <string name="mail">Почта: %s</string>
 </resources>

@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.domain.SharingInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.impl.SharingInteractorImpl
 import ru.practicum.android.diploma.domain.impl.VacanciesInteractorImpl
 
 val interactorModule = module {
@@ -12,4 +14,9 @@ val interactorModule = module {
         )
     }
 
+    factory<SharingInteractor> {
+        SharingInteractorImpl(
+            get()
+        )
+    }
 }

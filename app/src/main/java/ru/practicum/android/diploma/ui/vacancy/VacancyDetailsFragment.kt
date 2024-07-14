@@ -81,7 +81,26 @@ class VacancyDetailsFragment : Fragment() {
             }.joinToString(separator = "\n")
         }
 
-        binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
+        binding.contactsTitle.isVisible =
+            (vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false)
+        binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
+        vacancy.contactsEmail?.let {
+            binding.contactsEmail.text = getString(R.string.mail).format(it)
+            binding.contactsEmail.setOnClickListener {
+                vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
+            }
+        }
+        binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
+        vacancy.contactsPhones?.let { contactsPhone ->
+            binding.contactsPhoneNumber.text = contactsPhone
+            binding.contactsPhoneNumber.setOnClickListener {
+                vacancyDetailsViewModel.callPhone(contactsPhone)
+            }
+        }
+
+
+        binding.vacancySalaryTextView.text =
+            UtilityFunctions.formatSalary(vacancy, requireContext())
         Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
             .centerInside()
             .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
@@ -89,13 +108,35 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
+        binding.shareVacancyIcon.setOnClickListener {
+            vacancyDetailsViewModel.shareVacancy(vacancy.id)
+        }
+        binding.favoriteIcon.setOnClickListener {
+            vacancyDetailsViewModel.favoriteVacancy()
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    private fun renderFavorite(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
+        } else {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
 
         vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+        }
+
+        vacancyDetailsViewModel.observeFavoriteState().observe(viewLifecycleOwner) {
+            renderFavorite(it)
         }
 
         return binding.root

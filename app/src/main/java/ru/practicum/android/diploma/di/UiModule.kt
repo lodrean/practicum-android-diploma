@@ -13,6 +13,6 @@ val uiModule = module {
         SearchViewModel(get(), androidApplication())
     }
     viewModel { (vacancy: Vacancy) ->
-        VacancyDetailsViewModel(vacancy = vacancy, get())
+        VacancyDetailsViewModel(vacancy = vacancy, get(), get())
     }
 }
