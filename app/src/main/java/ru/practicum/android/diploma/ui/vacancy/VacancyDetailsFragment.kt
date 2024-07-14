@@ -35,7 +35,8 @@ class VacancyDetailsFragment : Fragment() {
             }
 
             is VacancyDetailsState.VacancyNotFoundedError -> {
-                binding.vacancyErrorTextView.text = getString(R.string.vacancy_not_found_or_deleted)
+                binding.vacancyErrorTextView.text =
+                    getString(R.string.vacancy_not_found_or_deleted)
                 Glide.with(binding.root).load(R.drawable.no_vacancy_data)
                     .into(binding.vacancyErrorImageView)
                 showError()
@@ -56,13 +57,13 @@ class VacancyDetailsFragment : Fragment() {
         }
     }
 
-    private fun showError(){
+    private fun showError() {
         binding.contentScrollView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = true
     }
 
-    private fun loadContentData(vacancy: Vacancy){
+    private fun loadContentData(vacancy: Vacancy) {
         binding.vacancyNameTextView.text = vacancy.name
         binding.employerNameTextView.text = vacancy.employerName
         binding.employerCity.text = vacancy.employerCity
