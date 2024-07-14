@@ -75,7 +75,12 @@ class VacancyDetailsFragment : Fragment() {
 
         binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
         binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-        binding.keySkills.text = vacancy.keySkills
+        if (vacancy.keySkills != null) {
+            binding.keySkills.text = vacancy.keySkills.split(",").toList().map {
+                "• %s".format(it.replace("\"", "").replace(",", ""))
+            }.joinToString(separator = "\n")
+        }
+
         binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
         Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
             .centerInside()
