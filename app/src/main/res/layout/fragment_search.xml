@@ -96,7 +96,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/size_xxl"
             android:gravity="center_horizontal"
-            android:text="@string/intetnet_is_not_available"
+            android:text="@string/internet_is_not_available"
             android:visibility="gone" />
     </LinearLayout>
 

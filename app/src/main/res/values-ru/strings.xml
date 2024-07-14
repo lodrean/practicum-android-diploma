@@ -28,7 +28,7 @@
     <string name="no_region">Такого региона нет</string>
     <string name="no_vacancies">Таких вакансий нет</string>
     <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
-    <string name="intetnet_is_not_available">Нет интернета</string>
+    <string name="internet_is_not_available">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="Founded">Найдено </string>
     <string name="empty_string" />
@@ -43,4 +43,8 @@
         <item quantity="other">%d вакансий</item>
     </plurals>
 
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
 </resources>

@@ -72,7 +72,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 if (errorMessage == getApplication<Application>().getString(R.string.check_connection_message)) {
                     renderState(
                         SearchState.NoInternet(
-                            errorMessage = getApplication<Application>().getString(R.string.intetnet_is_not_available)
+                            errorMessage = getApplication<Application>().getString(R.string.internet_is_not_available)
                         ),
                     )
                 } else {
