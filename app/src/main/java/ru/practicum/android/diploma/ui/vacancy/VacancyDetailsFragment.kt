@@ -39,7 +39,8 @@ class VacancyDetailsFragment : Fragment() {
                 binding.employerCity.text = vacancy.employerCity
                 binding.experienceTextView.text = vacancy.experienceName
                 binding.employmentScheduleTextView.text = "%s, %s".format(vacancy.employment, vacancy.schedule)
-                binding.vacancyDescriptionTextView.text = Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                binding.vacancyDescriptionTextView.text =
+                    Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
                 binding.keySkillsTitle.isVisible = vacancy.keySkills != ""
                 binding.keySkills.isVisible = vacancy.keySkills != ""
