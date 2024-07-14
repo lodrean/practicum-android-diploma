@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AndroidDiploma" parent="">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>
@@ -7,6 +8,7 @@
         <item name="backgroundColor">@color/white_universal</item>
         <item name="android:background">?attr/background_color</item>
     </style>
+
     <style name="AndroidDiploma.ToolBar">
         <item name="android:layout_width">match_parent</item>
         <item name="contentInsetStartWithNavigation">@dimen/size_zero</item>
@@ -23,27 +25,52 @@
         <item name="elevation">@dimen/size_zero</item>
     </style>
 
+    <style name="AndroidDiploma.EditTextStyle">
+        <item name="android:background">@drawable/search_field</item>
+        <item name="android:contextClickable">true</item>
+        <item name="android:drawableEnd">@drawable/search_icon</item>
+        <item name="android:drawablePadding">@dimen/size_s</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:hint">@dimen/size_s</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black_universal</item>
+        <item name="android:textColorHint">?attr/text_hint_color</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">400</item>
+
+    </style>
+
     <style name="FontYSDisplay">
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">400</item>
     </style>
+
     <style name="FontYSDisplay.Bold32">
         <item name="android:fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">32sp</item>
         <item name="android:fontWeight">700</item>
     </style>
+
     <style name="FontYSDisplay.Medium22">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontWeight">500</item>
     </style>
+
     <style name="FontYSDisplay.Medium16">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">500</item>
     </style>
+
     <style name="FontYSDisplay.Regular12">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">12sp</item>

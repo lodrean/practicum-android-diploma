@@ -41,12 +41,13 @@ class VacanciesRepositoryImpl(
                             VacanciesSearchResult(
                                 vacancies = this.items.map { it.toVacancy() },
                                 page = this.page,
-                                perPage = this.perPage,
+                                found = this.found,
                                 count = this.pages
                             )
                         )
                     }
                 }
+
                 else -> Resource.Error(
                     context.getString(R.string.server_error_message) +
                         " : ${response.resultCode}"
@@ -71,6 +72,7 @@ class VacanciesRepositoryImpl(
                         )
                     }
                 }
+
                 else -> Resource.Error(
                     context.getString(R.string.server_error_message) +
                         " : ${response.resultCode}"

@@ -3,4 +3,5 @@
     <attr name="edit_text_color" />
     <attr name="background_color" />
     <attr name="icon_color" />
+    <attr name="text_hint_color" />
 </resources>
