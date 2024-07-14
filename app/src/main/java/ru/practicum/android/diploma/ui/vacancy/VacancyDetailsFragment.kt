@@ -42,8 +42,8 @@ class VacancyDetailsFragment : Fragment() {
                 binding.vacancyDescriptionTextView.text =
                     Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-                binding.keySkillsTitle.isVisible = vacancy.keySkills != ""
-                binding.keySkills.isVisible = vacancy.keySkills != ""
+                binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
+                binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
                 binding.keySkills.text = vacancy.keySkills
                 binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
                 Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
@@ -60,7 +60,7 @@ class VacancyDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
 
-        vacancyDetailsViewModel.observeState().observe(requireActivity()) {
+        vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
