@@ -169,7 +169,6 @@ class SearchFragment : Fragment() {
             )
         }
         vacanciesListItemUiModel.addAll(convertToListItem(vacanciesList))
-        vacanciesListItemUiModel.add(VacancyListItemUiModel.Loading)
         vacancyAdapter?.setData(vacanciesListItemUiModel)
     }
 
