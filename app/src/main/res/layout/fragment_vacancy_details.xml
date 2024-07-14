@@ -80,7 +80,8 @@
                     android:id="@+id/employer_logo_image_view"
                     android:layout_width="@dimen/image_l"
                     android:layout_height="@dimen/image_l"
-                    android:background="@drawable/placeholder"
+                    android:background="@color/transparent"
+                    android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -9,12 +9,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.core.os.bundleOf
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
@@ -22,10 +21,9 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
 import ru.practicum.android.diploma.util.UtilityFunctions
-import kotlin.math.roundToInt
 
 class VacancyDetailsFragment : Fragment() {
-    private val vacancyDetailsViewModel: VacancyDetailsViewModel by viewModel<VacancyDetailsViewModel>() {
+    private val vacancyDetailsViewModel: VacancyDetailsViewModel by viewModel<VacancyDetailsViewModel> {
         parametersOf(requireArguments().getSerializable(Vacancy.EXTRAS_KEY))
     }
     private var _binding: FragmentVacancyDetailsBinding? = null
@@ -40,22 +38,17 @@ class VacancyDetailsFragment : Fragment() {
                 binding.employerNameTextView.text = vacancy.employerName
                 binding.employerCity.text = vacancy.employerCity
                 binding.experienceTextView.text = vacancy.experienceName
-                binding.employmentScheduleTextView.text =
-                    "%s, %s".format(vacancy.employment, vacancy.schedule)
-                binding.vacancyDescriptionTextView.text = Html.fromHtml(vacancy.description)
+                binding.employmentScheduleTextView.text = "%s, %s".format(vacancy.employment, vacancy.schedule)
+                binding.vacancyDescriptionTextView.text = Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
                 binding.keySkillsTitle.isVisible = vacancy.keySkills != ""
                 binding.keySkills.isVisible = vacancy.keySkills != ""
                 binding.keySkills.text = vacancy.keySkills
                 binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
-                Glide.with(binding.root).load(vacancy.employerLogoPath)
-                    .apply(RequestOptions().placeholder(R.drawable.placeholder))
-                    .transform(
-                        CenterCrop(),
-                        RoundedCorners(
-                            resources.getDimension(R.dimen.size_l).roundToInt()
-                        )
-                    ).into(binding.employerLogoImageView)
+                Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
+                    .centerInside()
+                    .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
+                    .into(binding.employerLogoImageView)
             } else {
                 return
             }
@@ -85,8 +78,6 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     companion object {
-        fun createArgs(vacancy: Vacancy): Bundle =
-            bundleOf(Vacancy.EXTRAS_KEY to vacancy)
+        fun createArgs(vacancy: Vacancy): Bundle = bundleOf(Vacancy.EXTRAS_KEY to vacancy)
     }
 }
-
