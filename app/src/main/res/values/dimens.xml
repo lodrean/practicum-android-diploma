@@ -12,6 +12,7 @@
     <dimen name="size_xxl">16dp</dimen>
     <dimen name="size_3xl">18dp</dimen>
     <dimen name="size_4xl">20dp</dimen>
+    <dimen name="size_5xl">46dp</dimen>
 
     <dimen name="image_m">24dp</dimen>
     <dimen name="image_4xl">32dp</dimen>

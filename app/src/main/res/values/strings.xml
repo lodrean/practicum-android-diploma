@@ -31,7 +31,7 @@
     <string name="internet_is_not_available">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="Founded">Найдено</string>
-    <string name="empty_string"/>
+    <string name="empty_string" />
     <string name="server_error_message">Server error</string>
     <string name="check_connection_message">No Internet connection</string>
     <string name="empty_pace">" "</string>
@@ -44,4 +44,6 @@
         <item quantity="other">%d вакансий</item>
     </plurals>
 
+    <string name="empty_favorites_list">Список пуст</string>
+    <string name="favorites_error">Не удалось получить список вакансий</string>
 </resources>
