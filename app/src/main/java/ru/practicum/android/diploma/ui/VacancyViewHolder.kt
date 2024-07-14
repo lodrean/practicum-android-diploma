@@ -3,14 +3,14 @@ package ru.practicum.android.diploma.ui
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.VacancyListItemUiModel
 import ru.practicum.android.diploma.util.UtilityFunctions
 
-class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
+class VacancyViewHolder(itemView: View) : ListItemViewHolder(itemView) {
 
     private val context = itemView.context
 
@@ -19,7 +19,10 @@ class VacancyViewHolder(itemView: View) : ViewHolder(itemView) {
     private val companyName = itemView.findViewById<TextView>(R.id.company_name)
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
-    fun bind(vacancy: Vacancy) {
+    override fun bind(listItem: VacancyListItemUiModel) {
+        require(listItem is VacancyListItemUiModel.VacancyItem)
+        { "Expected VacancyListItemUiModel.VacancyItem" }
+        val vacancy = listItem.vacancy
         Glide.with(context)
             .load(vacancy.employerLogoPath)
             .placeholder(R.drawable.placeholder)
