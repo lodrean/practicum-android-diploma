@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -23,8 +24,16 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Ada
         listData.clear()
         listData.addAll(newListData)
         notifyDataSetChanged()
+
+        Log.d("adapter", "vacanciesListItemUiModel = $itemCount")
     }
 
+    override fun getItemViewType(position: Int) =
+        when (listData[position]) {
+            VacancyListItemUiModel.Empty -> VIEW_TYPE_EMPTY
+            VacancyListItemUiModel.Loading -> VIEW_TYPE_LOADING
+            is VacancyListItemUiModel.VacancyItem -> VIEW_TYPE_VACANCY
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         VIEW_TYPE_VACANCY -> {
             VacancyViewHolder(

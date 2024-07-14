@@ -27,7 +27,7 @@ class SearchFragment : Fragment() {
     private var onItemClickListener: OnItemClickListener? = null
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
     private var vacancyAdapter: VacancyAdapter? = null
-    private var vacancyList: MutableList<Vacancy> = mutableListOf()
+    private var vacanciesListItemUiModel: MutableList<VacancyListItemUiModel> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.clearIcon.setOnClickListener {
-            vacancyList.clear()
+            vacanciesListItemUiModel.clear()
             binding.inputEditText.setText(getString(R.string.empty_string))
             vacancyAdapter?.notifyDataSetChanged()
             viewModel.clearSearch()
@@ -63,7 +63,6 @@ class SearchFragment : Fragment() {
             inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
         }
 
-        vacancyList = mutableListOf()
         vacancyAdapter = VacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
@@ -153,7 +152,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(vacanciesList: List<Vacancy>, countOfVacancies: Int) {
-        vacancyList.clear()
+        vacanciesListItemUiModel.clear()
+        vacanciesListItemUiModel.add(VacancyListItemUiModel.Empty)
         binding.progressBar.isVisible = false
         binding.centralImageHolder.isVisible = false
         binding.recyclerView.isVisible = true
@@ -168,8 +168,15 @@ class SearchFragment : Fragment() {
                 )
             )
         }
-        vacancyList.addAll(vacanciesList)
-        vacancyAdapter?.notifyDataSetChanged()
+        vacanciesListItemUiModel.addAll(convertToListItem(vacanciesList))
+        vacanciesListItemUiModel.add(VacancyListItemUiModel.Loading)
+        vacancyAdapter?.setData(vacanciesListItemUiModel)
+    }
+
+    private fun convertToListItem(vacanciesList: List<Vacancy>): List<VacancyListItemUiModel> {
+        val newVacanciesList = mutableListOf<VacancyListItemUiModel>()
+        for (vacancy in vacanciesList){newVacanciesList.add(VacancyListItemUiModel.VacancyItem(vacancy))}
+        return newVacanciesList
     }
 
     override fun onDestroyView() {
@@ -178,11 +185,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
-        return if (s.isNullOrEmpty()) {
-            false
-        } else {
-            true
-        }
+        return !s.isNullOrEmpty()
     }
 
     companion object {

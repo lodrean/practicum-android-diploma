@@ -101,13 +101,13 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_zero"
-        android:layout_marginTop="@dimen/size_xxl"
+        app:layout_constraintTop_toBottomOf="@id/search_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vacancy_count_text_view"
         app:layout_constraintVertical_weight="1"
         tools:itemCount="20"
         tools:layout_editor_absoluteX="0dp"
