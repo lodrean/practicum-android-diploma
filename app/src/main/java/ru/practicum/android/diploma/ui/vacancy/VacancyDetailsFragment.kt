@@ -31,44 +31,21 @@ class VacancyDetailsFragment : Fragment() {
     private fun render(state: VacancyDetailsState) {
         when (state) {
             is VacancyDetailsState.Content -> {
-                binding.vacancyNameTextView.text = state.vacancy.name
-                binding.employerNameTextView.text = state.vacancy.employerName
-                binding.employerCity.text = state.vacancy.employerCity
-                binding.experienceTextView.text = state.vacancy.experienceName
-                binding.employmentScheduleTextView.text =
-                    "%s, %s".format(state.vacancy.employment, state.vacancy.schedule)
-                binding.vacancyDescriptionTextView.text =
-                    Html.fromHtml(state.vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-                binding.keySkillsTitle.isVisible = state.vacancy.keySkills?.isNotEmpty() ?: false
-                binding.keySkills.isVisible = state.vacancy.keySkills?.isNotEmpty() ?: false
-                binding.keySkills.text = state.vacancy.keySkills
-                binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(state.vacancy, requireContext())
-                Glide.with(binding.root).load(state.vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
-                    .centerInside()
-                    .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
-                    .into(binding.employerLogoImageView)
-                binding.vacancyDetailsProgressBar.isVisible = false
-                binding.layoutError.isVisible = false
-                binding.contentScrollView.isVisible = true
+                loadContentData(state.vacancy)
             }
 
             is VacancyDetailsState.VacancyNotFoundedError -> {
                 binding.vacancyErrorTextView.text = getString(R.string.vacancy_not_found_or_deleted)
-                binding.contentScrollView.isVisible = false
-                binding.vacancyDetailsProgressBar.isVisible = false
                 Glide.with(binding.root).load(R.drawable.no_vacancy_data)
                     .into(binding.vacancyErrorImageView)
-                binding.layoutError.isVisible = true
+                showError()
             }
 
             is VacancyDetailsState.VacancyServerError -> {
                 binding.vacancyErrorTextView.text = getString(R.string.server_error)
-                binding.contentScrollView.isVisible = false
-                binding.vacancyDetailsProgressBar.isVisible = false
                 Glide.with(binding.root).load(R.drawable.server_error)
                     .into(binding.vacancyErrorImageView)
-                binding.layoutError.isVisible = true
+                showError()
             }
 
             is VacancyDetailsState.Loading -> {
@@ -77,6 +54,35 @@ class VacancyDetailsFragment : Fragment() {
                 binding.vacancyDetailsProgressBar.isVisible = true
             }
         }
+    }
+
+    private fun showError(){
+        binding.contentScrollView.isVisible = false
+        binding.vacancyDetailsProgressBar.isVisible = false
+        binding.layoutError.isVisible = true
+    }
+
+    private fun loadContentData(vacancy: Vacancy){
+        binding.vacancyNameTextView.text = vacancy.name
+        binding.employerNameTextView.text = vacancy.employerName
+        binding.employerCity.text = vacancy.employerCity
+        binding.experienceTextView.text = vacancy.experienceName
+        binding.employmentScheduleTextView.text =
+            "%s, %s".format(vacancy.employment, vacancy.schedule)
+        binding.vacancyDescriptionTextView.text =
+            Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+        binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
+        binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
+        binding.keySkills.text = vacancy.keySkills
+        binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
+        Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
+            .centerInside()
+            .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
+            .into(binding.employerLogoImageView)
+        binding.vacancyDetailsProgressBar.isVisible = false
+        binding.layoutError.isVisible = false
+        binding.contentScrollView.isVisible = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
