@@ -30,7 +30,7 @@ class FavoritesRepositoryImpl(
                     message = context.getString(R.string.favorites_error)
                 )
             )
-            throw (e)
+            throw e
         }
     }
 }
