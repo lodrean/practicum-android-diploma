@@ -12,6 +12,6 @@ val uiModule = module {
         SearchViewModel(get(), get())
     }
     viewModel { (vacancy: Vacancy) ->
-        VacancyDetailsViewModel(vacancy = vacancy)
+        VacancyDetailsViewModel(vacancy = vacancy, get())
     }
 }

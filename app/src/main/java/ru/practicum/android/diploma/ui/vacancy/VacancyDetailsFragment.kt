@@ -28,28 +28,53 @@ class VacancyDetailsFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private fun render(result: Result<Vacancy>) {
-        if (result.isSuccess) {
-            val vacancy = result.getOrNull()
-            if (vacancy != null) {
-                binding.vacancyNameTextView.text = vacancy.name
-                binding.employerNameTextView.text = vacancy.employerName
-                binding.employerCity.text = vacancy.employerCity
-                binding.experienceTextView.text = vacancy.experienceName
-                binding.employmentScheduleTextView.text = "%s, %s".format(vacancy.employment, vacancy.schedule)
+    private fun render(state: VacancyDetailsState) {
+        when (state) {
+            is VacancyDetailsState.Content -> {
+                binding.vacancyNameTextView.text = state.vacancy.name
+                binding.employerNameTextView.text = state.vacancy.employerName
+                binding.employerCity.text = state.vacancy.employerCity
+                binding.experienceTextView.text = state.vacancy.experienceName
+                binding.employmentScheduleTextView.text =
+                    "%s, %s".format(state.vacancy.employment, state.vacancy.schedule)
                 binding.vacancyDescriptionTextView.text =
-                    Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    Html.fromHtml(state.vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-                binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-                binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-                binding.keySkills.text = vacancy.keySkills
-                binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
-                Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
+                binding.keySkillsTitle.isVisible = state.vacancy.keySkills?.isNotEmpty() ?: false
+                binding.keySkills.isVisible = state.vacancy.keySkills?.isNotEmpty() ?: false
+                binding.keySkills.text = state.vacancy.keySkills
+                binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(state.vacancy, requireContext())
+                Glide.with(binding.root).load(state.vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
                     .centerInside()
                     .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
                     .into(binding.employerLogoImageView)
-            } else {
-                return
+                binding.vacancyDetailsProgressBar.isVisible = false
+                binding.layoutError.isVisible = false
+                binding.contentScrollView.isVisible = true
+            }
+
+            is VacancyDetailsState.VacancyNotFoundedError -> {
+                binding.vacancyErrorTextView.text = getString(R.string.vacancy_not_found_or_deleted)
+                binding.contentScrollView.isVisible = false
+                binding.vacancyDetailsProgressBar.isVisible = false
+                Glide.with(binding.root).load(R.drawable.no_vacancy_data)
+                    .into(binding.vacancyErrorImageView)
+                binding.layoutError.isVisible = true
+            }
+
+            is VacancyDetailsState.VacancyServerError -> {
+                binding.vacancyErrorTextView.text = getString(R.string.server_error)
+                binding.contentScrollView.isVisible = false
+                binding.vacancyDetailsProgressBar.isVisible = false
+                Glide.with(binding.root).load(R.drawable.server_error)
+                    .into(binding.vacancyErrorImageView)
+                binding.layoutError.isVisible = true
+            }
+
+            is VacancyDetailsState.Loading -> {
+                binding.contentScrollView.isVisible = false
+                binding.layoutError.isVisible = false
+                binding.vacancyDetailsProgressBar.isVisible = true
             }
         }
     }
