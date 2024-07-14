@@ -16,7 +16,6 @@ class FavoritesRepositoryImpl(
     private val context: Context
 ) : FavoritesRepository {
     override fun updateFavorites(): Flow<Resource<List<Vacancy>>> = flow {
-
         try {
             emit(
                 Resource.Success(
@@ -31,6 +30,7 @@ class FavoritesRepositoryImpl(
                     message = context.getString(R.string.favorites_error)
                 )
             )
+            throw (e)
         }
     }
 }

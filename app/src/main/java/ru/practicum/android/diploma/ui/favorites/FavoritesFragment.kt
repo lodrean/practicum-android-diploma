@@ -51,7 +51,6 @@ class FavoritesFragment : Fragment() {
 
     private fun showContent(listOfVacancies: List<Vacancy>) {
         val adapter = VacancyAdapter(listOfVacancies) {
-
         }
 
         binding.favoritesList.adapter = adapter
