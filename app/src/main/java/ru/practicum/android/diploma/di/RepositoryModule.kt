@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.data.FavoritesRepositoryImpl
 import ru.practicum.android.diploma.data.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.domain.api.VacanciesRepository
 
 val repositoryModule = module {
@@ -13,4 +15,7 @@ val repositoryModule = module {
         )
     }
 
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
+    }
 }

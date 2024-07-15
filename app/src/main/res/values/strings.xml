@@ -49,4 +49,7 @@
     <string name="required_experience">Требуемый опыт</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
+
+    <string name="empty_favorites_list">Список пуст</string>
+    <string name="favorites_error">Не удалось получить список вакансий</string>
 </resources>
