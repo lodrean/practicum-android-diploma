@@ -111,7 +111,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             else -> {
                 renderState(
                     SearchState.Content(
-                        vacanciesList, countOfVacancies
+                        vacanciesList,
+                        countOfVacancies
                     )
                 )
             }
@@ -134,7 +135,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     fun onLastItemReached() {
-        if (isNextPageLoading) return else {
+        if (isNextPageLoading) {
+            return
+        } else {
             searchVacancies(latestSearchText!!)
         }
     }
