@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.vacancy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -49,7 +49,15 @@ class VacancyDetailsViewModel(
         sharingInteractor.shareVacancy(vacancyId)
     }
 
+    fun openEmail(mailTo: String, vacancyName: String) {
+        sharingInteractor.openEmail(mailTo, vacancyName)
+    }
+
     fun favoriteVacancy() {
         renderFavoriteState(!(observeFavoriteState().value ?: false))
+    }
+
+    fun callPhone(phoneNumber: String) {
+        sharingInteractor.callPhone(phoneNumber)
     }
 }

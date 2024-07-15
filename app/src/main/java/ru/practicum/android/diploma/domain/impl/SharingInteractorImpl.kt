@@ -7,4 +7,12 @@ class SharingInteractorImpl(private val sharingRepository: SharingRepository) : 
     override fun shareVacancy(vacancyId: String) {
         sharingRepository.shareVacancy(vacancyId)
     }
+
+    override fun openEmail(email: String, vacancyName: String) {
+        sharingRepository.openEmail(email, vacancyName)
+    }
+
+    override fun callPhone(phoneNumber: String) {
+        sharingRepository.callPhone(phoneNumber)
+    }
 }

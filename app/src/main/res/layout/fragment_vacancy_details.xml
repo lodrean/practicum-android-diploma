@@ -202,6 +202,29 @@
                 style="@style/FontYSDisplay.Regular16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/contacts_title"
+                style="@style/FontYSDisplay.Medium22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:text="@string/contacts" />
+
+            <TextView
+                android:id="@+id/contacts_email"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
+
+            <TextView
+                android:id="@+id/contacts_phone_number"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
+
         </LinearLayout>
     </ScrollView>
 
