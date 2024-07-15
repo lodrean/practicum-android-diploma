@@ -74,7 +74,9 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.isVisible = clearButtonVisibility(s)
                 binding.inputEditText.requestFocus()
-                viewModel.searchDebounce(changedText = s.toString())
+                if (s?.isNotEmpty() == true) {
+                    viewModel.searchDebounce(changedText = s.toString())
+                }
                 if (binding.inputEditText.hasFocus() && s?.isEmpty() == true) {
                     viewModel.clearSearch()
                 }
