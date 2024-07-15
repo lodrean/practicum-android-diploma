@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/crew_title"
+        android:id="@+id/favorites_title"
         style="@style/AndroidDiploma.AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,5 +20,45 @@
             app:title="@string/favorite_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favorites_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_zero"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favorites_title" />
+
+    <ImageView
+        android:id="@+id/error_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/error_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favorites_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/error_text"
+        style="@style/FontYSDisplay.Medium22"
+        android:layout_width="@dimen/size_zero"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_5xl"
+        android:layout_marginTop="@dimen/size_xxl"
+        android:layout_marginEnd="@dimen/size_5xl"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/error_image" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favorites_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

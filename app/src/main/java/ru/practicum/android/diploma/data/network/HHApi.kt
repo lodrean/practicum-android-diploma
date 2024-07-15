@@ -16,7 +16,7 @@ interface HHApi {
         "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
     )
     @GET("/vacancies")
-    suspend fun getVacancies(@QueryMap options: Map<String, String>): VacanciesResponse
+    suspend fun getVacancies(@QueryMap options: Map<String, String>): VacanciesSearchResponse
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
