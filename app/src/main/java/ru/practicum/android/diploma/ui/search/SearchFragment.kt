@@ -33,7 +33,6 @@ class SearchFragment : Fragment() {
     private val binding
         get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-    var inputText: String = AMOUNT_DEF
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -41,7 +40,6 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.inputEditText.setText(inputText)
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -76,15 +74,13 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.isVisible = clearButtonVisibility(s)
                 binding.inputEditText.requestFocus()
-                if (s?.isNotEmpty() == true) {
-                    viewModel.searchDebounce(changedText = s.toString())
-                } else {
+                viewModel.searchDebounce(changedText = s.toString())
+                if (binding.inputEditText.hasFocus() && s?.isEmpty() == true) {
                     viewModel.clearSearch()
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                inputText.plus(s)
             }
         }
 
@@ -217,7 +213,6 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        const val AMOUNT_DEF = ""
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
 
