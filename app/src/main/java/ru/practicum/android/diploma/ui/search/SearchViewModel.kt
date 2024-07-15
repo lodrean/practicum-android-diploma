@@ -52,29 +52,28 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     searchRequest(searchText, currentPage)
                 }
             }
-            this.currentPage += 1
+            currentPage += 1
         }
     }
 
     private fun searchRequest(searchText: String, currentPage: Int) {
         if (searchText.isNotEmpty()) {
-            while (!isNextPageLoading) {
-                viewModelScope.launch {
-                    isNextPageLoading = true
-                    vacanciesInteractor
-                        .searchVacancies(searchText, currentPage, PER_PAGE_SIZE)
-                        .collect { resource ->
-                            processResult(
-                                resource.data?.vacancies,
-                                resource.message,
-                                resource.data?.found
-                            )
-                            maxPage = resource.data?.count
-                        }
-
-                }
+            viewModelScope.launch {
+                isNextPageLoading = true
+                vacanciesInteractor.searchVacancies(
+                    searchText,
+                    currentPage,
+                    PER_PAGE_SIZE
+                )
+                    .collect { resource ->
+                        processResult(
+                            resource.data?.vacancies,
+                            resource.message,
+                            resource.data?.found
+                        )
+                        maxPage = resource.data?.count
+                    }
             }
-
         }
     }
 
@@ -112,8 +111,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             else -> {
                 renderState(
                     SearchState.Content(
-                        vacanciesList,
-                        countOfVacancies
+                        vacanciesList, countOfVacancies
                     )
                 )
             }
@@ -136,7 +134,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     fun onLastItemReached() {
-        searchVacancies(latestSearchText!!)
+        if (isNextPageLoading) return else {
+            searchVacancies(latestSearchText!!)
+        }
     }
 
     companion object {
