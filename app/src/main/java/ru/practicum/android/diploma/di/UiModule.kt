@@ -5,6 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
+import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 import ru.practicum.android.diploma.ui.search.SearchViewModel
 
 val uiModule = module {
@@ -14,5 +15,8 @@ val uiModule = module {
     }
     viewModel { (vacancy: Vacancy) ->
         VacancyDetailsViewModel(vacancy = vacancy, get())
+    }
+    viewModel<FavoritesViewModel> {
+        FavoritesViewModel(get())
     }
 }
