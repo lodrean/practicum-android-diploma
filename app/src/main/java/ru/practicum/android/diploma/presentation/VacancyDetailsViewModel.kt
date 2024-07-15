@@ -49,15 +49,7 @@ class VacancyDetailsViewModel(
         sharingInteractor.shareVacancy(vacancyId)
     }
 
-    fun openEmail(mailTo: String, vacancyName: String){
-        sharingInteractor.openEmail(mailTo, vacancyName)
-    }
-
     fun favoriteVacancy(){
         renderFavoriteState(!(observeFavoriteState().value?:false))
-    }
-
-    fun callPhone(phoneNumber: String){
-        sharingInteractor.callPhone(phoneNumber)
     }
 }

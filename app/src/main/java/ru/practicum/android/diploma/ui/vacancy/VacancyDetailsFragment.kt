@@ -81,24 +81,6 @@ class VacancyDetailsFragment : Fragment() {
             }.joinToString(separator = "\n")
         }
 
-        binding.contactsTitle.isVisible =
-            (vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false)
-        binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
-        vacancy.contactsEmail?.let {
-            binding.contactsEmail.text = getString(R.string.mail).format(it)
-            binding.contactsEmail.setOnClickListener {
-                vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
-            }
-        }
-        binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
-        vacancy.contactsPhones?.let { contactsPhone ->
-            binding.contactsPhoneNumber.text = contactsPhone
-            binding.contactsPhoneNumber.setOnClickListener {
-                vacancyDetailsViewModel.callPhone(contactsPhone)
-            }
-        }
-
-
         binding.vacancySalaryTextView.text =
             UtilityFunctions.formatSalary(vacancy, requireContext())
         Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
