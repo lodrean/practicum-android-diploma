@@ -23,14 +23,16 @@ data class VacancyFullDto(
     val area: AreaDto,
     @SerializedName("billing_type")
     val billingType: BillingTypeDto,
-    // val branded_description: Any,
-    // val code: Any,
+    @SerializedName("branded_description")
+    val brandedDescription: Any,
+    val code: Any,
     val contacts: ContactsDto,
     @SerializedName("created_at")
     val createdAt: String,
     val department: DepartmentDto,
     val description: String,
-    // val driver_license_types: List<Any>,
+    @SerializedName("driver_license_types")
+    val driverLicenseTypes: List<Any>,
     val employer: EmployerDto,
     val employment: EmploymentDto,
     val experience: ExperienceDto,
@@ -40,12 +42,14 @@ data class VacancyFullDto(
     val id: String,
     @SerializedName("initial_created_at")
     val initialCreatedAt: String,
-    // val insider_interview: Any,
+    @SerializedName("insider_interview")
+    val insiderInterview: Any,
     @SerializedName("key_skills")
     val keySkills: List<KeySkillDto>,
-    // val languages: List<Any>,
+    val languages: List<Any>,
     val name: String,
-    // val negotiations_url: Any,
+    @SerializedName("negotiations_url")
+    val negotiationsUrl: Any,
     val premium: Boolean,
     @SerializedName("professional_roles")
     val professionalRoles: List<ProfessionalRoleDto>,
@@ -53,18 +57,22 @@ data class VacancyFullDto(
     val publishedAt: String,
     @SerializedName("quick_responses_allowed")
     val quickResponsesAllowed: Boolean,
-    // val relations: List<Any>,
+    val relations: List<Any>,
     @SerializedName("response_letter_required")
     val responseLetterRequired: Boolean,
-    // val response_url: Any,
+    @SerializedName("response_url")
+    val responseUrl: Any,
     val salary: SalaryDto,
     val schedule: ScheduleDto,
-    // val specializations: List<Any>,
-    // val suitable_resumes_url: Any,
-    // val test: Any,
+    val specializations: List<Any>,
+    @SerializedName("suitable_resumes_url")
+    val suitableResumesUrl: Any,
+    val test: Any,
     val type: TypeDto,
-    // val vacancy_constructor_template: Any,
-    // val working_days: List<Any>,
+    @SerializedName("vacancy_constructor_template")
+    val vacancyConstructorTemplate: Any,
+    @SerializedName("working_days")
+    val workingDays: List<Any>,
     @SerializedName("working_time_intervals")
     val workingTimeIntervals: List<WorkingTimeIntervalDto>,
     @SerializedName("working_time_modes")

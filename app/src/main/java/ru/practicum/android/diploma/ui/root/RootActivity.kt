@@ -54,11 +54,6 @@ class RootActivity : AppCompatActivity() {
         testApi()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     private fun changeBottomNavigationVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.isVisible = isVisible
         binding.separator.isVisible = isVisible

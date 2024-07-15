@@ -44,6 +44,9 @@ android {
 dependencies {
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
+    implementation(libs.androidX.fragment)
+    implementation(libs.gson)
+    implementation(libs.kotlinx.coroutines)
 
     // UI layer libraries
     implementation(libs.ui.material)
@@ -58,20 +61,20 @@ dependencies {
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
 
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // network
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.convertergson)
+    implementation(libs.glide)
 
-    implementation("io.insert-koin:koin-android:3.3.0")
+    // database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation("androidx.fragment:fragment-ktx:1.5.6")
+    // dependency injection
+    implementation(libs.koin)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-
-    implementation("androidx.room:room-runtime:2.5.1")
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
+    // navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }
