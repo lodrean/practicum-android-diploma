@@ -37,15 +37,13 @@ class VacancyDetailsFragment : Fragment() {
             is VacancyDetailsState.VacancyNotFoundedError -> {
                 binding.vacancyErrorTextView.text =
                     getString(R.string.vacancy_not_found_or_deleted)
-                Glide.with(binding.root).load(R.drawable.no_vacancy_data)
-                    .into(binding.vacancyErrorImageView)
+                binding.vacancyErrorImageView.setImageResource(R.drawable.no_vacancy_data)
                 showError()
             }
 
             is VacancyDetailsState.VacancyServerError -> {
                 binding.vacancyErrorTextView.text = getString(R.string.server_error)
-                Glide.with(binding.root).load(R.drawable.server_error)
-                    .into(binding.vacancyErrorImageView)
+                binding.vacancyErrorImageView.setImageResource(R.drawable.server_error)
                 showError()
             }
 
@@ -75,7 +73,7 @@ class VacancyDetailsFragment : Fragment() {
 
         binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
         binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-        if (vacancy.keySkills != null) {
+        vacancy.keySkills?.let {
             binding.keySkills.text = vacancy.keySkills.split(",").toList().map {
                 "• %s".format(it.replace("\"", "").replace(",", ""))
             }.joinToString(separator = "\n")
