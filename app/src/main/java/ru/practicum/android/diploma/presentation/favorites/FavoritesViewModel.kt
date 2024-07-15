@@ -23,7 +23,7 @@ class FavoritesViewModel(
     fun updateFavoritesList() {
         viewModelScope.launch(Dispatchers.IO) {
             renderState(FavoritesState.Loading)
-            favoritesInteractor.updateFavorites().collect {
+            favoritesInteractor.getFavoriteVacancies().collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data!!.isEmpty()) {

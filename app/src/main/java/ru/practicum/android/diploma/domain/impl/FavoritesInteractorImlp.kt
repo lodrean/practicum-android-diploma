@@ -9,7 +9,15 @@ import ru.practicum.android.diploma.util.Resource
 class FavoritesInteractorImlp(
     private val favoritesRepository: FavoritesRepository
 ) : FavoritesInteractor {
-    override fun updateFavorites(): Flow<Resource<List<Vacancy>>> {
-        return favoritesRepository.updateFavorites()
+    override fun getFavoriteVacancies(): Flow<Resource<List<Vacancy>>> {
+        return favoritesRepository.getFavoriteVacancies()
+    }
+
+    override suspend fun addVacancyToFavorites(vacancy: Vacancy) {
+        favoritesRepository.addVacancyToFavorites(vacancy)
+    }
+
+    override suspend fun deleteVacancyFromFavorites(vacancy: Vacancy) {
+        favoritesRepository.deleteVacancyFromFavorites(vacancy)
     }
 }
