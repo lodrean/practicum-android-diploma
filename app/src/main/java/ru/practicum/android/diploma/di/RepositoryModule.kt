@@ -4,6 +4,7 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.data.VacanciesRepositoryImpl
 import ru.practicum.android.diploma.data.sharing.SharingRepository
 import ru.practicum.android.diploma.data.sharing.SharingRepositoryImpl
+import ru.practicum.android.diploma.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.domain.api.VacanciesRepository
 
 val repositoryModule = module {
@@ -13,6 +14,10 @@ val repositoryModule = module {
             context = get(),
             networkClient = get(),
         )
+    }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
     }
 
     single<SharingRepository> {
