@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -85,6 +86,22 @@ class SearchFragment : Fragment() {
 
         binding.inputEditText.addTextChangedListener(simpleTextWatcher)
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = vacancyAdapter?.itemCount
+                    if (itemsCount != null) {
+                        if (pos >= itemsCount-1) {
+                            viewModel.onLastItemReached()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
@@ -102,7 +119,13 @@ class SearchFragment : Fragment() {
             is SearchState.Loading -> showLoading()
             is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
+            is SearchState.LoadingNextPage -> showLoadingNextPage()
         }
+    }
+
+    private fun showLoadingNextPage() {
+        vacanciesListItemUiModel.add(VacancyListItemUiModel.Loading)
+        vacancyAdapter?.notifyDataSetChanged()
     }
 
     private fun showLooseInternetConnection(errorMessage: String) {
@@ -174,7 +197,9 @@ class SearchFragment : Fragment() {
 
     private fun convertToListItem(vacanciesList: List<Vacancy>): List<VacancyListItemUiModel> {
         val newVacanciesList = mutableListOf<VacancyListItemUiModel>()
-        for (vacancy in vacanciesList){newVacanciesList.add(VacancyListItemUiModel.VacancyItem(vacancy))}
+        for (vacancy in vacanciesList) {
+            newVacanciesList.add(VacancyListItemUiModel.VacancyItem(vacancy))
+        }
         return newVacanciesList
     }
 
