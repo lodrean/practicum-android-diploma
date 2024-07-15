@@ -34,6 +34,7 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Ada
             VacancyListItemUiModel.Loading -> VIEW_TYPE_LOADING
             is VacancyListItemUiModel.VacancyItem -> VIEW_TYPE_VACANCY
         }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         VIEW_TYPE_VACANCY -> {
             VacancyViewHolder(
@@ -58,8 +59,7 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Ada
         }
     }
 
-    override fun getItemCount()
-        : Int {
+    override fun getItemCount(): Int {
         return listData.size
     }
 

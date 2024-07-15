@@ -22,8 +22,7 @@ class VacancyViewHolder(itemView: View, private val onClickListener: OnItemClick
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
     override fun bind(listItem: VacancyListItemUiModel) {
-        require(listItem is VacancyListItemUiModel.VacancyItem)
-        { "Expected VacancyListItemUiModel.VacancyItem" }
+        require(listItem is VacancyListItemUiModel.VacancyItem) { "Expected VacancyListItemUiModel.VacancyItem" }
         val vacancy = listItem.vacancy
         itemView.setOnClickListener { onClickListener.onItemClick(vacancy) }
         Glide.with(context)

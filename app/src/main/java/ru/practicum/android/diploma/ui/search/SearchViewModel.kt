@@ -38,7 +38,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
-        if ((this.currentPage - 1) == maxPage) {
+        if (this.currentPage - 1 == maxPage) {
             return
         } else {
             when (currentPage) {

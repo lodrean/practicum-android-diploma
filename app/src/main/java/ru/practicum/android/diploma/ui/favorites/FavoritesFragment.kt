@@ -57,9 +57,10 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun showContent(listOfVacancies: List<Vacancy>) {
-
         val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
         ) { vacancy ->
             launchVacancyDetails(vacancy)
         }
