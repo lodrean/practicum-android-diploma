@@ -38,7 +38,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
-        if (this.currentPage == maxPage) {
+        if ((this.currentPage - 1) == maxPage) {
             return
         } else {
             when (currentPage) {
@@ -48,11 +48,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 }
 
                 else -> {
-                    isNextPageLoading = true
-                    while (isNextPageLoading) {
-                        renderState(SearchState.LoadingNextPage)
-                        searchRequest(searchText, currentPage)
-                    }
+                    renderState(SearchState.LoadingNextPage)
+                    searchRequest(searchText, currentPage)
                 }
             }
             this.currentPage += 1
@@ -61,24 +58,28 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
     private fun searchRequest(searchText: String, currentPage: Int) {
         if (searchText.isNotEmpty()) {
-            viewModelScope.launch {
-                vacanciesInteractor
-                    .searchVacancies(searchText, currentPage, PER_PAGE_SIZE)
-                    .collect { resource ->
-                        processResult(
-                            resource.data?.vacancies,
-                            resource.message,
-                            resource.data?.found
-                        )
-                        maxPage = resource.data?.count
-                    }
+            while (!isNextPageLoading) {
+                viewModelScope.launch {
+                    isNextPageLoading = true
+                    vacanciesInteractor
+                        .searchVacancies(searchText, currentPage, PER_PAGE_SIZE)
+                        .collect { resource ->
+                            processResult(
+                                resource.data?.vacancies,
+                                resource.message,
+                                resource.data?.found
+                            )
+                            maxPage = resource.data?.count
+                        }
+
+                }
             }
 
-            isNextPageLoading = false
         }
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+        isNextPageLoading = false
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }

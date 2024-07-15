@@ -76,7 +76,11 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.isVisible = clearButtonVisibility(s)
                 binding.inputEditText.requestFocus()
-                viewModel.searchDebounce(changedText = s.toString())
+                if (s?.isNotEmpty() == true) {
+                    viewModel.searchDebounce(changedText = s.toString())
+                } else {
+                    viewModel.clearSearch()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -95,7 +99,7 @@ class SearchFragment : Fragment() {
                     val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = vacancyAdapter?.itemCount
                     if (itemsCount != null) {
-                        if (pos >= itemsCount-1) {
+                        if (pos >= itemsCount - 1) {
                             viewModel.onLastItemReached()
                         }
                     }
@@ -124,8 +128,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun showLoadingNextPage() {
-        vacanciesListItemUiModel.add(VacancyListItemUiModel.Loading)
-        vacancyAdapter?.notifyDataSetChanged()
+        vacanciesListItemUiModel[vacanciesListItemUiModel.size - 1] = VacancyListItemUiModel.Loading
+        vacancyAdapter?.setData(vacanciesListItemUiModel)
     }
 
     private fun showLooseInternetConnection(errorMessage: String) {
