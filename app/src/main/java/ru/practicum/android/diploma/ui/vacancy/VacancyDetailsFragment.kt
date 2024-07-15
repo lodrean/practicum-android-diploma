@@ -82,7 +82,7 @@ class VacancyDetailsFragment : Fragment() {
         }
 
         binding.contactsTitle.isVisible =
-            (vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false)
+            vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
         binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
         vacancy.contactsEmail?.let {
             binding.contactsEmail.text = getString(R.string.mail).format(it)
@@ -101,7 +101,6 @@ class VacancyDetailsFragment : Fragment() {
                 }
             }
         }
-
 
         binding.vacancySalaryTextView.text =
             UtilityFunctions.formatSalary(vacancy, requireContext())
