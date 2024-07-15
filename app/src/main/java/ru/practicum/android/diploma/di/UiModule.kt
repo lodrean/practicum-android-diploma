@@ -12,8 +12,15 @@ val uiModule = module {
     viewModel<SearchViewModel> {
         SearchViewModel(get(), get())
     }
-    viewModel { (vacancy: Vacancy) ->
-        VacancyDetailsViewModel(vacancy = vacancy, get(), get(), get())
+    viewModel { (vacancy: Vacancy, isFavorite: Boolean, vacancyNeedToUpdate: Boolean) ->
+        VacancyDetailsViewModel(
+            vacancy = vacancy,
+            isFavorite = isFavorite,
+            vacancyNeedToUpdate = vacancyNeedToUpdate,
+            get(),
+            get(),
+            get()
+        )
     }
     viewModel<FavoritesViewModel> {
         FavoritesViewModel(get())

@@ -14,6 +14,8 @@ import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsState
 
 class VacancyDetailsViewModel(
     val vacancy: Vacancy,
+    private val isFavorite: Boolean,
+    private val vacancyNeedToUpdate: Boolean,
     private val vacanciesInteractor: VacanciesInteractor,
     private val sharingInteractor: SharingInteractor,
     private val favoritesInteractor: FavoritesInteractor
@@ -24,21 +26,19 @@ class VacancyDetailsViewModel(
     init {
         renderState(VacancyDetailsState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
-            favoritesInteractor.getFavoriteVacancies().collect { it ->
-                it.data?.let {
-                    if (it.map { currentVacancy -> currentVacancy.id }.contains(vacancy.id)) {
-                        renderFavoriteState(true)
+            renderFavoriteState(isFavorite)
+            if (vacancyNeedToUpdate) {
+                vacanciesInteractor.updateToFullVacancy(vacancy).collect {
+                    if (it.message != null) {
+                        renderState(VacancyDetailsState.VacancyServerError)
+                    } else if (it.data != null) {
+                        renderState(VacancyDetailsState.Content(it.data))
+                    } else {
+                        renderState(VacancyDetailsState.VacancyNotFoundedError)
                     }
                 }
-            }
-            vacanciesInteractor.updateToFullVacancy(vacancy).collect {
-                if (it.message != null) {
-                    renderState(VacancyDetailsState.VacancyServerError)
-                } else if (it.data != null) {
-                    renderState(VacancyDetailsState.Content(it.data))
-                } else {
-                    renderState(VacancyDetailsState.VacancyNotFoundedError)
-                }
+            } else {
+                renderState(VacancyDetailsState.Content(vacancy))
             }
         }
     }

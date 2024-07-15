@@ -22,7 +22,11 @@ import ru.practicum.android.diploma.util.UtilityFunctions
 
 class VacancyDetailsFragment : Fragment() {
     private val vacancyDetailsViewModel: VacancyDetailsViewModel by viewModel<VacancyDetailsViewModel> {
-        parametersOf(requireArguments().getSerializable(Vacancy.EXTRAS_KEY))
+        parametersOf(
+            requireArguments().getSerializable(Vacancy.EXTRAS_KEY),
+            requireArguments().getBoolean(IS_FAVORITE_VACANCY_KEY),
+            requireArguments().getBoolean(VACANCY_NEED_TO_UPDATE_KEY)
+        )
     }
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding
@@ -156,5 +160,9 @@ class VacancyDetailsFragment : Fragment() {
 
     companion object {
         fun createArgs(vacancy: Vacancy): Bundle = bundleOf(Vacancy.EXTRAS_KEY to vacancy)
+
+        const val IS_FAVORITE_VACANCY_KEY = "IS_FAVORITE_VACANCY"
+
+        const val VACANCY_NEED_TO_UPDATE_KEY = "VACANCY_NEED_TO_UPDATE_KEY"
     }
 }
