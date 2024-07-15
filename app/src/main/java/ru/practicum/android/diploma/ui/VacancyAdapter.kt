@@ -24,8 +24,6 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Ada
         listData.clear()
         listData.addAll(newListData)
         notifyDataSetChanged()
-
-        Log.d("adapter", "vacanciesListItemUiModel = $itemCount")
     }
 
     override fun getItemViewType(position: Int) =
