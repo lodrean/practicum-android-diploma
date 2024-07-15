@@ -5,9 +5,9 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -17,7 +17,7 @@ import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
+import ru.practicum.android.diploma.presentation.vacancy.VacancyDetailsViewModel
 import ru.practicum.android.diploma.util.UtilityFunctions
 
 class VacancyDetailsFragment : Fragment() {
@@ -81,7 +81,29 @@ class VacancyDetailsFragment : Fragment() {
             }.joinToString(separator = "\n")
         }
 
-        binding.vacancySalaryTextView.text = UtilityFunctions.formatSalary(vacancy, requireContext())
+        binding.contactsTitle.isVisible =
+            vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
+        binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
+        vacancy.contactsEmail?.let {
+            binding.contactsEmail.text = getString(R.string.mail).format(it)
+            binding.contactsEmail.setOnClickListener {
+                vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
+            }
+        }
+        binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
+        vacancy.contactsPhones?.let { contactsPhone ->
+            val regex = "\\+[0-9]{11}".toRegex()
+            val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
+            contactsFormattedNumber?.let {
+                binding.contactsPhoneNumber.text = contactsFormattedNumber
+                binding.contactsPhoneNumber.setOnClickListener {
+                    vacancyDetailsViewModel.callPhone(contactsFormattedNumber)
+                }
+            }
+        }
+
+        binding.vacancySalaryTextView.text =
+            UtilityFunctions.formatSalary(vacancy, requireContext())
         Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
             .centerInside()
             .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
@@ -89,14 +111,28 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
+        binding.shareVacancyIcon.setOnClickListener {
+            vacancyDetailsViewModel.shareVacancy(vacancy.id)
+        }
+        binding.favoriteIcon.setOnClickListener {
+            vacancyDetailsViewModel.makeVacancyFavorite()
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
-
-        vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+    private fun renderFavorite(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
+        } else {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -104,6 +140,14 @@ class VacancyDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+
+        vacancyDetailsViewModel.observeFavoriteState().observe(viewLifecycleOwner) {
+            renderFavorite(it)
         }
     }
 

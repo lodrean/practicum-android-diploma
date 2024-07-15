@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.sharing.ExternalNavigator
 
 val dataModule = module {
 
@@ -36,5 +37,9 @@ val dataModule = module {
             context = get(),
             hhService = get(),
         )
+    }
+
+    single {
+        ExternalNavigator(get())
     }
 }

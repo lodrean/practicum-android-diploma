@@ -50,4 +50,7 @@
 
     <string name="empty_favorites_list">Список пуст</string>
     <string name="favorites_error">Не удалось получить список вакансий</string>
+    <string name="message_email">" "</string>
+    <string name="contacts">Контакты</string>
+    <string name="mail">Почта: %s</string>
 </resources>
