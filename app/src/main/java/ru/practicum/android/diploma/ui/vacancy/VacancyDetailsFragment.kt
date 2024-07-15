@@ -115,7 +115,7 @@ class VacancyDetailsFragment : Fragment() {
             vacancyDetailsViewModel.shareVacancy(vacancy.id)
         }
         binding.favoriteIcon.setOnClickListener {
-            vacancyDetailsViewModel.favoriteVacancy()
+            vacancyDetailsViewModel.makeVacancyFavorite()
         }
     }
 
@@ -134,20 +134,20 @@ class VacancyDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
 
-        vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-        }
-
-        vacancyDetailsViewModel.observeFavoriteState().observe(viewLifecycleOwner) {
-            renderFavorite(it)
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+
+        vacancyDetailsViewModel.observeFavoriteState().observe(viewLifecycleOwner) {
+            renderFavorite(it)
         }
     }
 

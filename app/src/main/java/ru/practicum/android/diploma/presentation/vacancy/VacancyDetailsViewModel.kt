@@ -53,7 +53,7 @@ class VacancyDetailsViewModel(
         sharingInteractor.openEmail(mailTo, vacancyName)
     }
 
-    fun favoriteVacancy() {
+    fun makeVacancyFavorite() {
         renderFavoriteState(!(observeFavoriteState().value ?: false))
     }
 
