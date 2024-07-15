@@ -6,6 +6,10 @@ import ru.practicum.android.diploma.util.Resource
 
 interface FavoritesRepository {
 
-    fun updateFavorites(): Flow<Resource<List<Vacancy>>>
+    fun getFavoriteVacancies(): Flow<Resource<List<Vacancy>>>
+
+    suspend fun addVacancyToFavorites(vacancy: Vacancy)
+
+    suspend fun deleteVacancyFromFavorites(vacancy: Vacancy)
 
 }
