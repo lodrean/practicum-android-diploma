@@ -41,15 +41,15 @@ class VacancyDetailsViewModel(
         stateLiveData.postValue(state)
     }
 
-    private fun renderFavoriteState(isLiked: Boolean){
+    private fun renderFavoriteState(isLiked: Boolean) {
         stateFavoriteData.postValue(isLiked)
     }
 
-    fun shareVacancy(vacancyId: String){
+    fun shareVacancy(vacancyId: String) {
         sharingInteractor.shareVacancy(vacancyId)
     }
 
-    fun favoriteVacancy(){
-        renderFavoriteState(!(observeFavoriteState().value?:false))
+    fun favoriteVacancy() {
+        renderFavoriteState(!(observeFavoriteState().value ?: false))
     }
 }
