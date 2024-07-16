@@ -12,4 +12,6 @@ interface FavoritesRepository {
 
     suspend fun deleteVacancyFromFavorites(vacancy: Vacancy)
 
+    suspend fun checkVacancyIsFavorite(vacancy: Vacancy): Boolean
+
 }

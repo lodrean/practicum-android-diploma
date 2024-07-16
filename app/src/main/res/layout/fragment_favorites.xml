@@ -26,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_zero"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/favorites_title" />
 
     <ImageView

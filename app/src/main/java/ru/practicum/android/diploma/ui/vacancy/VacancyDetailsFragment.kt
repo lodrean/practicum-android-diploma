@@ -24,7 +24,6 @@ class VacancyDetailsFragment : Fragment() {
     private val vacancyDetailsViewModel: VacancyDetailsViewModel by viewModel<VacancyDetailsViewModel> {
         parametersOf(
             requireArguments().getSerializable(Vacancy.EXTRAS_KEY),
-            requireArguments().getBoolean(IS_FAVORITE_VACANCY_KEY),
             requireArguments().getBoolean(VACANCY_NEED_TO_UPDATE_KEY)
         )
     }
@@ -113,16 +112,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
-        binding.shareVacancyIcon.setOnClickListener {
-            vacancyDetailsViewModel.shareVacancy(vacancy.id)
-        }
-        binding.favoriteIcon.setOnClickListener {
-            vacancyDetailsViewModel.makeVacancyFavorite()
-        }
-    }
 
-    private fun renderFavorite(isFavorite: Boolean) {
-        if (isFavorite) {
+        if (vacancy.isFavorite) {
             binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
         } else {
             binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
@@ -148,8 +139,11 @@ class VacancyDetailsFragment : Fragment() {
             render(it)
         }
 
-        vacancyDetailsViewModel.observeFavoriteState().observe(viewLifecycleOwner) {
-            renderFavorite(it)
+        binding.shareVacancyIcon.setOnClickListener {
+            vacancyDetailsViewModel.shareVacancy()
+        }
+        binding.favoriteIcon.setOnClickListener {
+            vacancyDetailsViewModel.makeVacancyFavorite()
         }
     }
 
@@ -159,9 +153,11 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     companion object {
-        fun createArgs(vacancy: Vacancy): Bundle = bundleOf(Vacancy.EXTRAS_KEY to vacancy)
-
-        const val IS_FAVORITE_VACANCY_KEY = "IS_FAVORITE_VACANCY"
+        fun createArgs(vacancy: Vacancy, vacancyNeedUpdate: Boolean): Bundle =
+            bundleOf(
+                Vacancy.EXTRAS_KEY to vacancy,
+                VACANCY_NEED_TO_UPDATE_KEY to vacancyNeedUpdate
+            )
 
         const val VACANCY_NEED_TO_UPDATE_KEY = "VACANCY_NEED_TO_UPDATE_KEY"
     }

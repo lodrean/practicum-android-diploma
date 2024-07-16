@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.data
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.domain.api.FavoritesRepository
@@ -20,8 +22,10 @@ class FavoritesRepositoryImpl(
         try {
             emit(
                 Resource.Success(
-                    database.favoriteVacancyDao().getFavoriteVacancies().map {
-                        it.toVacancy()
+                    withContext(Dispatchers.IO) {
+                        database.favoriteVacancyDao().getFavoriteVacancies().map {
+                            it.toVacancy()
+                        }
                     }
                 )
             )
@@ -36,10 +40,20 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun addVacancyToFavorites(vacancy: Vacancy) {
-        database.favoriteVacancyDao().insertVacancy(vacancy.toEntity())
+        withContext(Dispatchers.IO) {
+            database.favoriteVacancyDao().insertVacancy(vacancy.toEntity())
+        }
     }
 
     override suspend fun deleteVacancyFromFavorites(vacancy: Vacancy) {
-        database.favoriteVacancyDao().deleteFromFavorite(vacancy.toEntity())
+        withContext(Dispatchers.IO) {
+            database.favoriteVacancyDao().deleteFromFavorite(vacancy.toEntity())
+        }
+    }
+
+    override suspend fun checkVacancyIsFavorite(vacancy: Vacancy): Boolean {
+        return withContext(Dispatchers.IO) {
+            database.favoriteVacancyDao().findVacancyById(vacancy.id).isNotEmpty()
+        }
     }
 }
