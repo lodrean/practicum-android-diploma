@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.VacancyAdapter
+import ru.practicum.android.diploma.ui.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
@@ -27,7 +27,7 @@ class SearchFragment : Fragment() {
 
     private var onItemClickListener: OnItemClickListener? = null
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
-    private var vacancyAdapter: VacancyAdapter? = null
+    private var vacancyAdapter: SearchVacancyAdapter? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
@@ -60,7 +60,7 @@ class SearchFragment : Fragment() {
             inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
         }
 
-        vacancyAdapter = VacancyAdapter(onItemClickListener!!)
+        vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
 
@@ -108,7 +108,7 @@ class SearchFragment : Fragment() {
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_search_fragment_to_vacancy_details_fragment,
-            VacancyDetailsFragment.createArgs(vacancy)
+            VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = true)
         )
     }
 

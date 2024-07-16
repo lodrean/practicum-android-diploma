@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 import ru.practicum.android.diploma.ui.VacancyAdapter
 import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
-import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
 
 class FavoritesFragment : Fragment() {
@@ -27,6 +26,7 @@ class FavoritesFragment : Fragment() {
         get() = _binding!!
 
     private val viewModel by viewModel<FavoritesViewModel>()
+    private var adapter: VacancyAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
@@ -48,6 +48,16 @@ class FavoritesFragment : Fragment() {
                 is FavoritesState.Loading -> showLoading()
             }
         }
+
+        val onVacancyClickDebounce = debounce<Vacancy>(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { vacancy ->
+            launchVacancyDetails(vacancy)
+        }
+        adapter = VacancyAdapter { onVacancyClickDebounce(it) }
+        binding.favoritesList.adapter = adapter
     }
 
     override fun onResume() {
@@ -56,21 +66,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun showContent(listOfVacancies: List<Vacancy>) {
-        val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { vacancy ->
-            launchVacancyDetails(vacancy)
-        }
-        val onItemClickListener = OnItemClickListener { vacancy ->
-            onVacancyClickDebounce(vacancy)
-        }
-        val adapter = VacancyAdapter(onItemClickListener)
-        adapter.setData(listOfVacancies)
-
-        binding.favoritesList.adapter = adapter
-
+        adapter?.setData(listOfVacancies)
         binding.errorImage.isVisible = false
         binding.errorText.isVisible = false
         binding.loading.isVisible = false
@@ -106,8 +102,8 @@ class FavoritesFragment : Fragment() {
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
-            R.id.action_search_fragment_to_vacancy_details_fragment,
-            VacancyDetailsFragment.createArgs(vacancy)
+            R.id.action_favorites_fragment_to_vacancy_details_fragment,
+            VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = false)
         )
     }
 }
