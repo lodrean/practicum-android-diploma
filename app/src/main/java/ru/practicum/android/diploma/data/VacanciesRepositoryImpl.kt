@@ -68,7 +68,10 @@ class VacanciesRepositoryImpl(
                 NetworkClient.HTTP_SUCCESS -> {
                     with(response as VacancyResponse) {
                         Resource.Success(
-                            vacancy.copy(description = response.vacancy.description)
+                            vacancy.copy(
+                                description = response.vacancy.description,
+                                keySkills = response.vacancy.keySkills.joinToString { it.name },
+                            )
                         )
                     }
                 }
