@@ -74,7 +74,7 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     override fun getItemCount(): Int {
-        return listData.size + 1 + (if (showLoading) 1 else 0)
+        return listData.size + 1 + if (showLoading) 1 else 0
     }
 
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
