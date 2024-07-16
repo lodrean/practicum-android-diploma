@@ -31,8 +31,8 @@ class VacancyDetailsViewModel(
                     if (it.message != null) {
                         stateLiveData.postValue(VacancyDetailsState.VacancyServerError)
                     } else if (it.data != null) {
-                        vacancy = it.data
-                        vacancy.isFavorite = favoritesInteractor.checkVacancyIsFavorite(vacancy)
+                        val vacancyIsFavorite = favoritesInteractor.checkVacancyIsFavorite(it.data)
+                        vacancy = it.data.copy(isFavorite = vacancyIsFavorite)
                         stateLiveData.postValue(VacancyDetailsState.Content(vacancy))
                     } else {
                         stateLiveData.postValue(VacancyDetailsState.VacancyNotFoundedError)
@@ -54,7 +54,7 @@ class VacancyDetailsViewModel(
 
     fun makeVacancyFavorite() {
         viewModelScope.launch() {
-            vacancy.isFavorite = !vacancy.isFavorite
+            vacancy = vacancy.copy(isFavorite = !vacancy.isFavorite)
             if (vacancy.isFavorite) {
                 favoritesInteractor.addVacancyToFavorites(vacancy)
             } else {

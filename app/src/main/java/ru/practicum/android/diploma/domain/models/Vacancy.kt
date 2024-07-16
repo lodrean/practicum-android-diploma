@@ -21,7 +21,7 @@ data class Vacancy(
     val salaryCurrencyName: String?,
     val schedule: String?,
     val callTrackingEnabled: Boolean?,
-    var isFavorite: Boolean,
+    val isFavorite: Boolean,
 ) : Serializable {
     companion object {
         private const val serialVersionUID = 1L
