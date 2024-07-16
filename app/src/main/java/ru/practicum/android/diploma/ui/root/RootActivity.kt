@@ -51,7 +51,7 @@ class RootActivity : AppCompatActivity() {
         }
 
         // Пример использования интерактора вакансий
-        //testApi()
+        // testApi()
     }
 
     override fun onDestroy() {
