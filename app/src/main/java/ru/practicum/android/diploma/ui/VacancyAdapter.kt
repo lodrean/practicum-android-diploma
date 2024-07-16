@@ -9,7 +9,8 @@ import ru.practicum.android.diploma.ui.viewholder.ListItemViewHolder
 import ru.practicum.android.diploma.ui.viewholder.VacancyViewHolder
 import ru.practicum.android.diploma.util.OnItemClickListener
 
-class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<ListItemViewHolder>() {
+class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<ListItemViewHolder>() {
 
     val listData = mutableListOf<Vacancy>()
     var totalQuantity: Int = 0
@@ -40,7 +41,9 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Rec
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.empty_list_item, parent, false)
             ) {
-                override fun bind(listItem: Vacancy) {}
+                override fun bind(listItem: Vacancy) {
+                    return
+                }
             }
         }
 
@@ -49,7 +52,9 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) : Rec
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.loading_list_item, parent, false)
             ) {
-                override fun bind(listItem: Vacancy) {}
+                override fun bind(listItem: Vacancy) {
+                    return
+                }
             }
         }
 

@@ -80,7 +80,9 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(p0: Editable?) { return }
+
+
         }
 
         binding.inputEditText.addTextChangedListener(simpleTextWatcher)
