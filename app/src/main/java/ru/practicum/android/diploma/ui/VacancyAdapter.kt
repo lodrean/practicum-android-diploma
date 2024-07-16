@@ -13,7 +13,6 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<ListItemViewHolder>() {
 
     private val listData = mutableListOf<Vacancy>()
-    var totalQuantity: Int = 0
     private var showLoading: Boolean = false
 
     fun setData(newListData: List<Vacancy>) {

@@ -194,7 +194,6 @@ class SearchFragment : Fragment() {
             )
         }
         vacancyAdapter?.showLoading(false)
-        vacancyAdapter?.totalQuantity = countOfVacancies
         vacancyAdapter?.setData(vacanciesList)
 
     }
