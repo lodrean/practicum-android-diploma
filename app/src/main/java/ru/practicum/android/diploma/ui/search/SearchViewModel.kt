@@ -75,9 +75,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
-            val newVacancies = LinkedHashSet<Vacancy>()
-            newVacancies.addAll(vacanciesList)
-            vacanciesList = newVacancies.toMutableList()
         }
         when {
             errorMessage != null -> {
@@ -119,7 +116,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             else -> {
                 renderState(
                     SearchState.Content(
-                        vacanciesList,
+                        vacanciesList.distinct(),
                         countOfVacancies
                     )
                 )
