@@ -28,7 +28,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     private val showToast = SingleLiveEvent<String>()
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
-
+    fun observeShowToast(): LiveData<String> = showToast
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
@@ -71,18 +71,34 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
-        isNextPageLoading = false
+
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
+            val newVacancies = LinkedHashSet<Vacancy>()
+            newVacancies.addAll(vacanciesList)
+            vacanciesList = newVacancies.toMutableList()
         }
         when {
             errorMessage != null -> {
                 if (errorMessage == getApplication<Application>().getString(R.string.check_connection_message)) {
-                    renderState(
-                        SearchState.NoInternet(
-                            errorMessage = getApplication<Application>().getString(R.string.internet_is_not_available)
-                        ),
-                    )
+                    when (isNextPageLoading) {
+                        true -> {
+                            renderState(
+                                SearchState.Content(
+                                    vacanciesList, null
+                                )
+                            )
+                        }
+
+                        false -> {
+                            renderState(
+                                SearchState.NoInternet(
+                                    errorMessage = getApplication<Application>().getString(R.string.internet_is_not_available)
+                                ),
+                            )
+                        }
+                    }
+
                 } else {
                     renderState(
                         SearchState.Error(
@@ -90,6 +106,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                         ),
                     )
                 }
+                isNextPageLoading = false
                 showToast(errorMessage)
             }
 
@@ -108,6 +125,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                         countOfVacancies
                     )
                 )
+                isNextPageLoading = false
             }
         }
     }
@@ -131,6 +149,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         if (isNextPageLoading) {
             return
         } else {
+            renderState(SearchState.NextPageLoading)
             searchVacancies(latestSearchText!!)
         }
     }
