@@ -22,6 +22,7 @@
 
 
             <ImageView
+                android:id="@+id/favorite_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
@@ -30,6 +31,7 @@
                 android:src="@drawable/favorites_off_icon" />
 
             <ImageView
+                android:id="@+id/share_vacancy_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
@@ -54,9 +56,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/no_vacancy_data"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/vacancy_error_text_view"
@@ -64,9 +66,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_xxl"
-            app:layout_constraintTop_toBottomOf="@id/vacancy_error_image_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vacancy_error_image_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
@@ -200,6 +202,29 @@
                 style="@style/FontYSDisplay.Regular16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/contacts_title"
+                style="@style/FontYSDisplay.Medium22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:text="@string/contacts" />
+
+            <TextView
+                android:id="@+id/contacts_email"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
+
+            <TextView
+                android:id="@+id/contacts_phone_number"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
+
         </LinearLayout>
     </ScrollView>
 

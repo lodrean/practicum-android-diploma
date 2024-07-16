@@ -8,6 +8,7 @@ import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
+import ru.practicum.android.diploma.util.toEntity
 import ru.practicum.android.diploma.util.toVacancy
 import java.sql.SQLException
 
@@ -15,7 +16,7 @@ class FavoritesRepositoryImpl(
     private val database: AppDatabase,
     private val context: Context
 ) : FavoritesRepository {
-    override fun updateFavorites(): Flow<Resource<List<Vacancy>>> = flow {
+    override fun getFavoriteVacancies(): Flow<Resource<List<Vacancy>>> = flow {
         try {
             emit(
                 Resource.Success(
@@ -32,5 +33,13 @@ class FavoritesRepositoryImpl(
             )
             throw e
         }
+    }
+
+    override suspend fun addVacancyToFavorites(vacancy: Vacancy) {
+        database.favoriteVacancyDao().insertVacancy(vacancy.toEntity())
+    }
+
+    override suspend fun deleteVacancyFromFavorites(vacancy: Vacancy) {
+        database.favoriteVacancyDao().deleteFromFavorite(vacancy.toEntity())
     }
 }

@@ -1,16 +1,22 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.vacancy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.SharingInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsState
 
-class VacancyDetailsViewModel(vacancy: Vacancy, private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class VacancyDetailsViewModel(
+    vacancy: Vacancy,
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val sharingInteractor: SharingInteractor
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<VacancyDetailsState>()
+    private val stateFavoriteData = MutableLiveData<Boolean>()
 
     init {
         renderState(VacancyDetailsState.Loading)
@@ -29,7 +35,29 @@ class VacancyDetailsViewModel(vacancy: Vacancy, private val vacanciesInteractor:
 
     fun observeState(): LiveData<VacancyDetailsState> = stateLiveData
 
+    fun observeFavoriteState(): LiveData<Boolean> = stateFavoriteData
+
     private fun renderState(state: VacancyDetailsState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun renderFavoriteState(isLiked: Boolean) {
+        stateFavoriteData.postValue(isLiked)
+    }
+
+    fun shareVacancy(vacancyId: String) {
+        sharingInteractor.shareVacancy(vacancyId)
+    }
+
+    fun openEmail(mailTo: String, vacancyName: String) {
+        sharingInteractor.openEmail(mailTo, vacancyName)
+    }
+
+    fun makeVacancyFavorite() {
+        renderFavoriteState(!(observeFavoriteState().value ?: false))
+    }
+
+    fun callPhone(phoneNumber: String) {
+        sharingInteractor.callPhone(phoneNumber)
     }
 }

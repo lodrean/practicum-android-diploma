@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class AddressDto(
     val building: String,
     val city: String,
-    // val description: Any,
+    val description: Any,
     val id: String,
     val lat: Double,
     val lng: Double,
