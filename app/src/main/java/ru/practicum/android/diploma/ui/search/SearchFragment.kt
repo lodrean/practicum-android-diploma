@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -27,12 +28,10 @@ class SearchFragment : Fragment() {
     private var onItemClickListener: OnItemClickListener? = null
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
     private var vacancyAdapter: VacancyAdapter? = null
-    private var vacancyList: MutableList<Vacancy> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-    var inputText: String = AMOUNT_DEF
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -40,7 +39,6 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.inputEditText.setText(inputText)
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -55,7 +53,6 @@ class SearchFragment : Fragment() {
         }
 
         binding.clearIcon.setOnClickListener {
-            vacancyList.clear()
             binding.inputEditText.setText(getString(R.string.empty_string))
             vacancyAdapter?.notifyDataSetChanged()
             viewModel.clearSearch()
@@ -63,8 +60,7 @@ class SearchFragment : Fragment() {
             inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
         }
 
-        vacancyList = mutableListOf()
-        vacancyAdapter = VacancyAdapter(vacancyList, onItemClickListener!!)
+        vacancyAdapter = VacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
 
@@ -76,16 +72,37 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.isVisible = clearButtonVisibility(s)
                 binding.inputEditText.requestFocus()
-                viewModel.searchDebounce(changedText = s.toString())
+                if (s?.isNotEmpty() == true) {
+                    viewModel.searchDebounce(changedText = s.toString())
+                }
+                if (binding.inputEditText.hasFocus() && s?.isEmpty() == true) {
+                    viewModel.clearSearch()
+                }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                inputText.plus(s)
+            override fun afterTextChanged(p0: Editable?) {
+                return
             }
         }
 
         binding.inputEditText.addTextChangedListener(simpleTextWatcher)
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = vacancyAdapter?.itemCount
+                    itemsCount?.let {
+                        if (pos >= it - 1) {
+                            viewModel.onLastItemReached()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
@@ -153,7 +170,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(vacanciesList: List<Vacancy>, countOfVacancies: Int) {
-        vacancyList.clear()
         binding.progressBar.isVisible = false
         binding.centralImageHolder.isVisible = false
         binding.recyclerView.isVisible = true
@@ -168,8 +184,9 @@ class SearchFragment : Fragment() {
                 )
             )
         }
-        vacancyList.addAll(vacanciesList)
-        vacancyAdapter?.notifyDataSetChanged()
+        vacancyAdapter?.totalQuantity = countOfVacancies
+        vacancyAdapter?.setData(vacanciesList)
+
     }
 
     override fun onDestroyView() {
@@ -178,15 +195,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
-        return if (s.isNullOrEmpty()) {
-            false
-        } else {
-            true
-        }
+        return !s.isNullOrEmpty()
     }
 
     companion object {
-        const val AMOUNT_DEF = ""
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
 

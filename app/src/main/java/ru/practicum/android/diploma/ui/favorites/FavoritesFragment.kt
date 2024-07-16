@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
@@ -13,6 +15,10 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.favorites.FavoritesState
 import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 import ru.practicum.android.diploma.ui.VacancyAdapter
+import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
+import ru.practicum.android.diploma.util.OnItemClickListener
+import ru.practicum.android.diploma.util.debounce
 
 class FavoritesFragment : Fragment() {
 
@@ -50,8 +56,18 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun showContent(listOfVacancies: List<Vacancy>) {
-        val adapter = VacancyAdapter(listOfVacancies) {
+        val onVacancyClickDebounce = debounce<Vacancy>(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { vacancy ->
+            launchVacancyDetails(vacancy)
         }
+        val onItemClickListener = OnItemClickListener { vacancy ->
+            onVacancyClickDebounce(vacancy)
+        }
+        val adapter = VacancyAdapter(onItemClickListener)
+        adapter.setData(listOfVacancies)
 
         binding.favoritesList.adapter = adapter
 
@@ -88,4 +104,10 @@ class FavoritesFragment : Fragment() {
         binding.favoritesList.isVisible = false
     }
 
+    private fun launchVacancyDetails(vacancy: Vacancy) {
+        findNavController().navigate(
+            R.id.action_search_fragment_to_vacancy_details_fragment,
+            VacancyDetailsFragment.createArgs(vacancy)
+        )
+    }
 }
