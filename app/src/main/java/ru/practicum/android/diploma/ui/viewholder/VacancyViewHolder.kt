@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.search.VacancyListItemUiModel
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.UtilityFunctions
 
@@ -21,9 +20,7 @@ class VacancyViewHolder(itemView: View, private val onClickListener: OnItemClick
     private val companyName = itemView.findViewById<TextView>(R.id.company_name)
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
-    override fun bind(listItem: VacancyListItemUiModel) {
-        require(listItem is VacancyListItemUiModel.VacancyItem) { "Expected VacancyListItemUiModel.VacancyItem" }
-        val vacancy = listItem.vacancy
+    override fun bind(vacancy: Vacancy) {
         itemView.setOnClickListener { onClickListener.onItemClick(vacancy) }
         Glide.with(context)
             .load(vacancy.employerLogoPath)

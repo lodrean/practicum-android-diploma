@@ -6,7 +6,6 @@ sealed interface SearchState {
 
     data object Loading : SearchState
     data object Default : SearchState
-    data object LoadingNextPage : SearchState
 
     data class Content(
         val vacanciesList: List<Vacancy>,

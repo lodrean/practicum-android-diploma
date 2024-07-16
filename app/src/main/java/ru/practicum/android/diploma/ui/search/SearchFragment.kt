@@ -28,7 +28,6 @@ class SearchFragment : Fragment() {
     private var onItemClickListener: OnItemClickListener? = null
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
     private var vacancyAdapter: VacancyAdapter? = null
-    private var vacanciesListItemUiModel: MutableList<VacancyListItemUiModel> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
@@ -54,7 +53,6 @@ class SearchFragment : Fragment() {
         }
 
         binding.clearIcon.setOnClickListener {
-            vacanciesListItemUiModel.clear()
             binding.inputEditText.setText(getString(R.string.empty_string))
             vacancyAdapter?.notifyDataSetChanged()
             viewModel.clearSearch()
@@ -82,8 +80,7 @@ class SearchFragment : Fragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) { return }
         }
 
         binding.inputEditText.addTextChangedListener(simpleTextWatcher)
@@ -121,13 +118,7 @@ class SearchFragment : Fragment() {
             is SearchState.Loading -> showLoading()
             is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
-            is SearchState.LoadingNextPage -> showLoadingNextPage()
         }
-    }
-
-    private fun showLoadingNextPage() {
-        vacanciesListItemUiModel[vacanciesListItemUiModel.size - 1] = VacancyListItemUiModel.Loading
-        vacancyAdapter?.setData(vacanciesListItemUiModel)
     }
 
     private fun showLooseInternetConnection(errorMessage: String) {
@@ -177,8 +168,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(vacanciesList: List<Vacancy>, countOfVacancies: Int) {
-        vacanciesListItemUiModel.clear()
-        vacanciesListItemUiModel.add(VacancyListItemUiModel.Empty)
         binding.progressBar.isVisible = false
         binding.centralImageHolder.isVisible = false
         binding.recyclerView.isVisible = true
@@ -193,16 +182,10 @@ class SearchFragment : Fragment() {
                 )
             )
         }
-        vacanciesListItemUiModel.addAll(convertToListItem(vacanciesList))
-        vacancyAdapter?.setData(vacanciesListItemUiModel)
-    }
+        vacancyAdapter?.totalQuantity = countOfVacancies
+        vacancyAdapter?.setData(vacanciesList)
 
-    private fun convertToListItem(vacanciesList: List<Vacancy>): List<VacancyListItemUiModel> {
-        val newVacanciesList = mutableListOf<VacancyListItemUiModel>()
-        for (vacancy in vacanciesList) {
-            newVacanciesList.add(VacancyListItemUiModel.VacancyItem(vacancy))
-        }
-        return newVacanciesList
+
     }
 
     override fun onDestroyView() {
