@@ -185,7 +185,6 @@ class SearchFragment : Fragment() {
         vacancyAdapter?.totalQuantity = countOfVacancies
         vacancyAdapter?.setData(vacanciesList)
 
-
     }
 
     override fun onDestroyView() {
