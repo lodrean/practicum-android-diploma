@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.ui.viewholder.ListItemViewHolder
 import ru.practicum.android.diploma.ui.viewholder.VacancyViewHolder
 import ru.practicum.android.diploma.util.OnItemClickListener
 
-class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
+class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<ListItemViewHolder>() {
 
     private val listData = mutableListOf<Vacancy>()

@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.favorites.FavoritesState
 import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
-import ru.practicum.android.diploma.ui.VacancyAdapter
+import ru.practicum.android.diploma.ui.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
@@ -66,7 +66,7 @@ class FavoritesFragment : Fragment() {
         val onItemClickListener = OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
-        val adapter = VacancyAdapter(onItemClickListener)
+        val adapter = SearchVacancyAdapter(onItemClickListener)
         adapter.setData(listOfVacancies)
 
         binding.favoritesList.adapter = adapter
