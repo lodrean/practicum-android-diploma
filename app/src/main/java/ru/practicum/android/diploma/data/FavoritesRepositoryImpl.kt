@@ -1,11 +1,9 @@
 package ru.practicum.android.diploma.data
 
-import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -15,8 +13,7 @@ import ru.practicum.android.diploma.util.toVacancy
 import java.sql.SQLException
 
 class FavoritesRepositoryImpl(
-    private val database: AppDatabase,
-    private val context: Context
+    private val database: AppDatabase
 ) : FavoritesRepository {
     override fun getFavoriteVacancies(): Flow<Resource<List<Vacancy>>> = flow {
         try {
@@ -32,10 +29,9 @@ class FavoritesRepositoryImpl(
         } catch (e: SQLException) {
             emit(
                 Resource.Error(
-                    message = context.getString(R.string.favorites_error)
+                    message = e.toString()
                 )
             )
-            throw e
         }
     }
 
