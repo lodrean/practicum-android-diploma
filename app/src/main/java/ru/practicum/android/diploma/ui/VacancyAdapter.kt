@@ -12,13 +12,19 @@ import ru.practicum.android.diploma.util.OnItemClickListener
 class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<ListItemViewHolder>() {
 
-    val listData = mutableListOf<Vacancy>()
+    private val listData = mutableListOf<Vacancy>()
     var totalQuantity: Int = 0
+    private var showLoading: Boolean = false
 
     fun setData(newListData: List<Vacancy>) {
         listData.clear()
         listData.addAll(newListData)
         notifyDataSetChanged()
+    }
+
+    fun showLoading(isShowLoading: Boolean) {
+        showLoading = isShowLoading
+        notifyItemChanged(listData.size + 2)
     }
 
     override fun getItemViewType(position: Int) =
@@ -69,7 +75,7 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     override fun getItemCount(): Int {
-        return listData.size + 1 + if (listData.size < totalQuantity) 1 else 0
+        return listData.size + 1 + (if (showLoading) 1 else 0)
     }
 
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
