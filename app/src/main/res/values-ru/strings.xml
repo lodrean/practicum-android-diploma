@@ -33,7 +33,7 @@
     <string name="Founded">Найдено </string>
     <string name="empty_string" />
     <string name="server_error_message">Ошибка сервера</string>
-    <string name="check_connection_message">Нет сети, проверьте пожключение</string>
+    <string name="check_connection_message">Нет сети, проверьте подключение</string>
     <string name="empty_pace">" "</string>
 
     <plurals name="count_of_vacancies">
