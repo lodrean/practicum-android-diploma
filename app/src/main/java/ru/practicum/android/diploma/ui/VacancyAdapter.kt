@@ -59,7 +59,12 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
         }
 
         else -> {
-            throw IllegalArgumentException("Unknown view type requested: $viewType")
+            throw IllegalArgumentException(
+                parent.context.getString(
+                    R.string.unknown_view_type_requested,
+                    viewType.toString()
+                )
+            )
         }
     }
 
