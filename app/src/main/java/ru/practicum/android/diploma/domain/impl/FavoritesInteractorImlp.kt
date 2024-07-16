@@ -20,4 +20,7 @@ class FavoritesInteractorImlp(
     override suspend fun deleteVacancyFromFavorites(vacancy: Vacancy) {
         favoritesRepository.deleteVacancyFromFavorites(vacancy)
     }
+
+    override suspend fun checkVacancyIsFavorite(vacancy: Vacancy) = favoritesRepository.checkVacancyIsFavorite(vacancy)
+
 }

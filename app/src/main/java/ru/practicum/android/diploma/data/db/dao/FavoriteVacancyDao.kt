@@ -17,4 +17,7 @@ interface FavoriteVacancyDao {
 
     @Delete
     fun deleteFromFavorite(vacancy: FavoriteVacancyEntity)
+
+    @Query("select vacancy_id from favorite_vacancies_table where vacancy_id = :vacancyId")
+    fun findVacancyById(vacancyId: String): List<String>
 }

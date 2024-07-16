@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FavoritesInteractor
 import ru.practicum.android.diploma.util.Resource
@@ -21,7 +20,7 @@ class FavoritesViewModel(
     }
 
     fun updateFavoritesList() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch() {
             renderState(FavoritesState.Loading)
             favoritesInteractor.getFavoriteVacancies().collect {
                 when (it) {

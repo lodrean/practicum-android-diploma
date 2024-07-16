@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 fun FavoriteVacancyEntity.toVacancy() = Vacancy(
-    id = vacancyId.toString(), // Наверное нужно в Entity тоже сдеть строку
+    id = vacancyId,
     name = name,
     employerName = employerName,
     employerLogoPath = employerLogoPath,
@@ -23,10 +23,11 @@ fun FavoriteVacancyEntity.toVacancy() = Vacancy(
     salaryCurrencyName = salaryCurrencyName,
     schedule = schedule,
     callTrackingEnabled = callTrackingEnabled,
+    isFavorite = true,
 )
 
 fun Vacancy.toEntity() = FavoriteVacancyEntity(
-    vacancyId = id.toInt(), // Наверное нужно в Entity тоже сдеть строку
+    vacancyId = id,
     name = name,
     employerName = employerName,
     employerLogoPath = employerLogoPath ?: "",
@@ -65,4 +66,5 @@ fun VacancyDto.toVacancy() = Vacancy(
     salaryCurrencyName = salary?.currency,
     schedule = schedule?.name,
     callTrackingEnabled = null,
+    isFavorite = false,
 )

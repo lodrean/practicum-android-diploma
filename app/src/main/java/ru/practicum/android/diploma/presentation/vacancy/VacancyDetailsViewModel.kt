@@ -13,50 +13,39 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsState
 
 class VacancyDetailsViewModel(
-    val vacancy: Vacancy,
-    private val isFavorite: Boolean,
+    var vacancy: Vacancy,
     private val vacancyNeedToUpdate: Boolean,
     private val vacanciesInteractor: VacanciesInteractor,
     private val sharingInteractor: SharingInteractor,
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
+
     private val stateLiveData = MutableLiveData<VacancyDetailsState>()
-    private val stateFavoriteData = MutableLiveData<Boolean>()
+    fun observeState(): LiveData<VacancyDetailsState> = stateLiveData
 
     init {
-        renderState(VacancyDetailsState.Loading)
+        stateLiveData.postValue(VacancyDetailsState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
-            renderFavoriteState(isFavorite)
             if (vacancyNeedToUpdate) {
                 vacanciesInteractor.updateToFullVacancy(vacancy).collect {
                     if (it.message != null) {
-                        renderState(VacancyDetailsState.VacancyServerError)
+                        stateLiveData.postValue(VacancyDetailsState.VacancyServerError)
                     } else if (it.data != null) {
-                        renderState(VacancyDetailsState.Content(it.data))
+                        val vacancyIsFavorite = favoritesInteractor.checkVacancyIsFavorite(it.data)
+                        vacancy = it.data.copy(isFavorite = vacancyIsFavorite)
+                        stateLiveData.postValue(VacancyDetailsState.Content(vacancy))
                     } else {
-                        renderState(VacancyDetailsState.VacancyNotFoundedError)
+                        stateLiveData.postValue(VacancyDetailsState.VacancyNotFoundedError)
                     }
                 }
             } else {
-                renderState(VacancyDetailsState.Content(vacancy))
+                stateLiveData.postValue(VacancyDetailsState.Content(vacancy))
             }
         }
     }
 
-    fun observeState(): LiveData<VacancyDetailsState> = stateLiveData
-
-    fun observeFavoriteState(): LiveData<Boolean> = stateFavoriteData
-
-    private fun renderState(state: VacancyDetailsState) {
-        stateLiveData.postValue(state)
-    }
-
-    private fun renderFavoriteState(isLiked: Boolean) {
-        stateFavoriteData.postValue(isLiked)
-    }
-
-    fun shareVacancy(vacancyId: String) {
-        sharingInteractor.shareVacancy(vacancyId)
+    fun shareVacancy() {
+        sharingInteractor.shareVacancy(vacancy.id)
     }
 
     fun openEmail(mailTo: String, vacancyName: String) {
@@ -64,13 +53,14 @@ class VacancyDetailsViewModel(
     }
 
     fun makeVacancyFavorite() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (observeFavoriteState().value == true) {
-                favoritesInteractor.deleteVacancyFromFavorites(vacancy)
-            } else {
+        viewModelScope.launch() {
+            vacancy = vacancy.copy(isFavorite = !vacancy.isFavorite)
+            if (vacancy.isFavorite) {
                 favoritesInteractor.addVacancyToFavorites(vacancy)
+            } else {
+                favoritesInteractor.deleteVacancyFromFavorites(vacancy)
             }
-            renderFavoriteState(!(observeFavoriteState().value ?: false))
+            stateLiveData.postValue(VacancyDetailsState.Content(vacancy))
         }
     }
 
