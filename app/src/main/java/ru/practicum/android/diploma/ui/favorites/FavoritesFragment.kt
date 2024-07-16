@@ -16,7 +16,6 @@ import ru.practicum.android.diploma.presentation.favorites.FavoritesState
 import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 import ru.practicum.android.diploma.ui.VacancyAdapter
 import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
-import ru.practicum.android.diploma.ui.search.VacancyListItemUiModel
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
@@ -68,7 +67,7 @@ class FavoritesFragment : Fragment() {
             onVacancyClickDebounce(vacancy)
         }
         val adapter = VacancyAdapter(onItemClickListener)
-        adapter.setData(convertToListItem(listOfVacancies))
+        adapter.setData(listOfVacancies)
 
         binding.favoritesList.adapter = adapter
 
@@ -103,14 +102,6 @@ class FavoritesFragment : Fragment() {
         binding.errorText.isVisible = false
         binding.loading.isVisible = true
         binding.favoritesList.isVisible = false
-    }
-
-    private fun convertToListItem(vacanciesList: List<Vacancy>): List<VacancyListItemUiModel> {
-        val newVacanciesList = mutableListOf<VacancyListItemUiModel>()
-        for (vacancy in vacanciesList) {
-            newVacanciesList.add(VacancyListItemUiModel.VacancyItem(vacancy))
-        }
-        return newVacanciesList
     }
 
     private fun launchVacancyDetails(vacancy: Vacancy) {

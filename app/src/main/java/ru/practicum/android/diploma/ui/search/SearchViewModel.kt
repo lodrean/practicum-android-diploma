@@ -41,17 +41,10 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         if (this.currentPage - 1 == maxPage) {
             return
         } else {
-            when (currentPage) {
-                0 -> {
-                    renderState(SearchState.Loading)
-                    searchRequest(searchText, currentPage)
-                }
-
-                else -> {
-                    renderState(SearchState.LoadingNextPage)
-                    searchRequest(searchText, currentPage)
-                }
+            if (currentPage == 0) {
+                renderState(SearchState.Loading)
             }
+            searchRequest(searchText, currentPage)
             currentPage += 1
         }
     }
