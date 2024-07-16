@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -42,10 +41,6 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-        }
-
-        viewModel.observeShowToast().observe(viewLifecycleOwner) { toast ->
-            showToast(toast)
         }
         defaultState()
         onVacancyClickDebounce = debounce(
@@ -110,10 +105,6 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun showToast(additionalMessage: String) {
-        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
-    }
-
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_search_fragment_to_vacancy_details_fragment,
@@ -129,13 +120,7 @@ class SearchFragment : Fragment() {
             is SearchState.Loading -> showLoading()
             is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
-            is SearchState.NextPageLoading -> showLoadingItem()
         }
-    }
-
-    private fun showLoadingItem() {
-        vacancyAdapter?.showLoading(true)
-        vacancyAdapter?.notifyDataSetChanged()
     }
 
     private fun showLooseInternetConnection(errorMessage: String) {
@@ -199,8 +184,6 @@ class SearchFragment : Fragment() {
                 )
             )
         }
-
-        vacancyAdapter?.showLoading(false)
         vacancyAdapter?.totalQuantity = countOfVacancies
         vacancyAdapter?.setData(vacanciesList)
 
