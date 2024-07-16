@@ -73,7 +73,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
-
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
             val newVacancies = LinkedHashSet<Vacancy>()
@@ -88,7 +87,10 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                             true -> renderState(SearchState.Content(vacanciesList, null))
                             false -> renderState(
                                 SearchState.NoInternet(
-                                    errorMessage = getApplication<Application>().getString(R.string.internet_is_not_available)
+                                    errorMessage = getApplication<Application>()
+                                        .getString(
+                                            R.string.internet_is_not_available
+                                        )
                                 ),
                             )
                         }
