@@ -97,7 +97,7 @@ class VacancyDetailsFragment : Fragment() {
     private fun fillKeySkills(vacancy: Vacancy) {
         binding.keySkillsTitle.isVisible = !vacancy.keySkills.isNullOrEmpty()
         binding.keySkills.isVisible = !vacancy.keySkills.isNullOrEmpty()
-        vacancy.keySkills?.let {keyString ->
+        vacancy.keySkills?.let { keyString ->
             binding.keySkills.text = keyString.split(",").joinToString(separator = "\n") { "• $it" }
         }
     }

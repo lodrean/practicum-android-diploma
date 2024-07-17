@@ -73,7 +73,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
-
         val messageServerError = getApplication<Application>().getString(R.string.server_error)
         val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
         val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
