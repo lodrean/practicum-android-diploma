@@ -32,35 +32,23 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/search_frame"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        app:layout_constraintTop_toBottomOf="@id/search_title">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_frame"
+            style="@style/AndroidDiploma.EditTextStyleBoxed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_height"
+            app:layout_constraintTop_toBottomOf="@id/search_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_edit_text"
-            style="@style/AndroidDiploma.EditTextStyle"
+            style="@style/AndroidDiploma.EditTextStyleBoxed.Input"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/search_height"
+            android:padding="@dimen/size_zero"
             android:layout_marginHorizontal="@dimen/size_xxl"
-            android:hint="@string/enter_request"
-            android:paddingStart="@dimen/size_xxl"
-            android:paddingEnd="@dimen/size_xxl"
-            android:textCursorDrawable="@drawable/cursor_blue" />
+            android:hint="@string/enter_request"/>
 
-        <ImageView
-            android:id="@+id/clear_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/image_4xl"
-            android:background="?attr/edit_text_color"
-            android:importantForAccessibility="no"
-            android:src="@drawable/close_icon"
-            android:visibility="gone" />
-    </FrameLayout>
-
+        </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/search_main_field"
@@ -82,8 +70,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/progress_bar"
+            android:layout_height="@dimen/progress_bar"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
@@ -91,7 +79,7 @@
         <TextView
             android:id="@+id/state_text_view"
             style="@style/FontYSDisplay.Medium22"
-            android:layout_width="268dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/size_xxl"
@@ -110,7 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_weight="1"
         tools:itemCount="20"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="@dimen/size_zero"
         tools:listitem="@layout/vacancy_list_item" />
 
 
