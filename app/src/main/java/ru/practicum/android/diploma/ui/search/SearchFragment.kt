@@ -1,13 +1,11 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -32,6 +30,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
+    private var textWatcher: TextWatcher? = null
     private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -40,6 +39,8 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -56,41 +57,29 @@ class SearchFragment : Fragment() {
             onVacancyClickDebounce(vacancy)
         }
 
-        binding.clearIcon.setOnClickListener {
-            binding.inputEditText.setText(getString(R.string.empty_string))
-            vacancyAdapter?.notifyDataSetChanged()
-            viewModel.clearSearch()
-            val inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
-        }
-
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
 
-        val simpleTextWatcher = object : TextWatcher {
+        textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.inputEditText.requestFocus()
+                return
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.clearIcon.isVisible = clearButtonVisibility(s)
-                binding.inputEditText.requestFocus()
-                if (s?.isNotEmpty() == true) {
-                    viewModel.searchDebounce(changedText = s.toString())
-                }
-                if (binding.inputEditText.hasFocus() && s?.isEmpty() == true) {
-                    viewModel.clearSearch()
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
                 return
             }
-        }
 
-        binding.inputEditText.addTextChangedListener(simpleTextWatcher)
-        super.onViewCreated(view, savedInstanceState)
+            override fun afterTextChanged(s: Editable?) {
+                if (s?.isNotEmpty() == true) {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
+                    viewModel.searchDebounce(changedText = s.toString())
+                } else {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+                }
+            }
+        }
+        binding.inputEditText.addTextChangedListener(textWatcher!!)
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -107,6 +96,11 @@ class SearchFragment : Fragment() {
                 }
             }
         })
+
+        binding.searchFrame.setEndIconOnClickListener {
+            binding.inputEditText.setText(getString(R.string.empty_string))
+        }
+
     }
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
@@ -200,11 +194,8 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         _binding = null
-    }
-
-    private fun clearButtonVisibility(s: CharSequence?): Boolean {
-        return !s.isNullOrEmpty()
     }
 
     companion object {

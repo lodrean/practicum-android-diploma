@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_xxl"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/size_xxl">
@@ -32,7 +32,7 @@
             android:id="@+id/workers_list"
             style="@style/FontYSDisplay.Bold32"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/workers_list" />
 

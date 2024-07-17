@@ -11,7 +11,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black_universal</item>
         <item name="edit_text_color">@color/gray</item>
-        <item name="android:background">?attr/background_color</item>
         <item name="background_color">@color/black_universal</item>
         <item name="icon_color">@color/white_universal</item>
         <item name="text_hint_color">@color/white_universal</item>
