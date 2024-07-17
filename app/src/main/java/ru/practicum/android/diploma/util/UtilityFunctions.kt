@@ -12,9 +12,7 @@ object UtilityFunctions {
     fun formatSalary(vacancy: Vacancy, context: Context): String {
         var symbol = ""
         if (vacancy.salaryCurrencyName != null) {
-
             val currency = Currency.getInstance(vacancy.salaryCurrencyName)
-
             symbol = currency.getSymbol(Locale.getDefault(Locale.Category.DISPLAY))
         }
 
