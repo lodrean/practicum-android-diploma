@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding
         get() = _binding!!
-    private lateinit var textWatcher: TextWatcher
+    private var textWatcher: TextWatcher? = null
     private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -79,7 +79,7 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-        binding.inputEditText.addTextChangedListener(textWatcher)
+        binding.inputEditText.addTextChangedListener(textWatcher!!)
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -194,7 +194,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.inputEditText.removeTextChangedListener(textWatcher)
+        textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         _binding = null
     }
 
