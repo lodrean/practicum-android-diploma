@@ -53,8 +53,14 @@
         <item name="boxCornerRadiusBottomStart">8dp</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
         <item name="boxStrokeWidth">0dp</item>
+        <item name="maxLines">1</item>
+
+        <item name="singleLine">true</item>
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintEnabled">false</item>
+
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="endIconDrawable">@drawable/search_icon</item>
         <item name="endIconTint">@color/black_universal</item>
         <item name="endIconMode">custom</item>
@@ -64,6 +70,9 @@
 
     <style name="AndroidDiploma.EditTextStyleBoxed.Input">
         <item name="android:textColor">@color/black_universal</item>
+        <item name="android:inputType">text|textCapSentences</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:textColorHint">?attr/text_hint_color</item>
         <item name="android:background"/>
         <item name="android:textSize">16sp</item>

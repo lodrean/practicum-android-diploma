@@ -13,10 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.ListItemUiModel
 import ru.practicum.android.diploma.ui.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
@@ -25,6 +27,7 @@ import ru.practicum.android.diploma.util.debounce
 class SearchFragment : Fragment() {
 
     private var onItemClickListener: OnItemClickListener? = null
+    private val listUiModel = mutableListOf<ListItemUiModel>()
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
     private var vacancyAdapter: SearchVacancyAdapter? = null
     private var _binding: FragmentSearchBinding? = null
@@ -60,7 +63,7 @@ class SearchFragment : Fragment() {
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
-
+        binding.recyclerView.itemAnimator = null
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 return
@@ -187,9 +190,13 @@ class SearchFragment : Fragment() {
                 )
             )
         }
-        vacancyAdapter?.showLoading(false)
-        vacancyAdapter?.setData(vacanciesList)
+        listUiModel.clear()
+        for (vacancy in vacanciesList) {
+            listUiModel.add(ListItemUiModel.VacancyListItem(vacancy))
+        }
 
+        vacancyAdapter?.showLoading(false)
+        vacancyAdapter?.setData(listUiModel)
     }
 
     override fun onDestroyView() {
@@ -203,3 +210,4 @@ class SearchFragment : Fragment() {
     }
 
 }
+

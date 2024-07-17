@@ -3,16 +3,16 @@ package ru.practicum.android.diploma.ui.viewholder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.ListItemUiModel
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.UtilityFunctions
 
-class VacancyViewHolder(itemView: View, private val onClickListener: OnItemClickListener) :
-    RecyclerView.ViewHolder(itemView) {
+class SearchVacancyViewHolder(itemView: View, private val onClickListener: OnItemClickListener) :
+    ListItemViewHolder(itemView) {
 
     private val context = itemView.context
 
@@ -21,7 +21,10 @@ class VacancyViewHolder(itemView: View, private val onClickListener: OnItemClick
     private val companyName = itemView.findViewById<TextView>(R.id.company_name)
     private val salaryRange = itemView.findViewById<TextView>(R.id.salary_range)
 
-     fun bind(vacancy: Vacancy) {
+    override fun bind(listitem: ListItemUiModel) {
+        require(listitem is ListItemUiModel.VacancyListItem)
+        { "ListItemUiModel.VacancyListItem" }
+        val vacancy = listitem.vacancy
         itemView.setOnClickListener { onClickListener.onItemClick(vacancy) }
         Glide.with(context)
             .load(vacancy.employerLogoPath)
