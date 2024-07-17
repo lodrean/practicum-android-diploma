@@ -25,9 +25,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             clearSearch()
             searchVacancies(changedText)
         }
-    private val nextPageDebounce = debounce<String>(SEARCH_NEXT_PAGE_DELAY, viewModelScope, false) { searchText ->
-        searchRequest(searchText, currentPage)
-    }
     private val showToast = SingleLiveEvent<String>()
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -46,12 +43,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         } else {
             if (currentPage == 0) {
                 renderState(SearchState.Loading)
-                searchRequest(searchText, currentPage)
             } else {
                 isNextPageLoading = true
                 renderState(SearchState.NextPageLoading)
-                nextPageDebounce(searchText)
             }
+            searchRequest(searchText, currentPage)
             currentPage += 1
         }
     }
@@ -85,12 +81,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 when (errorMessage) {
                     getApplication<Application>().getString(R.string.check_connection_message) -> {
                         when (isNextPageLoading) {
-                            true -> {
-                                renderState(SearchState.Content(vacanciesList, null))
-                                showToast(errorMessage)
-                                return
-                            }
-
+                            true -> renderState(SearchState.Content(vacanciesList, null))
                             false -> renderState(
                                 SearchState.NoInternet(
                                     errorMessage = getApplication<Application>()
@@ -110,6 +101,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                         )
                     }
                 }
+                isNextPageLoading = false
                 showToast(errorMessage)
             }
 
@@ -157,7 +149,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     companion object {
-        private const val SEARCH_NEXT_PAGE_DELAY = 300L
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PER_PAGE_SIZE = 20
     }
