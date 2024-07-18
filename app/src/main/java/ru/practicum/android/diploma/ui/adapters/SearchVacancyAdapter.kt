@@ -23,7 +23,7 @@ class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener)
 
     fun showLoading(isShowLoading: Boolean) {
         showLoading = isShowLoading
-        notifyItemChanged(listData.size + 1)
+        notifyItemRangeChanged(listData.size + 1, 1, true)
     }
 
     override fun getItemViewType(position: Int) =
