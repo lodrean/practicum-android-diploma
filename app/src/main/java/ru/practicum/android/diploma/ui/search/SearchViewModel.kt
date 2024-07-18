@@ -73,38 +73,27 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+        val messageServerError = getApplication<Application>().getString(R.string.server_error)
+        val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
+        val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
+
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }
         when {
             errorMessage != null -> {
                 when (errorMessage) {
-                    getApplication<Application>().getString(R.string.check_connection_message) -> {
+                    messageCheckConnection -> {
                         when (isNextPageLoading) {
                             true -> renderState(SearchState.Content(vacanciesList, null))
-                            false -> renderState(
-                                SearchState.NoInternet(
-                                    errorMessage = getApplication<Application>()
-                                        .getString(
-                                            R.string.internet_is_not_available
-                                        )
-                                ),
-                            )
+                            false -> renderState(SearchState.NoInternet(messageNoInternet))
                         }
                     }
-
-                    else -> {
-                        renderState(
-                            SearchState.Error(
-                                errorMessage = getApplication<Application>().getString(R.string.server_error)
-                            ),
-                        )
-                    }
+                    else -> renderState(SearchState.Error(messageServerError))
                 }
                 isNextPageLoading = false
                 showToast(errorMessage)
             }
-
             vacanciesList.isEmpty() -> {
                 renderState(
                     SearchState.Empty(
@@ -112,14 +101,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     )
                 )
             }
-
             else -> {
-                renderState(
-                    SearchState.Content(
-                        vacanciesList.distinct(),
-                        countOfVacancies
-                    )
-                )
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
                 isNextPageLoading = false
             }
         }

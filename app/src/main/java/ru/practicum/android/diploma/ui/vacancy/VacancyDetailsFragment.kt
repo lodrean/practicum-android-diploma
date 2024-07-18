@@ -74,14 +74,35 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDescriptionTextView.text =
             Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        binding.keySkillsTitle.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-        binding.keySkills.isVisible = vacancy.keySkills?.isNotEmpty() ?: false
-        vacancy.keySkills?.let {
-            binding.keySkills.text = vacancy.keySkills.split(",").toList().map {
-                "• %s".format(it.replace("\"", "").replace(",", ""))
-            }.joinToString(separator = "\n")
-        }
+        fillKeySkills(vacancy)
+        fillContacts(vacancy)
 
+        binding.vacancySalaryTextView.text =
+            UtilityFunctions.formatSalary(vacancy, requireContext())
+        Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
+            .centerInside()
+            .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
+            .into(binding.employerLogoImageView)
+        binding.vacancyDetailsProgressBar.isVisible = false
+        binding.layoutError.isVisible = false
+        binding.contentScrollView.isVisible = true
+
+        if (vacancy.isFavorite) {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
+        } else {
+            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
+        }
+    }
+
+    private fun fillKeySkills(vacancy: Vacancy) {
+        binding.keySkillsTitle.isVisible = !vacancy.keySkills.isNullOrEmpty()
+        binding.keySkills.isVisible = !vacancy.keySkills.isNullOrEmpty()
+        vacancy.keySkills?.let { keyString ->
+            binding.keySkills.text = keyString.split(",").joinToString(separator = "\n") { "• $it" }
+        }
+    }
+
+    private fun fillContacts(vacancy: Vacancy) {
         binding.contactsTitle.isVisible =
             vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
         binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
@@ -102,22 +123,6 @@ class VacancyDetailsFragment : Fragment() {
                 }
             }
         }
-
-        binding.vacancySalaryTextView.text =
-            UtilityFunctions.formatSalary(vacancy, requireContext())
-        Glide.with(binding.root).load(vacancy.employerLogoPath).placeholder(R.drawable.placeholder)
-            .centerInside()
-            .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
-            .into(binding.employerLogoImageView)
-        binding.vacancyDetailsProgressBar.isVisible = false
-        binding.layoutError.isVisible = false
-        binding.contentScrollView.isVisible = true
-
-        if (vacancy.isFavorite) {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
-        } else {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
-        }
     }
 
     override fun onCreateView(
@@ -126,7 +131,6 @@ class VacancyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
