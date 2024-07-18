@@ -59,18 +59,20 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun showError() {
+        binding.vacancyItems.isVisible = false
         binding.contentScrollView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = true
     }
 
     private fun loadContentData(vacancy: Vacancy) {
+        binding.vacancyItems.isVisible = true
         binding.vacancyNameTextView.text = vacancy.name
         binding.employerNameTextView.text = vacancy.employerName
         binding.employerCity.text = vacancy.employerCity
         binding.experienceTextView.text = vacancy.experienceName
         binding.employmentScheduleTextView.text =
-            "%s, %s".format(vacancy.employment, vacancy.schedule)
+            getString(R.string.employment_Schedule).format(vacancy.employment, vacancy.schedule)
         binding.vacancyDescriptionTextView.text =
             Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -145,6 +147,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.favoriteIcon.setOnClickListener {
             vacancyDetailsViewModel.makeVacancyFavorite()
         }
+
+        binding.vacancyDetailsProgressBar.isVisible = true
     }
 
     override fun onDestroyView() {

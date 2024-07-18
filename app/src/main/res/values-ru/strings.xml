@@ -56,4 +56,5 @@
     <string name="unknown_view_type_requested">Unknown view type requested: %1$s</string>
     <string name="favorite">фильтр</string>
     <string name="filter_icon">наличие фильтра</string>
+    <string name="employment_Schedule">%s, %s</string>
 </resources>

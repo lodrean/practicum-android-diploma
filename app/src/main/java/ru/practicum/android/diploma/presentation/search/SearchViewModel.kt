@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.presentation.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -9,12 +9,14 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
 
+    private var isFiltered: Boolean = false//todo интерактор при init
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -42,7 +44,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             return
         } else {
             if (currentPage == 0) {
-                renderState(SearchState.Loading)
+                renderState(SearchState.LoadingNewExpression)
             } else {
                 isNextPageLoading = true
                 renderState(SearchState.NextPageLoading)
@@ -81,9 +83,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 when (errorMessage) {
                     getApplication<Application>().getString(R.string.check_connection_message) -> {
                         when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null))
+                            true -> renderState(SearchState.Content(vacanciesList, null, isFiltered))
                             false -> renderState(
-                                SearchState.NoInternet(
+                                SearchState.InternetNotAvailable(
                                     errorMessage = getApplication<Application>()
                                         .getString(
                                             R.string.internet_is_not_available
@@ -95,7 +97,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
 
                     else -> {
                         renderState(
-                            SearchState.Error(
+                            SearchState.ServerError(
                                 errorMessage = getApplication<Application>().getString(R.string.server_error)
                             ),
                         )
@@ -117,7 +119,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 renderState(
                     SearchState.Content(
                         vacanciesList.distinct(),
-                        countOfVacancies
+                        countOfVacancies,
+                        isFiltered
                     )
                 )
                 isNextPageLoading = false
