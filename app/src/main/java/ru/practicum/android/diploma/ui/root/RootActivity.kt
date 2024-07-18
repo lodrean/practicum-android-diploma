@@ -66,19 +66,19 @@ class RootActivity : AppCompatActivity() {
     private fun testApi() {
         val interactor: VacanciesInteractor = getKoin().get()
         val dictionaryInteractor: DictionariesInteractor = getKoin().get()
-
+        val noConnectionStr = "No connection"
+        val serverErrorStr = "Server error"
         val debugTag = "DIPLOMA_DEBUG"
 
         lifecycleScope.launch {
-
             var regions: List<Area> = emptyList()
 
             dictionaryInteractor.getCountries().collect { resource ->
                 if (resource is Resource.Error) {
                     when (resource.errorType) {
-                        ErrorType.NoConnection -> Log.d(debugTag, "No connection")
-                        ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
-                        else -> throw Error("Error type exception")
+                        ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
+                        ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
+                        else -> throw IllegalStateException("Error type exception")
                     }
                 } else {
                     regions = resource.data ?: emptyList()
@@ -94,9 +94,9 @@ class RootActivity : AppCompatActivity() {
                 dictionaryInteractor.getRegionsByCountry(it).collect { resource ->
                     if (resource is Resource.Error) {
                         when (resource.errorType) {
-                            ErrorType.NoConnection -> Log.d(debugTag, "No connection")
-                            ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
-                            else -> throw Error("Error type exception")
+                            ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
+                            ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
+                            else -> throw IllegalStateException("Error type exception")
                         }
                     } else {
                         resource.data?.forEach { area ->
@@ -109,9 +109,9 @@ class RootActivity : AppCompatActivity() {
             dictionaryInteractor.getIndustries().collect { resource ->
                 if (resource is Resource.Error) {
                     when (resource.errorType) {
-                        ErrorType.NoConnection -> Log.d(debugTag, "No connection")
-                        ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
-                        else -> throw Error("Error type exception")
+                        ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
+                        ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
+                        else -> throw IllegalStateException("Error type exception")
                     }
                 } else {
                     resource.data?.forEach { industry ->

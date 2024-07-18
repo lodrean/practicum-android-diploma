@@ -23,6 +23,7 @@ class DictionariesRepositoryImpl(
     private val context: Context,
     private val networkClient: NetworkClient,
 ) : DictionariesRepository {
+    private val serverErrorHeader = context.getString(R.string.server_error_message)
 
     override fun getCountries(): Flow<Resource<List<Area>>> = flow {
         val response = networkClient.doRequest(CountriesRequest())
@@ -37,8 +38,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = context.getString(R.string.server_error_message) +
-                        " : ${response.resultCode}"
+                    message = "$serverErrorHeader : ${response.resultCode}"
                 )
             }
         )
@@ -57,8 +57,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = context.getString(R.string.server_error_message) +
-                        " : ${response.resultCode}"
+                    message = "$serverErrorHeader : ${response.resultCode}"
                 )
             }
         )
@@ -79,8 +78,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = context.getString(R.string.server_error_message) +
-                        " : ${response.resultCode}"
+                    message = "$serverErrorHeader : ${response.resultCode}"
                 )
             }
         )

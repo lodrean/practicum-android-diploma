@@ -19,6 +19,7 @@ class VacanciesRepositoryImpl(
     private val context: Context,
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
+    private val serverErrorHeader = context.getString(R.string.server_error_message)
 
     override fun searchVacancies(
         expression: String,
@@ -51,8 +52,7 @@ class VacanciesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = context.getString(R.string.server_error_message) +
-                        " : ${response.resultCode}"
+                    message = "$serverErrorHeader : ${response.resultCode}"
                 )
             }
         )
@@ -80,8 +80,7 @@ class VacanciesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = context.getString(R.string.server_error_message) +
-                        " : ${response.resultCode}"
+                    message = "$serverErrorHeader : ${response.resultCode}"
                 )
             }
         )
