@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.AreaResponse
 import ru.practicum.android.diploma.data.network.AreasRequest
 import ru.practicum.android.diploma.data.network.CountriesRequest
@@ -70,7 +71,9 @@ class DictionariesRepositoryImpl(
                 NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
                     with(response as IndustriesResponse) {
-                        Resource.Success(response.industries.map { it.toIndustry() })
+                        val industries = mutableListOf<Industry>()
+                        addSubIndustries(industries, response.industries)
+                        Resource.Success(industries)
                     }
                 }
 
@@ -81,6 +84,15 @@ class DictionariesRepositoryImpl(
                 )
             }
         )
+    }
+
+    private fun addSubIndustries(industries: MutableList<Industry>, industriesDto: List<IndustryDto>) {
+        industriesDto.forEach {
+            industries.add(it.toIndustry())
+            it.industries?.let { subIndustries ->
+                addSubIndustries(industries, subIndustries)
+            }
+        }
     }
 
 }
