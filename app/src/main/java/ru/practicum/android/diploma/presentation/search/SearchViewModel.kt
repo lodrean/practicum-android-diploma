@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
-    private var isFiltered: Boolean = false//todo
+    private var isFiltered: Boolean = false // todo
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null

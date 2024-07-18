@@ -125,7 +125,9 @@ class VacancyDetailsFragment : Fragment() {
 
             val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
             contactsFormattedNumber?.let {
-                binding.contactsPhoneNumber.setPaintFlags(binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+                binding.contactsPhoneNumber.setPaintFlags(
+                    binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
+                )
                 binding.contactsPhoneNumber.setTextColor(Color.BLUE)
                 binding.contactsPhoneNumber.text = contactsFormattedNumber
                 binding.contactsPhoneNumber.setOnClickListener {
