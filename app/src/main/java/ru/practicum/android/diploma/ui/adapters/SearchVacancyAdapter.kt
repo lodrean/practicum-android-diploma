@@ -29,7 +29,12 @@ class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener)
     override fun getItemViewType(position: Int) =
         when (position) {
             0 -> VIEW_TYPE_EMPTY
-            listData.size + 1 -> VIEW_TYPE_LOADING
+            listData.size + 1 -> if (showLoading) {
+                VIEW_TYPE_LOADING
+            } else {
+                VIEW_TYPE_EMPTY
+            }
+
             else -> VIEW_TYPE_VACANCY
         }
 
