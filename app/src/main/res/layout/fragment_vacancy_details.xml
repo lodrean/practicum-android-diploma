@@ -19,26 +19,9 @@
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
             app:navigationIcon="@drawable/arrow_back_icon"
+            app:menu="@menu/top_vacancy_details_bar"
             app:title="@string/vacancy_title">
 
-
-            <ImageView
-                android:id="@+id/favorite_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/size_xxl"
-                android:importantForAccessibility="no"
-                android:src="@drawable/favorites_off_icon" />
-
-            <ImageView
-                android:id="@+id/share_vacancy_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/image_m"
-                android:importantForAccessibility="no"
-                android:src="@drawable/sharing_icon" />
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

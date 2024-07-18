@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -114,11 +115,10 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
-
         if (vacancy.isFavorite) {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
+            binding.topAppBar.menu.findItem(R.id.favorite).setIcon(R.drawable.favorites_on_icon)
         } else {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
+            binding.topAppBar.menu.findItem(R.id.favorite).setIcon(R.drawable.favorites_off_icon)
         }
     }
 
@@ -140,12 +140,20 @@ class VacancyDetailsFragment : Fragment() {
         vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.favorite -> {
+                    vacancyDetailsViewModel.makeVacancyFavorite()
+                    true
+                }
 
-        binding.shareVacancyIcon.setOnClickListener {
-            vacancyDetailsViewModel.shareVacancy()
-        }
-        binding.favoriteIcon.setOnClickListener {
-            vacancyDetailsViewModel.makeVacancyFavorite()
+                R.id.share -> {
+                    vacancyDetailsViewModel.shareVacancy()
+                    true
+                }
+
+                else -> false
+            }
         }
 
         binding.vacancyDetailsProgressBar.isVisible = true
