@@ -19,7 +19,6 @@ class VacancyDetailsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
-
     private val stateLiveData = MutableLiveData<VacancyDetailsState>()
     fun observeState(): LiveData<VacancyDetailsState> = stateLiveData
 

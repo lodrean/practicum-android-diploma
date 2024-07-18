@@ -110,8 +110,9 @@ class VacancyDetailsFragment : Fragment() {
             vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
         binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
         vacancy.contactsEmail?.let {
-
-            binding.contactsEmail.setPaintFlags(binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+            binding.contactsEmail.setPaintFlags(
+                binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
+            )
             binding.contactsEmail.setTextColor(Color.BLUE)
             binding.contactsEmail.text = it
             binding.contactsEmail.setOnClickListener {
@@ -157,10 +158,12 @@ class VacancyDetailsFragment : Fragment() {
                     vacancyDetailsViewModel.makeVacancyFavorite()
                     true
                 }
+
                 R.id.share -> {
                     vacancyDetailsViewModel.shareVacancy()
                     true
                 }
+
                 else -> false
             }
         }

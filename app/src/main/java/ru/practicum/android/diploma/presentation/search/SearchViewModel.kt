@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
-    private var isFavorites: Boolean = false//todo
+    private var isFiltered: Boolean = false//todo
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -85,7 +85,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                 when (errorMessage) {
                     messageCheckConnection -> {
                         when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null, isFavorites))
+                            true -> renderState(SearchState.Content(vacanciesList, null, isFiltered))
                             false -> renderState(SearchState.InternetNotAvailable(messageNoInternet))
                         }
                     }
@@ -105,7 +105,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             }
 
             else -> {
-                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFavorites))
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFiltered))
                 isNextPageLoading = false
             }
         }
