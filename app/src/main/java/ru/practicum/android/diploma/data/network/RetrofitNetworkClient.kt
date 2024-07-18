@@ -23,6 +23,7 @@ class RetrofitNetworkClient(
             is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
+            is IndustriesRequest -> getIndustries()
             else -> Response().apply { resultCode = NetworkClient.HTTP_CLIENT_ERROR }
         }
     }
@@ -52,7 +53,18 @@ class RetrofitNetworkClient(
     private suspend fun getAreas(request: AreasRequest): Response {
         return withContext(Dispatchers.IO) {
             try {
-                AreasResponse(hhService.getAreas(request.areaId))
+                AreaResponse(hhService.getAreas(request.areaId))
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
+    }
+
+    private suspend fun getIndustries(): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                IndustriesResponse(hhService.getIndustries())
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }

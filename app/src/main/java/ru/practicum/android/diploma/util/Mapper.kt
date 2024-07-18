@@ -1,7 +1,12 @@
 package ru.practicum.android.diploma.util
 
 import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyEntity
+import ru.practicum.android.diploma.data.dto.AreaDto
+import ru.practicum.android.diploma.data.dto.CountryDto
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
+import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 fun FavoriteVacancyEntity.toVacancy() = Vacancy(
@@ -67,4 +72,19 @@ fun VacancyDto.toVacancy() = Vacancy(
     schedule = schedule?.name,
     callTrackingEnabled = null,
     isFavorite = false,
+)
+
+fun IndustryDto.toIndustry() = Industry(
+    id = id,
+    name = name,
+)
+
+fun AreaDto.toArea() = Area(
+    id = id,
+    name = name,
+)
+
+fun CountryDto.toArea() = Area(
+    id = id,
+    name = name,
 )
