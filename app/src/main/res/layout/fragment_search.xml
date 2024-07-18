@@ -18,15 +18,9 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
-            app:title="@string/vacancy_search_title">
+            app:title="@string/vacancy_search_title"
+            app:menu="@menu/top_search_app_bar">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/size_xxl"
-                android:importantForAccessibility="no"
-                android:src="@drawable/filter_off_icon" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 

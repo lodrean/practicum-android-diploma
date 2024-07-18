@@ -54,4 +54,6 @@
     <string name="contacts">Контакты</string>
     <string name="mail">Почта: %s</string>
     <string name="unknown_view_type_requested">Unknown view type requested: %1$s</string>
+    <string name="favorite">фильтр</string>
+    <string name="filter_icon">наличие фильтра</string>
 </resources>

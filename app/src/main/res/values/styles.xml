@@ -12,6 +12,7 @@
     <style name="AndroidDiploma.ToolBar">
         <item name="android:layout_width">match_parent</item>
         <item name="contentInsetStartWithNavigation">@dimen/size_zero</item>
+        <item name="android:paddingEnd">@dimen/size_s</item>
         <item name="android:layout_height">64dp</item>
         <item name="buttonGravity">center_vertical</item>
         <item name="android:titleTextColor">?attr/colorOnPrimary</item>
