@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.ui.vacancy
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -19,6 +21,7 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.vacancy.VacancyDetailsViewModel
 import ru.practicum.android.diploma.util.UtilityFunctions
+
 
 class VacancyDetailsFragment : Fragment() {
     private val vacancyDetailsViewModel: VacancyDetailsViewModel by viewModel<VacancyDetailsViewModel> {
@@ -70,7 +73,7 @@ class VacancyDetailsFragment : Fragment() {
         binding.employerCity.text = vacancy.employerCity
         binding.experienceTextView.text = vacancy.experienceName
         binding.employmentScheduleTextView.text =
-            "%s, %s".format(vacancy.employment, vacancy.schedule)
+            getString(R.string.employment_schedule).format(vacancy.employment, vacancy.schedule)
         binding.vacancyDescriptionTextView.text =
             Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -107,7 +110,10 @@ class VacancyDetailsFragment : Fragment() {
             vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
         binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
         vacancy.contactsEmail?.let {
-            binding.contactsEmail.text = getString(R.string.mail).format(it)
+
+            binding.contactsEmail.setPaintFlags(binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+            binding.contactsEmail.setTextColor(Color.BLUE)
+            binding.contactsEmail.text = it
             binding.contactsEmail.setOnClickListener {
                 vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
             }
@@ -115,8 +121,11 @@ class VacancyDetailsFragment : Fragment() {
         binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
         vacancy.contactsPhones?.let { contactsPhone ->
             val regex = "\\+[0-9]{11}".toRegex()
+
             val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
             contactsFormattedNumber?.let {
+                binding.contactsPhoneNumber.setPaintFlags(binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+                binding.contactsPhoneNumber.setTextColor(Color.BLUE)
                 binding.contactsPhoneNumber.text = contactsFormattedNumber
                 binding.contactsPhoneNumber.setOnClickListener {
                     vacancyDetailsViewModel.callPhone(contactsFormattedNumber)
