@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.presentation.search
+package ru.practicum.android.diploma.ui.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -9,14 +9,12 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.search.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
 
-    private var isFiltered: Boolean = false//todo интерактор при init
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -44,7 +42,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             return
         } else {
             if (currentPage == 0) {
-                renderState(SearchState.LoadingNewExpression)
+                renderState(SearchState.Loading)
             } else {
                 isNextPageLoading = true
                 renderState(SearchState.NextPageLoading)
@@ -75,33 +73,23 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+        val messageServerError = getApplication<Application>().getString(R.string.server_error)
+        val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
+        val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
+
         if (foundVacancies != null) {
             vacanciesList.addAll(foundVacancies)
         }
         when {
             errorMessage != null -> {
                 when (errorMessage) {
-                    getApplication<Application>().getString(R.string.check_connection_message) -> {
+                    messageCheckConnection -> {
                         when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null, isFiltered))
-                            false -> renderState(
-                                SearchState.InternetNotAvailable(
-                                    errorMessage = getApplication<Application>()
-                                        .getString(
-                                            R.string.internet_is_not_available
-                                        )
-                                ),
-                            )
+                            true -> renderState(SearchState.Content(vacanciesList, null))
+                            false -> renderState(SearchState.NoInternet(messageNoInternet))
                         }
                     }
-
-                    else -> {
-                        renderState(
-                            SearchState.ServerError(
-                                errorMessage = getApplication<Application>().getString(R.string.server_error)
-                            ),
-                        )
-                    }
+                    else -> renderState(SearchState.Error(messageServerError))
                 }
                 isNextPageLoading = false
                 showToast(errorMessage)
@@ -116,13 +104,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             }
 
             else -> {
-                renderState(
-                    SearchState.Content(
-                        vacanciesList.distinct(),
-                        countOfVacancies,
-                        isFiltered
-                    )
-                )
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
                 isNextPageLoading = false
             }
         }
