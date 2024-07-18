@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -146,12 +145,10 @@ class VacancyDetailsFragment : Fragment() {
                     vacancyDetailsViewModel.makeVacancyFavorite()
                     true
                 }
-
                 R.id.share -> {
                     vacancyDetailsViewModel.shareVacancy()
                     true
                 }
-
                 else -> false
             }
         }
