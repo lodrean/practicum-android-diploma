@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.databinding.ActivityRootBinding
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 
 class RootActivity : AppCompatActivity() {
@@ -53,7 +54,7 @@ class RootActivity : AppCompatActivity() {
         }
 
         // Пример использования интерактора вакансий
-        testApi()
+        // testApi()
 
     }
 
@@ -74,12 +75,13 @@ class RootActivity : AppCompatActivity() {
 
             dictionaryInteractor.getCountries().collect { resource ->
                 if (resource is Resource.Error) {
-                    Log.d(debugTag, "Search error: ${resource.message}")
+                    when (resource.errorType) {
+                        ErrorType.NoConnection -> Log.d(debugTag, "No connection")
+                        ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
+                        else -> throw Error("Error type exception")
+                    }
                 } else {
                     regions = resource.data ?: emptyList()
-                    // resource.data?.forEach { country ->
-                    //    Log.d(debugTag, "Country: ${country.name}")
-                    // }
                 }
             }
 
@@ -91,7 +93,11 @@ class RootActivity : AppCompatActivity() {
             regions.find { it.id == "113" }?.let {
                 dictionaryInteractor.getRegionsByCountry(it).collect { resource ->
                     if (resource is Resource.Error) {
-                        Log.d(debugTag, "Search error: ${resource.message}")
+                        when (resource.errorType) {
+                            ErrorType.NoConnection -> Log.d(debugTag, "No connection")
+                            ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
+                            else -> throw Error("Error type exception")
+                        }
                     } else {
                         resource.data?.forEach { area ->
                             Log.d(debugTag, "Region: ${area.name}")
@@ -102,7 +108,11 @@ class RootActivity : AppCompatActivity() {
 
             dictionaryInteractor.getIndustries().collect { resource ->
                 if (resource is Resource.Error) {
-                    Log.d(debugTag, "Search error: ${resource.message}")
+                    when (resource.errorType) {
+                        ErrorType.NoConnection -> Log.d(debugTag, "No connection")
+                        ErrorType.ServerError -> Log.d(debugTag, "Server error: ${resource.message}")
+                        else -> throw Error("Error type exception")
+                    }
                 } else {
                     resource.data?.forEach { industry ->
                         Log.d(debugTag, "Industry: ${industry.name}")

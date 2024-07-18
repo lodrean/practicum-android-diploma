@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.network.VacancyResponse
 import ru.practicum.android.diploma.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.domain.api.VacanciesSearchResult
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.toVacancy
 
@@ -34,7 +35,7 @@ class VacanciesRepositoryImpl(
 
         emit(
             when (response.resultCode) {
-                NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(context.getString(R.string.check_connection_message))
+                NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
                     with(response as VacanciesSearchResponse) {
                         Resource.Success(
@@ -49,7 +50,8 @@ class VacanciesRepositoryImpl(
                 }
 
                 else -> Resource.Error(
-                    context.getString(R.string.server_error_message) +
+                    errorType = ErrorType.ServerError,
+                    message = context.getString(R.string.server_error_message) +
                         " : ${response.resultCode}"
                 )
             }
@@ -64,7 +66,7 @@ class VacanciesRepositoryImpl(
 
         emit(
             when (response.resultCode) {
-                NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(context.getString(R.string.check_connection_message))
+                NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
                     with(response as VacancyResponse) {
                         Resource.Success(
@@ -77,7 +79,8 @@ class VacanciesRepositoryImpl(
                 }
 
                 else -> Resource.Error(
-                    context.getString(R.string.server_error_message) +
+                    errorType = ErrorType.ServerError,
+                    message = context.getString(R.string.server_error_message) +
                         " : ${response.resultCode}"
                 )
             }
