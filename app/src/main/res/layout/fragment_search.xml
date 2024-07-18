@@ -35,6 +35,9 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_frame"
             style="@style/AndroidDiploma.EditTextStyleBoxed"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_height"
             app:layout_constraintTop_toBottomOf="@id/search_title">
