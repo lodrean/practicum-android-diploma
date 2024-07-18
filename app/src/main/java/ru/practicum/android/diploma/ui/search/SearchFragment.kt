@@ -60,6 +60,7 @@ class SearchFragment : Fragment() {
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
+        binding.recyclerView.animation = null
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
