@@ -25,9 +25,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             clearSearch()
             searchVacancies(changedText)
         }
-    private val nextPageDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, false) { searchText ->
-        searchVacancies(searchText)
-    }
     private val showToast = SingleLiveEvent<String>()
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
