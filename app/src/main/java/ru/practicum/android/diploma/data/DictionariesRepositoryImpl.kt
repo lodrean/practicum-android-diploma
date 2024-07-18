@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.network.CountriesRequest
 import ru.practicum.android.diploma.data.network.CountriesResponse
 import ru.practicum.android.diploma.data.network.IndustriesRequest
 import ru.practicum.android.diploma.data.network.IndustriesResponse
+import ru.practicum.android.diploma.data.network.Response
 import ru.practicum.android.diploma.domain.api.DictionariesRepository
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Industry
@@ -23,7 +24,10 @@ class DictionariesRepositoryImpl(
     private val context: Context,
     private val networkClient: NetworkClient,
 ) : DictionariesRepository {
-    private val serverErrorHeader = context.getString(R.string.server_error_message)
+    private fun makeErrorMessage(response: Response): String {
+        val header = context.getString(R.string.server_error_message)
+        return "$header : ${response.resultCode}"
+    }
 
     override fun getCountries(): Flow<Resource<List<Area>>> = flow {
         val response = networkClient.doRequest(CountriesRequest())
@@ -38,7 +42,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = "$serverErrorHeader : ${response.resultCode}"
+                    message = makeErrorMessage(response)
                 )
             }
         )
@@ -57,7 +61,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = "$serverErrorHeader : ${response.resultCode}"
+                    message = makeErrorMessage(response)
                 )
             }
         )
@@ -78,7 +82,7 @@ class DictionariesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = "$serverErrorHeader : ${response.resultCode}"
+                    message = makeErrorMessage(response)
                 )
             }
         )

@@ -67,7 +67,7 @@ class RootActivity : AppCompatActivity() {
         val interactor: VacanciesInteractor = getKoin().get()
         val dictionaryInteractor: DictionariesInteractor = getKoin().get()
         val noConnectionStr = "No connection"
-        val serverErrorStr = "Server error"
+        val wrongTypeStr = "Error type exception"
         val debugTag = "DIPLOMA_DEBUG"
 
         lifecycleScope.launch {
@@ -77,8 +77,8 @@ class RootActivity : AppCompatActivity() {
                 if (resource is Resource.Error) {
                     when (resource.errorType) {
                         ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
-                        ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
-                        else -> throw IllegalStateException("Error type exception")
+                        ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
+                        else -> error(wrongTypeStr)
                     }
                 } else {
                     regions = resource.data ?: emptyList()
@@ -95,8 +95,8 @@ class RootActivity : AppCompatActivity() {
                     if (resource is Resource.Error) {
                         when (resource.errorType) {
                             ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
-                            ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
-                            else -> throw IllegalStateException("Error type exception")
+                            ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
+                            else -> error(wrongTypeStr)
                         }
                     } else {
                         resource.data?.forEach { area ->
@@ -110,8 +110,8 @@ class RootActivity : AppCompatActivity() {
                 if (resource is Resource.Error) {
                     when (resource.errorType) {
                         ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
-                        ErrorType.ServerError -> Log.d(debugTag, "$serverErrorStr: ${resource.message}")
-                        else -> throw IllegalStateException("Error type exception")
+                        ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
+                        else -> error(wrongTypeStr)
                     }
                 } else {
                     resource.data?.forEach { industry ->

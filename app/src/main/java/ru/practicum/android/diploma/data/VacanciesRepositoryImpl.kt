@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.data.network.Response
 import ru.practicum.android.diploma.data.network.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.network.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.network.VacancyRequest
@@ -19,7 +20,10 @@ class VacanciesRepositoryImpl(
     private val context: Context,
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
-    private val serverErrorHeader = context.getString(R.string.server_error_message)
+    private fun makeErrorMessage(response: Response): String {
+        val header = context.getString(R.string.server_error_message)
+        return "$header : ${response.resultCode}"
+    }
 
     override fun searchVacancies(
         expression: String,
@@ -52,7 +56,7 @@ class VacanciesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = "$serverErrorHeader : ${response.resultCode}"
+                    message = makeErrorMessage(response)
                 )
             }
         )
@@ -80,7 +84,7 @@ class VacanciesRepositoryImpl(
 
                 else -> Resource.Error(
                     errorType = ErrorType.ServerError,
-                    message = "$serverErrorHeader : ${response.resultCode}"
+                    message = makeErrorMessage(response)
                 )
             }
         )
