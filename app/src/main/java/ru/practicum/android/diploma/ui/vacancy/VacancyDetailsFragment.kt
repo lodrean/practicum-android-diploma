@@ -68,6 +68,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.contentScrollView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = true
+        binding.topAppBar.menu.findItem(R.id.favorite).setEnabled(false)
+        binding.topAppBar.menu.findItem(R.id.share).setEnabled(false)
     }
 
     private fun loadContentData(vacancy: Vacancy) {
@@ -93,7 +95,8 @@ class VacancyDetailsFragment : Fragment() {
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
-
+        binding.topAppBar.menu.findItem(R.id.favorite).setEnabled(true)
+        binding.topAppBar.menu.findItem(R.id.share).setEnabled(true)
         if (vacancy.isFavorite) {
             binding.topAppBar.menu.findItem(R.id.favorite).setIcon(R.drawable.favorites_on_icon)
         } else {
