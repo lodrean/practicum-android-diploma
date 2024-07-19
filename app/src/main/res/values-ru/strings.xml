@@ -52,6 +52,10 @@
     <string name="favorites_error">Не удалось получить список вакансий</string>
     <string name="message_email">" "</string>
     <string name="contacts">Контакты</string>
-    <string name="mail">Почта: %s</string>
+    <string name="mail">Почта: ""</string>
     <string name="unknown_view_type_requested">Unknown view type requested: %1$s</string>
+    <string name="filter">фильтр</string>
+    <string name="filter_icon">наличие фильтра</string>
+    <string name="employment_schedule">%s, %s</string>
+    <string name="phone">Телефон: ""</string>
 </resources>

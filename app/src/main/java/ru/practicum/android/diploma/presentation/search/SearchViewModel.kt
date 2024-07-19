@@ -9,12 +9,13 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
     AndroidViewModel(application) {
-
+    private var isFiltered: Boolean = false // todo
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -42,7 +43,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             return
         } else {
             if (currentPage == 0) {
-                renderState(SearchState.Loading)
+                renderState(SearchState.LoadingNewExpression)
             } else {
                 isNextPageLoading = true
                 renderState(SearchState.NextPageLoading)
@@ -63,8 +64,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     .collect { resource ->
                         processResult(
                             resource.data?.vacancies,
-                            resource.message,
-                            resource.data?.found
+                            resource.data?.found,
+                            resource.errorType,
+                            resource.message
                         )
                         maxPage = resource.data?.count
                     }
@@ -72,7 +74,12 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+    private fun processResult(
+        foundVacancies: List<Vacancy>?,
+        countOfVacancies: Int?,
+        errorType: ErrorType?,
+        errorMessage: String?
+    ) {
         val messageServerError = getApplication<Application>().getString(R.string.server_error)
         val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
         val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
@@ -81,19 +88,22 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             vacanciesList.addAll(foundVacancies)
         }
         when {
-            errorMessage != null -> {
-                when (errorMessage) {
-                    messageCheckConnection -> {
-                        when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null))
-                            false -> renderState(SearchState.NoInternet(messageNoInternet))
-                        }
+            errorType != null -> {
+                if (errorType == ErrorType.NoConnection) {
+                    if (isNextPageLoading) {
+                        renderState(SearchState.Content(vacanciesList, null, isFiltered))
+                    } else {
+                        renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
-                    else -> renderState(SearchState.Error(messageServerError))
+
+                    showToast(messageCheckConnection)
+                } else {
+                    renderState(SearchState.ServerError(messageServerError))
+                    showToast(errorMessage ?: messageServerError)
                 }
                 isNextPageLoading = false
-                showToast(errorMessage)
             }
+
             vacanciesList.isEmpty() -> {
                 renderState(
                     SearchState.Empty(
@@ -101,8 +111,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     )
                 )
             }
+
             else -> {
-                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFiltered))
                 isNextPageLoading = false
             }
         }

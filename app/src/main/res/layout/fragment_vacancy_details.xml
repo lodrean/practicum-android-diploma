@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/background_color">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/vacancy_title"
@@ -17,29 +19,11 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
+            app:menu="@menu/top_vacancy_details_bar"
             app:navigationIcon="@drawable/arrow_back_icon"
             app:title="@string/vacancy_title">
 
-
-            <ImageView
-                android:id="@+id/favorite_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/size_xxl"
-                android:importantForAccessibility="no"
-                android:src="@drawable/favorites_off_icon" />
-
-            <ImageView
-                android:id="@+id/share_vacancy_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/image_m"
-                android:importantForAccessibility="no"
-                android:src="@drawable/sharing_icon" />
         </com.google.android.material.appbar.MaterialToolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,12 +40,14 @@
             android:id="@+id/vacancy_error_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/no_vacancy_data"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
+            android:src="@drawable/no_vacancy_data"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/vacancy_error_text_view"
@@ -97,6 +83,7 @@
 
 
         <LinearLayout
+            android:id="@+id/vacancy_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -130,7 +117,8 @@
                     android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/employer_name_text_view"
@@ -211,25 +199,56 @@
             <TextView
                 android:id="@+id/contacts_title"
                 style="@style/FontYSDisplay.Medium22"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/size_xxl"
                 android:text="@string/contacts" />
 
-            <TextView
-                android:id="@+id/contacts_email"
-                style="@style/FontYSDisplay.Regular16"
+            <LinearLayout
+                android:id="@+id/email_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_xxl" />
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/contacts_phone_number"
-                style="@style/FontYSDisplay.Regular16"
+                <TextView
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_xxl"
+                    android:text="@string/mail" />
+
+                <TextView
+                    android:id="@+id/contacts_email"
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="email"
+                    android:clickable="true" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/phone_number_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_xxl" />
+                android:layout_marginBottom="@dimen/size_xxl"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/contacts_phone_number"
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="phone"
+                    android:clickable="true" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

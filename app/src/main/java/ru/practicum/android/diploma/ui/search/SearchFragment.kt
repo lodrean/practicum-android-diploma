@@ -17,7 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.SearchVacancyAdapter
+import ru.practicum.android.diploma.ui.adapters.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
@@ -115,9 +115,9 @@ class SearchFragment : Fragment() {
         when (state) {
             is SearchState.Content -> state.countOfVacancies?.let { showContent(state.vacanciesList, it) }
             is SearchState.Empty -> showEmpty(state.message)
-            is SearchState.Error -> showError(state.errorMessage)
-            is SearchState.Loading -> showLoading()
-            is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
+            is SearchState.ServerError -> showError(state.errorMessage)
+            is SearchState.LoadingNewExpression -> showLoading()
+            is SearchState.InternetNotAvailable -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
             is SearchState.NextPageLoading -> vacancyAdapter?.showLoading(true)
         }

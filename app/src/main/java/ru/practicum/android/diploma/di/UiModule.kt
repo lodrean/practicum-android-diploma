@@ -20,6 +20,7 @@ val uiModule = module {
             vacanciesInteractor = get(),
             sharingInteractor = get(),
             favoritesInteractor = get(),
+            application = get()
         )
     }
 

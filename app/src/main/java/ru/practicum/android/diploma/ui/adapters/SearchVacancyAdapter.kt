@@ -1,12 +1,12 @@
-package ru.practicum.android.diploma.ui
+package ru.practicum.android.diploma.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.viewholder.ListItemViewHolder
-import ru.practicum.android.diploma.ui.viewholder.VacancyViewHolder
+import ru.practicum.android.diploma.ui.viewholders.ListItemViewHolder
+import ru.practicum.android.diploma.ui.viewholders.VacancyViewHolder
 import ru.practicum.android.diploma.util.OnItemClickListener
 
 class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener) :

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.viewholder
+package ru.practicum.android.diploma.ui.viewholders
 
 import android.view.View
 import android.widget.ImageView

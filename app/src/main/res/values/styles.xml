@@ -12,7 +12,8 @@
     <style name="AndroidDiploma.ToolBar">
         <item name="android:layout_width">match_parent</item>
         <item name="contentInsetStartWithNavigation">@dimen/size_zero</item>
-        <item name="android:layout_height">64dp</item>
+        <item name="android:paddingEnd">@dimen/size_s</item>
+        <item name="android:layout_height">@dimen/image_max</item>
         <item name="buttonGravity">center_vertical</item>
         <item name="android:titleTextColor">?attr/colorOnPrimary</item>
         <item name="navigationIconTint">?attr/icon_color</item>
@@ -48,12 +49,12 @@
 
     <style name="AndroidDiploma.EditTextStyleBoxed">
         <item name="boxBackgroundColor">@color/light_gray_3</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxStrokeWidth">0dp</item>
-        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/size_s</item>
+        <item name="boxStrokeWidth">@dimen/size_zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/size_zero</item>
         <item name="hintEnabled">false</item>
         <item name="endIconDrawable">@drawable/search_icon</item>
         <item name="endIconTint">@color/black_universal</item>
