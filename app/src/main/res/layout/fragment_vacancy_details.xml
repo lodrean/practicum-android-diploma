@@ -18,8 +18,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
-            app:navigationIcon="@drawable/arrow_back_icon"
             app:menu="@menu/top_vacancy_details_bar"
+            app:navigationIcon="@drawable/arrow_back_icon"
             app:title="@string/vacancy_title">
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -39,13 +39,13 @@
             android:id="@+id/vacancy_error_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/no_vacancy_data"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
+            android:src="@drawable/no_vacancy_data"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -198,25 +198,56 @@
             <TextView
                 android:id="@+id/contacts_title"
                 style="@style/FontYSDisplay.Medium22"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/size_xxl"
                 android:text="@string/contacts" />
 
-            <TextView
-                android:id="@+id/contacts_email"
-                style="@style/FontYSDisplay.Regular16"
+            <LinearLayout
+                android:id="@+id/email_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_xxl" />
+                android:layout_marginVertical="@dimen/size_xxl"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/contacts_phone_number"
-                style="@style/FontYSDisplay.Regular16"
+                <TextView
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_xxl"
+                    android:text="@string/mail" />
+
+                <TextView
+                    android:id="@+id/contacts_email"
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="email"
+                    android:clickable="true" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/phone_number_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_xxl" />
+                android:layout_marginBottom="@dimen/size_xxl"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/contacts_phone_number"
+                    style="@style/FontYSDisplay.Regular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="phone"
+                    android:clickable="true" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

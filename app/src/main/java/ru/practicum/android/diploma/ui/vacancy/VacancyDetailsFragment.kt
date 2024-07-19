@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.ui.vacancy
 
-import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -115,27 +113,18 @@ class VacancyDetailsFragment : Fragment() {
     private fun fillContacts(vacancy: Vacancy) {
         binding.contactsTitle.isVisible =
             vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
-        binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
+        binding.emailField.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
         vacancy.contactsEmail?.let {
-            binding.contactsEmail.setPaintFlags(
-                binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
-            )
-            binding.contactsEmail.setTextColor(Color.BLUE)
             binding.contactsEmail.text = it
             binding.contactsEmail.setOnClickListener {
                 vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
             }
         }
-        binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
+        binding.phoneNumberField.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
         vacancy.contactsPhones?.let { contactsPhone ->
             val regex = "\\+[0-9]{11}".toRegex()
-
             val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
             contactsFormattedNumber?.let {
-                binding.contactsPhoneNumber.setPaintFlags(
-                    binding.contactsPhoneNumber.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG
-                )
-                binding.contactsPhoneNumber.setTextColor(Color.BLUE)
                 binding.contactsPhoneNumber.text = contactsFormattedNumber
                 binding.contactsPhoneNumber.setOnClickListener {
                     vacancyDetailsViewModel.callPhone(contactsFormattedNumber)
