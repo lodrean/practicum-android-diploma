@@ -23,4 +23,83 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/work_place"
+        style="@style/FontYSDisplay.Regular16"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/work_place"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_title" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:importantForAccessibility="no"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@id/work_place"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/work_place" />
+
+    <TextView
+        android:id="@+id/industry"
+        style="@style/FontYSDisplay.Regular16"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/industry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/work_place" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:importantForAccessibility="no"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@id/industry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/industry" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salary_frame"
+        style="@style/AndroidDiploma.EditTextStyleBoxed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_height"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_rectangle"
+        android:hint="@string/enter_sum"
+        app:hintTextColor="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/industry">
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/salary_is_required"
+        style="@style/FontYSDisplay.Regular16"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/do_not_show_without_salary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/salary_frame" />
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:button="@drawable/check_box_selector"
+        app:layout_constraintBottom_toBottomOf="@id/salary_is_required"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/salary_is_required" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,6 +56,9 @@ class SearchFragment : Fragment() {
         onItemClickListener = OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
+        binding.topAppBar.menu.findItem(R.id.filter).setOnMenuItemClickListener { _ ->
+            launchFilter()
+        }
 
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -109,6 +112,12 @@ class SearchFragment : Fragment() {
             R.id.action_search_fragment_to_vacancy_details_fragment,
             VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = true)
         )
+    }
+    private fun launchFilter(): Boolean {
+        findNavController().navigate(
+            R.id.action_search_fragment_to_filter_fragment,
+        )
+        return true
     }
 
     private fun render(state: SearchState) {
