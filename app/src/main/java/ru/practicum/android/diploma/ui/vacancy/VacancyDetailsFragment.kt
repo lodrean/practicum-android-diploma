@@ -52,7 +52,6 @@ class VacancyDetailsFragment : Fragment() {
             }
 
             is VacancyDetailsState.Loading -> {
-
                 binding.vacancyErrorImageView.isVisible = false
                 binding.contentScrollView.isVisible = false
                 binding.layoutError.isVisible = false
@@ -150,7 +149,7 @@ class VacancyDetailsFragment : Fragment() {
         vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
-        vacancyDetailsViewModel.observeShowToast().observe(viewLifecycleOwner){ showToast(it)}
+        vacancyDetailsViewModel.observeShowToast().observe(viewLifecycleOwner) { showToast(it) }
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite -> {

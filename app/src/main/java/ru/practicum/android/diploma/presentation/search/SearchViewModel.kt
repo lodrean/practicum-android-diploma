@@ -97,10 +97,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     }
 
                     showToast(messageCheckConnection)
-                }
-                else {
+                } else {
                     renderState(SearchState.ServerError(messageServerError))
-                    showToast(errorMessage?: messageServerError)
+                    showToast(errorMessage ?: messageServerError)
                 }
                 isNextPageLoading = false
             }
@@ -112,6 +111,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     )
                 )
             }
+
             else -> {
                 renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFiltered))
                 isNextPageLoading = false
