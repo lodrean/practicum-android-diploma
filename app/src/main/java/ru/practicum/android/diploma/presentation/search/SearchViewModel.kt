@@ -65,7 +65,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                         processResult(
                             resource.data?.vacancies,
                             resource.data?.found,
-                            resource.errorType
+                            resource.errorType,
+                            resource.message
                         )
                         maxPage = resource.data?.count
                     }
@@ -76,7 +77,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     private fun processResult(
         foundVacancies: List<Vacancy>?,
         countOfVacancies: Int?,
-        errorType: ErrorType?
+        errorType: ErrorType?,
+        errorMessage: String?
     ) {
         val messageServerError = getApplication<Application>().getString(R.string.server_error)
         val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
@@ -87,15 +89,20 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
         when {
             errorType != null -> {
-                when (errorType) {
-                    ErrorType.NoConnection -> {
-                        if (isNextPageLoading) renderState(SearchState.Content(vacanciesList, null, isFiltered))
-                        else renderState(SearchState.InternetNotAvailable(messageNoInternet))
+                if (errorType == ErrorType.NoConnection) {
+                    if (isNextPageLoading) {
+                        renderState(SearchState.Content(vacanciesList, null, isFiltered))
+                    } else {
+                        renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
-                    else -> renderState(SearchState.ServerError(messageServerError))
+
+                    showToast(messageCheckConnection)
+                }
+                else {
+                    renderState(SearchState.ServerError(messageServerError))
+                    showToast(errorMessage?: messageServerError)
                 }
                 isNextPageLoading = false
-                showToast(messageCheckConnection)
             }
 
             vacanciesList.isEmpty() -> {
@@ -105,7 +112,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     )
                 )
             }
-
             else -> {
                 renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFiltered))
                 isNextPageLoading = false

@@ -7,6 +7,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
@@ -157,6 +158,7 @@ class VacancyDetailsFragment : Fragment() {
         vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+        vacancyDetailsViewModel.observeShowToast().observe(viewLifecycleOwner){ showToast(it)}
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite -> {
@@ -172,6 +174,10 @@ class VacancyDetailsFragment : Fragment() {
                 else -> false
             }
         }
+    }
+
+    private fun showToast(toastMessage: String) {
+        Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {
