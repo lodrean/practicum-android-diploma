@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
@@ -63,8 +64,8 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
                     .collect { resource ->
                         processResult(
                             resource.data?.vacancies,
-                            resource.message,
-                            resource.data?.found
+                            resource.data?.found,
+                            resource.errorType
                         )
                         maxPage = resource.data?.count
                     }
@@ -72,7 +73,11 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+    private fun processResult(
+        foundVacancies: List<Vacancy>?,
+        countOfVacancies: Int?,
+        errorType: ErrorType?
+    ) {
         val messageServerError = getApplication<Application>().getString(R.string.server_error)
         val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
         val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
@@ -81,19 +86,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             vacanciesList.addAll(foundVacancies)
         }
         when {
-            errorMessage != null -> {
-                when (errorMessage) {
-                    messageCheckConnection -> {
-                        when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null, isFiltered))
-                            false -> renderState(SearchState.InternetNotAvailable(messageNoInternet))
-                        }
+            errorType != null -> {
+                when (errorType) {
+                    ErrorType.NoConnection -> {
+                        if (isNextPageLoading) renderState(SearchState.Content(vacanciesList, null, isFiltered))
+                        else renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
-
                     else -> renderState(SearchState.ServerError(messageServerError))
                 }
                 isNextPageLoading = false
-                showToast(errorMessage)
+                showToast(messageCheckConnection)
             }
 
             vacanciesList.isEmpty() -> {
