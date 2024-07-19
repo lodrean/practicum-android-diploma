@@ -8,5 +8,5 @@ data class AreaDto(
     val name: String,
     @SerializedName("parent_id")
     val parentId: String = "",
-    val areas: ArrayList<AreaDto>
+    val areas: List<AreaDto>
 )
