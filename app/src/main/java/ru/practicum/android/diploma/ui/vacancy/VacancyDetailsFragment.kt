@@ -53,6 +53,8 @@ class VacancyDetailsFragment : Fragment() {
             }
 
             is VacancyDetailsState.Loading -> {
+
+                binding.vacancyErrorImageView.isVisible = false
                 binding.contentScrollView.isVisible = false
                 binding.layoutError.isVisible = false
                 binding.vacancyDetailsProgressBar.isVisible = true
@@ -61,6 +63,7 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun showError() {
+        binding.vacancyErrorImageView.isVisible = true
         binding.contentScrollView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = true
@@ -85,6 +88,7 @@ class VacancyDetailsFragment : Fragment() {
             .centerInside()
             .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
             .into(binding.employerLogoImageView)
+        binding.vacancyErrorImageView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
