@@ -11,6 +11,8 @@ import ru.practicum.android.diploma.domain.api.FavoritesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsState
+import ru.practicum.android.diploma.util.ErrorType
+import ru.practicum.android.diploma.util.SingleLiveEvent
 
 class VacancyDetailsViewModel(
     var vacancy: Vacancy,
@@ -19,6 +21,8 @@ class VacancyDetailsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
+    private val showToast = SingleLiveEvent<String>()
+    fun observeShowToast(): LiveData<String> = showToast
     private val stateLiveData = MutableLiveData<VacancyDetailsState>()
     fun observeState(): LiveData<VacancyDetailsState> = stateLiveData
 
@@ -27,7 +31,14 @@ class VacancyDetailsViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             if (vacancyNeedToUpdate) {
                 vacanciesInteractor.updateToFullVacancy(vacancy).collect {
-                    if (it.message != null) {
+                    if (it.errorType != null) {
+                        when (it.errorType) {
+                            ErrorType.NoConnection -> {
+                                stateLiveData.postValue(VacancyDetailsState.VacancyNotFoundedError)
+                            }
+                            ErrorType.ServerError -> stateLiveData.postValue(VacancyDetailsState.VacancyServerError)
+                            ErrorType.SQLError -> stateLiveData.postValue(VacancyDetailsState.VacancyNotFoundedError)
+                        }
                         stateLiveData.postValue(VacancyDetailsState.VacancyServerError)
                     } else if (it.data != null) {
                         val vacancyIsFavorite = favoritesInteractor.checkVacancyIsFavorite(it.data)
@@ -62,7 +73,9 @@ class VacancyDetailsViewModel(
             stateLiveData.postValue(VacancyDetailsState.Content(vacancy))
         }
     }
-
+    private fun showToast(message: String) {
+        showToast.postValue(message)
+    }
     fun callPhone(phoneNumber: String) {
         sharingInteractor.callPhone(phoneNumber)
     }
