@@ -18,6 +18,7 @@
     <dimen name="image_4xl">32dp</dimen>
 
     <dimen name="image_l">48dp</dimen>
+    <dimen name="image_max">64dp</dimen>
 
     <dimen name="search_height">52dp</dimen>
     <dimen name="progress_bar">36dp</dimen>
