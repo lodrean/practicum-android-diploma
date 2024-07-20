@@ -69,9 +69,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/salary_frame"
-        style="@style/AndroidDiploma.EditTextStyleBoxed"
+        style="@style/AndroidDiploma.SalaryInputTextStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_height"
+        android:layout_marginHorizontal="@dimen/size_xxl"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_rectangle"
         android:hint="@string/enter_sum"
