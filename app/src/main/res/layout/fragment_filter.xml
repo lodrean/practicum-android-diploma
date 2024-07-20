@@ -38,6 +38,7 @@
         app:hintTextAppearance="@style/HintTextApperiance"
         app:layout_constraintTop_toBottomOf="@id/filter_title"
         app:prefixText="@string/work_place"
+        app:prefixTextColor="@color/gray"
         app:prefixTextAppearance="@style/FontYSDisplay.Regular16">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -85,6 +86,7 @@
         android:background="@drawable/rounded_rectangle"
         android:hint="@string/salary_expected"
         app:expandedHintEnabled="false"
+        app:hintAnimationEnabled="true"
         app:hintTextAppearance="@style/HintTextApperiance"
         app:layout_constraintTop_toBottomOf="@id/industry">
 

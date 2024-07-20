@@ -67,7 +67,7 @@
         <item name="boxStrokeWidth">@dimen/size_zero</item>
         <item name="boxStrokeWidthFocused">@dimen/size_zero</item>
         <item name="endIconDrawable">@drawable/arrow_forward</item>
-        <item name="endIconTint">@color/black_universal</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
         <item name="endIconMode">custom</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">400</item>
@@ -159,7 +159,6 @@
 
     <style name="HintTextApperiance" parent="TextAppearance.AppCompat">
         <item name="android:textSize">12sp</item>
-        <item name="hintTextColor">@color/blue</item>
 
     </style>
 
