@@ -68,4 +68,5 @@
     <string name="work_place">Место работы</string>
     <string name="industry">Отрасль</string>
     <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="salary_expected">Ожидаемая зарплата</string>
 </resources>
