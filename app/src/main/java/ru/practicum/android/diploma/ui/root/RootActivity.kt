@@ -1,12 +1,16 @@
 package ru.practicum.android.diploma.ui.root
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import ru.practicum.android.diploma.R
@@ -22,6 +26,26 @@ class RootActivity : AppCompatActivity() {
     private var _binding: ActivityRootBinding? = null
     private val binding
         get() = _binding!!
+
+    // функция проверяет, находится ли точка касания внутри области видимости текстового поля.
+    // Если точка касания находится вне области видимости текстового поля,
+    // то функция снимает фокус с текстового поля и скрывает клавиатуру.
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is TextInputEditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
