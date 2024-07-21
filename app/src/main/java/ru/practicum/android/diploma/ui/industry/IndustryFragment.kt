@@ -93,9 +93,7 @@ class IndustryFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentIndustryBinding.inflate(inflater, container, false)
         return binding.root
@@ -114,20 +112,19 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.adapter = industryAdapter
         binding.recyclerView.animation = null
 
-        binding.inputEditText.addTextChangedListener(
-            onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
-                if (charSequence?.isNotEmpty() == true) {
-                    binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
-                    industryViewModel.searchDebounce(changedText = charSequence.toString())
-                    binding.searchFrame.setEndIconOnClickListener {
-                        binding.inputEditText.setText(getString(R.string.empty_string))
-                        industryViewModel.loadIndustries()
-                    }
-                } else {
-                    binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
-                    binding.searchFrame.clearOnEndIconChangedListeners()
+        binding.inputEditText.addTextChangedListener(onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
+            if (charSequence?.isNotEmpty() == true) {
+                binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
+                industryViewModel.searchDebounce(changedText = charSequence.toString())
+                binding.searchFrame.setEndIconOnClickListener {
+                    binding.inputEditText.setText(getString(R.string.empty_string))
+                    industryViewModel.loadIndustries()
                 }
-            })
+            } else {
+                binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+                binding.searchFrame.clearOnEndIconChangedListeners()
+            }
+        })
         binding.inputEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 industryViewModel.searchDebounce(changedText = textView.text.toString())

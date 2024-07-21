@@ -13,7 +13,8 @@ import ru.practicum.android.diploma.ui.industry.IndustryState
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
-    val dictionariesInteractor: DictionariesInteractor, application: Application
+    val dictionariesInteractor: DictionariesInteractor,
+    application: Application
 ) : AndroidViewModel(application) {
 
     private val stateLiveData = MutableLiveData<IndustryState>()

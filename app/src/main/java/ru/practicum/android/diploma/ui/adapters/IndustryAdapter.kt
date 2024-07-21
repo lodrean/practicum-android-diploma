@@ -35,8 +35,8 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
             if (b) {
                 try {
                     notifyItemChanged(selectedPosition)
-                } catch (e: Exception) {
-                    Log.d("IndustryAdapter", "Fail notifyItemChanged")
+                } catch (e: IllegalStateException) {
+                    Log.d("IndustryAdapter", "Fail notifyItemChanged %s".format(e.toString()))
                 }
                 selectedPosition = holder.adapterPosition
                 onItemClickListener(listData[selectedPosition])
