@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.viewholders.IndustryViewHolder
+import java.lang.Exception
 
 class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
     RecyclerView.Adapter<IndustryViewHolder>() {
@@ -13,15 +14,12 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
     val listData = mutableListOf<Industry>()
     private var selectedPosition: Int = -1
 
-    init {
-        selectedPosition = -1
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IndustryViewHolder(
         IndustryListItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     ) {
+        selectedPosition = -1
         onItemClickListener(listData[it])
     }
 
@@ -31,8 +29,13 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
 
         holder.binding.industryRadioButton.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-                notifyItemChanged(selectedPosition)
+                try {
+                    notifyItemChanged(selectedPosition)
+                } catch (e: Exception) {
+
+                }
                 selectedPosition = holder.adapterPosition
+                onItemClickListener(listData[selectedPosition])
             }
         }
 
@@ -42,5 +45,4 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
     }
 
     override fun getItemCount(): Int = listData.size
-
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -25,19 +26,21 @@ class IndustryFragment : Fragment() {
         get() = _binding!!
 
     private fun render(state: IndustryState) {
-        when(state){
+        when (state) {
             is IndustryState.Content -> {
                 industryAdapter?.let {
                     showContent(state.industries)
                 }
             }
-            is IndustryState.Loading ->{
+
+            is IndustryState.Loading -> {
                 showLoading()
             }
 
             is IndustryState.Empty -> {
                 showEmpty(state.message)
             }
+
             is IndustryState.Error -> {
                 showError(state.message)
             }
@@ -50,7 +53,7 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.isVisible = true
         binding.stateTextView.isVisible = false
         binding.selectButton.isVisible = false
-        binding.recyclerView.post{
+        binding.recyclerView.post {
             kotlin.run {
                 industryAdapter?.listData?.apply {
                     clear()
@@ -123,12 +126,18 @@ class IndustryFragment : Fragment() {
             } else {
                 binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
                 binding.searchFrame.setEndIconOnClickListener {
-
                 }
             }
         })
+        binding.inputEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                industryViewModel.searchDebounce(changedText = textView.text.toString())
+                true
+            }
+            false
+        }
 
-        industryViewModel.observeState().observe(viewLifecycleOwner){
+        industryViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
