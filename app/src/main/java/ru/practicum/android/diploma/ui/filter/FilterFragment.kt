@@ -120,26 +120,27 @@ class FilterFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            checkSalaryRequired()
-
+            viewModel.saveFilter(
+                binding.workPlaceTv.text.toString(),
+                binding.industryTv.text.toString(),
+                binding.salaryTv.text.toString(),
+                checkSalaryRequired()
+            )
+            parentFragmentManager.popBackStack()
         }
 
 
     }
 
-    private fun checkSalaryRequired() {
-        if (binding.salaryIsRequiredCV.isChecked) {
-            viewModel.setSalaryIsRequired(true)
-        } else {
-            viewModel.setSalaryIsRequired(false)
-        }
+    private fun checkSalaryRequired(): Boolean {
+        return binding.salaryIsRequiredCV.isChecked
     }
 
 
     private fun render(state: FilterState) {
         when (state) {
             FilterState.Default -> defaultScreen()
-            is FilterState.Filtered -> filterScreen(state.area,  state.industry,state.salary, state.isSalaryRequired)
+            is FilterState.Filtered -> filterScreen(state.area, state.industry, state.salary, state.isSalaryRequired)
         }
     }
 

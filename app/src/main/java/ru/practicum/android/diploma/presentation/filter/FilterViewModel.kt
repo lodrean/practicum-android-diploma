@@ -23,4 +23,12 @@ class FilterViewModel(application: Application) :
         salaryIsRequired = required
     }
 
+    fun saveFilter(
+        workPlace: String,
+        industry: String,
+        salary: String,
+        checkSalaryRequired: Boolean) {
+
+    }
+
 }
