@@ -9,4 +9,5 @@ sealed interface FilterState {
         val salary: String,
         val isSalaryRequired: Boolean
     ) : FilterState
+    data object readyToSave : FilterState
 }

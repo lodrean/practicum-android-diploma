@@ -22,6 +22,7 @@ class FilterViewModel(application: Application) :
     }
 
     fun clearFilter() {
+        renderState(FilterState.Default)
     }
 
     fun setSalaryIsRequired(required: Boolean) {
@@ -54,6 +55,10 @@ class FilterViewModel(application: Application) :
 
     private fun fillData() {
         renderState(FilterState.Filtered(area, industry, salary, salaryIsRequired))
+    }
+
+    fun showSaveButton() {
+        renderState(FilterState.readyToSave)
     }
 
 }
