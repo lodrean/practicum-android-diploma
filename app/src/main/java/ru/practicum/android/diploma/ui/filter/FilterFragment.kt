@@ -39,6 +39,7 @@ class FilterFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -67,6 +68,8 @@ class FilterFragment : Fragment() {
                     binding.salaryFrame.hintTextColor = blackHintColor
                 } else if (binding.salaryTv.hasFocus()) {
                     binding.salaryFrame.defaultHintTextColor = blueHintColor
+                } else {
+                    binding.salaryFrame.defaultHintTextColor = emptyHintColor
                 }
             }
 
@@ -77,6 +80,7 @@ class FilterFragment : Fragment() {
                     binding.salaryFrame.setEndIconDrawable(R.drawable.close_icon)
                     binding.resetButton.isVisible = true
                     binding.saveButton.isVisible = true
+                    debounceBlackColor(s.toString())
                 } else {
                     binding.salaryFrame.defaultHintTextColor = emptyHintColor
                     debounceEmptyColor("")
@@ -91,13 +95,11 @@ class FilterFragment : Fragment() {
 
 
             override fun afterTextChanged(s: Editable?) {
-
                 if (binding.salaryTv.hasFocus()) {
                     binding.salaryFrame.defaultHintTextColor = blueHintColor
                 } else {
                     binding.salaryFrame.defaultHintTextColor = blackHintColor
                 }
-                debounceBlackColor(s.toString())
 
 
             }
@@ -119,6 +121,14 @@ class FilterFragment : Fragment() {
             debounceEmptyColor("")
         }
 
+        binding.salaryIsRequiredCV.setOnClickListener {
+            if (checkSalaryRequired()) {
+                viewModel.setSalaryIsRequired(true)
+            } else {
+                viewModel.setSalaryIsRequired(false)
+            }
+        }
+
         binding.saveButton.setOnClickListener {
             viewModel.saveFilter(
                 binding.workPlaceTv.text.toString(),
@@ -126,7 +136,7 @@ class FilterFragment : Fragment() {
                 binding.salaryTv.text.toString(),
                 checkSalaryRequired()
             )
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
 
 
@@ -149,6 +159,28 @@ class FilterFragment : Fragment() {
         binding.industryTv.setText(industry)
         binding.salaryTv.setText(salary)
         binding.salaryIsRequiredCV.isChecked = salaryRequired
+        if (binding.workPlaceTv.text.toString().isNotEmpty()) {
+            binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
+            binding.workPlace.setEndIconOnClickListener {
+                viewModel.clearWorkplace()
+                binding.workPlaceTv.setText(getString(R.string.empty_string))
+            }
+            binding.workPlace.defaultHintTextColor = hintColorStates().second
+        } else {
+            binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
+            binding.workPlace.defaultHintTextColor = hintColorStates().first
+        }
+        if (binding.industryTv.text.toString().isNotEmpty()) {
+            binding.industry.setEndIconDrawable(R.drawable.close_icon)
+            binding.industry.setEndIconOnClickListener {
+                viewModel.clearIndustry()
+                binding.industryTv.setText(getString(R.string.empty_string))
+            }
+            binding.industry.defaultHintTextColor = hintColorStates().second
+        } else {
+            binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
+            binding.industry.defaultHintTextColor = hintColorStates().first
+        }
     }
 
     private fun defaultScreen() {
@@ -210,6 +242,11 @@ class FilterFragment : Fragment() {
 
     companion object {
         const val SALARY_DEBOUNCE_DELAY = 1000L
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.salaryFrame.defaultHintTextColor = hintColorStates().first
     }
 }
 

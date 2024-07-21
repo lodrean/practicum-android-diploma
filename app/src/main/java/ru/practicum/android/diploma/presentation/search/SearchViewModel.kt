@@ -143,7 +143,6 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     }
 
     fun checkFilter() {
-        TODO("Not yet implemented")
     }
 
     companion object {
