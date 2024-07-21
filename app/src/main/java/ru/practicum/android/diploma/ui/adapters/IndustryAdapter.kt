@@ -1,12 +1,12 @@
 package ru.practicum.android.diploma.ui.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.viewholders.IndustryViewHolder
-import java.lang.Exception
 
 class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
     RecyclerView.Adapter<IndustryViewHolder>() {
@@ -32,7 +32,7 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
                 try {
                     notifyItemChanged(selectedPosition)
                 } catch (e: Exception) {
-
+                    Log.d("IndustryAdapter", "Fail notifyItemChanged")
                 }
                 selectedPosition = holder.adapterPosition
                 onItemClickListener(listData[selectedPosition])

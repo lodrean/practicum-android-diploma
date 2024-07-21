@@ -4,20 +4,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.industry.IndustryState
-import ru.practicum.android.diploma.ui.search.SearchState
-import ru.practicum.android.diploma.ui.search.SearchViewModel
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
-    val dictionariesInteractor: DictionariesInteractor, application: Application) : AndroidViewModel(application) {
+    val dictionariesInteractor: DictionariesInteractor, application: Application
+) : AndroidViewModel(application) {
 
     private val stateLiveData = MutableLiveData<IndustryState>()
     private var latestSearchText: String? = null
@@ -40,18 +37,24 @@ class IndustryViewModel(
         stateLiveData.postValue(IndustryState.Loading)
         viewModelScope.launch {
             dictionariesInteractor.getIndustries().collect {
-                if(it.message != null){
+                if (it.message != null) {
                     stateLiveData.postValue(IndustryState.Error(message = it.message))
                 }
-                if(it.data != null){
-                    it.data?.let { industries: List<Industry> ->
-                        val filteredIndustries = industries.filter { industry: Industry -> industry.name.contains(searchText) }
-
-                        if (filteredIndustries.isEmpty()){
-                            stateLiveData.postValue(IndustryState.Empty(message = getApplication<Application>().getString(
-                                R.string.industry_not_found),))
+                if (it.data != null) {
+                    it.data.let { industries: List<Industry> ->
+                        val filteredIndustries = industries.filter { industry: Industry ->
+                            industry.name.contains(searchText)
                         }
-                        else{
+
+                        if (filteredIndustries.isEmpty()) {
+                            stateLiveData.postValue(
+                                IndustryState.Empty(
+                                    message = getApplication<Application>().getString(
+                                        R.string.industry_not_found
+                                    ),
+                                )
+                            )
+                        } else {
                             stateLiveData.postValue(IndustryState.Content(filteredIndustries))
                         }
                     }
@@ -63,8 +66,8 @@ class IndustryViewModel(
     fun loadIndustries() {
         viewModelScope.launch {
             dictionariesInteractor.getIndustries().collect {
-                it?.let {
-                    it?.data?.let {
+                it.let {
+                    it.data?.let {
                         stateLiveData.postValue(IndustryState.Content(it))
                     }
                 }
@@ -72,11 +75,11 @@ class IndustryViewModel(
         }
     }
 
-    fun saveIndustry(industry: Industry){
+    fun saveIndustry(industry: Industry) {
 
     }
 
-    fun selectIndustry(){
+    fun selectIndustry() {
 
     }
 

@@ -115,7 +115,8 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.adapter = industryAdapter
         binding.recyclerView.animation = null
 
-        binding.inputEditText.addTextChangedListener(onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
+        binding.inputEditText.addTextChangedListener(
+            onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
             if (charSequence?.isNotEmpty() == true) {
                 binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
                 industryViewModel.searchDebounce(changedText = charSequence.toString())
@@ -125,8 +126,7 @@ class IndustryFragment : Fragment() {
                 }
             } else {
                 binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
-                binding.searchFrame.setEndIconOnClickListener {
-                }
+                binding.searchFrame.setEndIconOnClickListener {}
             }
         })
         binding.inputEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
