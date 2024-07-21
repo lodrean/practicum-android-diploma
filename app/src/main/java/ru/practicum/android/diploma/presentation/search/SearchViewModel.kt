@@ -142,9 +142,9 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    fun checkFilter(){
-        // todo
+    fun checkFilter() { // todo
     }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PER_PAGE_SIZE = 20
