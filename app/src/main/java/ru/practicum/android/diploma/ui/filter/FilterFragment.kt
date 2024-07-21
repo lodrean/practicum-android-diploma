@@ -21,7 +21,6 @@ import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 import ru.practicum.android.diploma.util.debounce
 
-
 class FilterFragment : Fragment() {
 
     private var textWatcher: TextWatcher? = null
@@ -55,7 +54,6 @@ class FilterFragment : Fragment() {
             findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
 
-
         val (emptyHintColor, blackHintColor, blueHintColor) = hintColorStates()
 
         val (debounceBlackColor, debounceEmptyColor, debounceBlueColor) = hintDebouncers(
@@ -63,7 +61,6 @@ class FilterFragment : Fragment() {
             emptyHintColor,
             blueHintColor
         )
-
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -124,14 +121,11 @@ class FilterFragment : Fragment() {
             )
             findNavController().popBackStack()
         }
-
-
     }
 
     private fun checkSalaryRequired(): Boolean {
         return binding.salaryIsRequiredCV.isChecked
     }
-
 
     private fun render(state: FilterState) {
         when (state) {
@@ -146,12 +140,18 @@ class FilterFragment : Fragment() {
         binding.saveButton.isVisible = true
     }
 
-
     private fun filterScreen(area: String, industry: String, salary: String, salaryRequired: Boolean) {
         binding.workPlaceTv.setText(area)
         binding.industryTv.setText(industry)
         binding.salaryTv.setText(salary)
         binding.salaryIsRequiredCV.isChecked = salaryRequired
+        fillWorkPlace()
+        fillIndustry()
+        binding.saveButton.isVisible = true
+        binding.resetButton.isVisible = true
+    }
+
+    private fun fillWorkPlace() {
         if (binding.workPlaceTv.text.toString().isNotEmpty()) {
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
             binding.workPlace.defaultHintTextColor = hintColorStates().second
@@ -171,8 +171,9 @@ class FilterFragment : Fragment() {
                 findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
             }
         }
+    }
 
-
+    private fun fillIndustry() {
         if (binding.industryTv.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
             binding.industry.defaultHintTextColor = hintColorStates().second
@@ -192,8 +193,6 @@ class FilterFragment : Fragment() {
                 findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
             }
         }
-        binding.saveButton.isVisible = true
-        binding.resetButton.isVisible = true
     }
 
     private fun defaultScreen() {
@@ -244,7 +243,6 @@ class FilterFragment : Fragment() {
         )
         return Triple(emptyHintColor, blackHintColor, blueHintColor)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

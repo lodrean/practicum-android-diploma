@@ -142,8 +142,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    fun checkFilter() {
-    }
+    fun checkFilter(){}
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L

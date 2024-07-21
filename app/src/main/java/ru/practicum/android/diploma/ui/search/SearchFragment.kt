@@ -113,6 +113,7 @@ class SearchFragment : Fragment() {
             VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = true)
         )
     }
+
     private fun launchFilter(): Boolean {
         findNavController().navigate(
             R.id.action_search_fragment_to_filter_fragment,
@@ -207,10 +208,12 @@ class SearchFragment : Fragment() {
         textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         _binding = null
     }
-override fun onResume() {
-    super.onResume()
-    viewModel.checkFilter()
-}
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilter()
+    }
+
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
