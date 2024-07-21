@@ -39,7 +39,7 @@ class FilterViewModel(application: Application) :
         salary: String,
         checkSalaryRequired: Boolean
     ) {
-
+        // todo
     }
 
     fun clearWorkplace() {
