@@ -31,6 +31,7 @@
         style="@style/AndroidDiploma.TextStyleFilter"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_button"
+        android:clickable="true"
         android:hint="@string/work_place"
         app:hintTextAppearance="@style/HintTextApperiance"
         app:layout_constraintTop_toBottomOf="@id/filter_title"
@@ -39,9 +40,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/work_place_tv"
+
             style="@style/AndroidDiploma.TextStyleFilter.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +99,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/salary_is_required_TV"
+        android:id="@+id/salary_is_required_CV"
         style="@style/AndroidDiploma.FilterButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_button"

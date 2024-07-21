@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 
 class FilterFragment : Fragment() {
@@ -22,6 +23,18 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.workPlaceTv.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
+        }
+        binding.industryTv.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
+        }
+        binding.workPlace.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
+        }
+        binding.industry.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
     }
 
