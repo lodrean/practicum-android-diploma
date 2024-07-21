@@ -29,11 +29,10 @@ val uiModule = module {
         FavoritesViewModel(get())
     }
 
-    viewModel<IndustryViewModel>{
+    viewModel<IndustryViewModel> {
         IndustryViewModel(
             dictionariesInteractor = get(),
             application = get()
         )
     }
-
 }

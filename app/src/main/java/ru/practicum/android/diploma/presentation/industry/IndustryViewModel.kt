@@ -32,7 +32,6 @@ class IndustryViewModel(
             searchIndustries(changedText)
         }
 
-
     private fun searchIndustries(searchText: String) {
         stateLiveData.postValue(IndustryState.Loading)
         viewModelScope.launch {
@@ -73,14 +72,6 @@ class IndustryViewModel(
                 }
             }
         }
-    }
-
-    fun saveIndustry(industry: Industry) {
-
-    }
-
-    fun selectIndustry() {
-
     }
 
     companion object {

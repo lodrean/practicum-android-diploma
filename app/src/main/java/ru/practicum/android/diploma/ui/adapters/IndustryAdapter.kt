@@ -14,15 +14,19 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
     val listData = mutableListOf<Industry>()
     private var selectedPosition: Int = -1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IndustryViewHolder(
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ) = IndustryViewHolder(
         IndustryListItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
     ) {
         selectedPosition = -1
         onItemClickListener(listData[it])
     }
-
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
         holder.binding.industryRadioButton.isChecked = position == selectedPosition

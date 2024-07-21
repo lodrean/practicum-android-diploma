@@ -108,7 +108,6 @@ class IndustryFragment : Fragment() {
 
         industryAdapter = IndustryAdapter {
             binding.selectButton.isVisible = true
-            industryViewModel.saveIndustry(it)
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -117,18 +116,18 @@ class IndustryFragment : Fragment() {
 
         binding.inputEditText.addTextChangedListener(
             onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
-            if (charSequence?.isNotEmpty() == true) {
-                binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
-                industryViewModel.searchDebounce(changedText = charSequence.toString())
-                binding.searchFrame.setEndIconOnClickListener {
-                    binding.inputEditText.setText(getString(R.string.empty_string))
-                    industryViewModel.loadIndustries()
+                if (charSequence?.isNotEmpty() == true) {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
+                    industryViewModel.searchDebounce(changedText = charSequence.toString())
+                    binding.searchFrame.setEndIconOnClickListener {
+                        binding.inputEditText.setText(getString(R.string.empty_string))
+                        industryViewModel.loadIndustries()
+                    }
+                } else {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+                    binding.searchFrame.clearOnEndIconChangedListeners()
                 }
-            } else {
-                binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
-                binding.searchFrame.setEndIconOnClickListener {}
-            }
-        })
+            })
         binding.inputEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 industryViewModel.searchDebounce(changedText = textView.text.toString())
@@ -142,7 +141,6 @@ class IndustryFragment : Fragment() {
         }
 
         binding.selectButton.setOnClickListener {
-            industryViewModel.selectIndustry()
             findNavController().popBackStack()
         }
 
