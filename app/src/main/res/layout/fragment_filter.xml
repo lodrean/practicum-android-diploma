@@ -85,7 +85,6 @@
         android:hint="@string/salary_expected"
         app:expandedHintEnabled="false"
         app:hintAnimationEnabled="true"
-        app:hintTextAppearance="@style/HintTextApperiance"
         app:layout_constraintTop_toBottomOf="@id/industry">
 
         <com.google.android.material.textfield.TextInputEditText
