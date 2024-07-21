@@ -93,9 +93,15 @@ class IndustryFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentIndustryBinding.inflate(inflater, container, false)
+        _binding = FragmentIndustryBinding.inflate(
+            inflater,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -112,7 +118,11 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.adapter = industryAdapter
         binding.recyclerView.animation = null
 
-        binding.inputEditText.addTextChangedListener(onTextChanged = { charSequence: CharSequence?, i: Int, i1: Int, i2: Int ->
+        binding.inputEditText.addTextChangedListener(onTextChanged = {
+                charSequence: CharSequence?,
+                i: Int,
+                i1: Int,
+                i2: Int ->
             if (charSequence?.isNotEmpty() == true) {
                 binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
                 industryViewModel.searchDebounce(changedText = charSequence.toString())
