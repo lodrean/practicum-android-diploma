@@ -19,4 +19,5 @@ class FindJobApplication : Application() {
         }
 
     }
+
 }
