@@ -19,7 +19,9 @@ import ru.practicum.android.diploma.util.ErrorType
 
 class IndustryFragment : Fragment() {
     private val industryViewModel by viewModel<IndustryViewModel>()
-    private var industryAdapter: IndustryAdapter? = null
+    private var industryAdapter = IndustryAdapter {
+        binding.selectButton.isVisible = it != null
+    }
 
     private var _binding: FragmentIndustryBinding? = null
     private val binding
@@ -27,23 +29,10 @@ class IndustryFragment : Fragment() {
 
     private fun render(state: IndustryState) {
         when (state) {
-            is IndustryState.Content -> {
-                industryAdapter?.let {
-                    showContent(state.industries)
-                }
-            }
-
-            is IndustryState.Loading -> {
-                showLoading()
-            }
-
-            is IndustryState.Empty -> {
-                showEmpty(state.message)
-            }
-
-            is IndustryState.Error -> {
-                showError(state.error)
-            }
+            is IndustryState.Content -> showContent(state.industries)
+            is IndustryState.Loading -> showLoading()
+            is IndustryState.Empty -> showEmpty(state.message)
+            is IndustryState.Error -> showError(state.error)
         }
     }
 
@@ -53,13 +42,7 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.isVisible = true
         binding.stateTextView.isVisible = false
         binding.selectButton.isVisible = false
-        binding.recyclerView.post {
-            industryAdapter?.listData?.apply {
-                clear()
-                addAll(industryList)
-            }
-            industryAdapter?.notifyDataSetChanged()
-        }
+        industryAdapter.setData(industryList)
     }
 
     private fun showLoading() {
@@ -105,16 +88,8 @@ class IndustryFragment : Fragment() {
         binding.selectButton.isVisible = false
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentIndustryBinding.inflate(
-            inflater,
-            container,
-            false
-        )
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentIndustryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -123,29 +98,25 @@ class IndustryFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        industryAdapter = IndustryAdapter {
-            binding.selectButton.isVisible = true
-        }
-
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = industryAdapter
         binding.recyclerView.animation = null
 
-        binding.inputEditText.addTextChangedListener(onTextChanged = { charSequence: CharSequence?,
-                                                                       i: Int,
-                                                                       i1: Int,
-                                                                       i2: Int ->
-            if (charSequence?.isNotEmpty() == true) {
-                binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
-                industryViewModel.searchDebounce(changedText = charSequence.toString())
-            } else {
-                binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+        binding.inputEditText.addTextChangedListener(
+            afterTextChanged = { text ->
+                if (text.isNullOrEmpty()) {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+                } else {
+                    binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
+                }
+                industryViewModel.searchDebounce(text.toString())
             }
-        })
+        )
 
         binding.searchFrame.setEndIconOnClickListener {
-            binding.inputEditText.setText(getString(R.string.empty_string))
-            industryViewModel.loadIndustries()
+            if (!binding.inputEditText.text.isNullOrEmpty()) {
+                binding.inputEditText.setText(getString(R.string.empty_string))
+            }
         }
 
         industryViewModel.observeState().observe(viewLifecycleOwner) {
@@ -153,10 +124,9 @@ class IndustryFragment : Fragment() {
         }
 
         binding.selectButton.setOnClickListener {
-            findNavController().popBackStack()
+            industryViewModel.setIndustryToFilter(industryAdapter.getSelectedIndustry())
         }
 
-        industryViewModel.loadIndustries()
     }
 
     override fun onDestroyView() {

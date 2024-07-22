@@ -1,49 +1,44 @@
 package ru.practicum.android.diploma.ui.adapters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.databinding.IndustryListItemBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.viewholders.IndustryViewHolder
 
-class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
+class IndustryAdapter(private val onItemClickListener: (Industry?) -> Unit) :
     RecyclerView.Adapter<IndustryViewHolder>() {
 
-    val listData = mutableListOf<Industry>()
-    private var selectedPosition: Int = -1
+    private val listData = mutableListOf<Industry>()
+    private var selectedIndustry: Industry? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ) = IndustryViewHolder(
-        IndustryListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-    ) {
-        selectedPosition = -1
-        onItemClickListener(listData[it])
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder =
+        IndustryViewHolder(parent, onItemClickListener) { newIndustry ->
+            val previousPosition: Int = selectedIndustry?.let { oldIndustry ->
+                listData.indexOf(oldIndustry)
+            } ?: -1
+            selectedIndustry = newIndustry
+            if (previousPosition >= 0) {
+                notifyItemChanged(previousPosition)
+            }
+            onItemClickListener(selectedIndustry)
+        }
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.binding.industryRadioButton.isChecked = position == selectedPosition
-
-        holder.binding.industryRadioButton.setOnCheckedChangeListener { compoundButton, b ->
-            if (b) {
-                if (!holder.isRecyclable) {
-                    notifyItemChanged(selectedPosition)
-                }
-                selectedPosition = holder.adapterPosition
-                onItemClickListener(listData[selectedPosition])
-            }
-        }
-
-        listData.getOrNull(position)?.let {
-            holder.bind(listData[position])
-        }
+        holder.bind(listData[position], listData[position] == selectedIndustry)
     }
 
     override fun getItemCount(): Int = listData.size
+
+    fun setData(industryList: List<Industry>) {
+        listData.clear()
+        listData.addAll(industryList)
+        if (!listData.contains(selectedIndustry)) {
+            selectedIndustry = null
+        }
+        onItemClickListener(selectedIndustry)
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedIndustry() = selectedIndustry
+
 }

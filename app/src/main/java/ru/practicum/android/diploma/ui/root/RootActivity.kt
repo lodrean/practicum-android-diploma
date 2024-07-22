@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.databinding.ActivityRootBinding
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.ui.industry.IndustryFragment
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 
@@ -55,6 +56,8 @@ class RootActivity : AppCompatActivity() {
 
         // Пример использования интерактора вакансий
         // testApi()
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, IndustryFragment()).commit()
 
     }
 

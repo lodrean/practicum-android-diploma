@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.presentation.industry
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,15 +24,16 @@ class IndustryViewModel(
     fun observeState(): LiveData<IndustryState> = stateLiveData
 
     init {
+        stateLiveData.postValue(IndustryState.Loading)
+
         viewModelScope.launch {
             dictionariesInteractor.getIndustries().collect {
                 if (it.errorType != null) {
                     industriesList = emptyList()
                     stateLiveData.postValue(IndustryState.Error(it.errorType))
-                }
-                if (it.data != null) {
+                } else if (it.data != null) {
                     industriesList = it.data
-                    stateLiveData.postValue(IndustryState.Content(it.data))
+                    stateLiveData.postValue(IndustryState.Content(industriesList))
                 }
             }
         }
@@ -69,16 +71,8 @@ class IndustryViewModel(
         }
     }
 
-    fun loadIndustries() {
-        viewModelScope.launch {
-            dictionariesInteractor.getIndustries().collect {
-                it.let {
-                    it.data?.let {
-                        stateLiveData.postValue(IndustryState.Content(it))
-                    }
-                }
-            }
-        }
+    fun setIndustryToFilter(industry: Industry?) {
+        Log.d("DIPLOMA_DEBUG", "Industry filter = $industry")
     }
 
     companion object {
