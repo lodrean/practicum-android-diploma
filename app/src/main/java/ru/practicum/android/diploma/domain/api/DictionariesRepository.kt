@@ -9,7 +9,7 @@ interface DictionariesRepository {
 
     fun getAreas(): Flow<Resource<List<Area>>>
 
-    fun getAreasById(areaId: String): Flow<Resource<List<Area>>>
+    fun getAreasById(areaId: String): Flow<Resource<Area>>
 
     fun getIndustries(): Flow<Resource<List<Industry>>>
 

@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.AreaResponse
 import ru.practicum.android.diploma.data.network.AreasByIdRequest
+import ru.practicum.android.diploma.data.network.AreasByIdResponse
 import ru.practicum.android.diploma.data.network.AreasRequest
 import ru.practicum.android.diploma.data.network.IndustriesRequest
 import ru.practicum.android.diploma.data.network.IndustriesResponse
@@ -49,16 +50,14 @@ class DictionariesRepositoryImpl(
         )
     }
 
-    override fun getAreasById(areaId: String): Flow<Resource<List<Area>>> = flow {
+    override fun getAreasById(areaId: String): Flow<Resource<Area>> = flow {
         val response = networkClient.doRequest(AreasByIdRequest(areaId))
         emit(
             when (response.resultCode) {
                 NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
-                    with(response as AreaResponse) {
-                        Resource.Success(response.area.map {
-                            it.toArea()
-                        })
+                    with(response as AreasByIdResponse) {
+                        Resource.Success(response.area.toArea())
                     }
                 }
 

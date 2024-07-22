@@ -19,7 +19,6 @@ import ru.practicum.android.diploma.presentation.region.RegionState
 import ru.practicum.android.diploma.presentation.region.RegionViewModel
 import ru.practicum.android.diploma.presentation.workplace.WorkplaceState
 import ru.practicum.android.diploma.ui.adapters.AreaAdapter
-import ru.practicum.android.diploma.ui.workplace.WorkplaceFragment
 
 class RegionFragment : Fragment() {
 
@@ -29,8 +28,6 @@ class RegionFragment : Fragment() {
 
     private val viewModel by viewModel<RegionViewModel>()
 
-    private val parent = parentFragment as WorkplaceFragment
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRegionBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,6 +36,20 @@ class RegionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        viewModel.getFilterState().observe(viewLifecycleOwner) {
+            when (it) {
+                is WorkplaceState.CountryAndRegionIsPicked -> {
+                    viewModel.loadRegionsList(it.country.id)
+                }
+                is WorkplaceState.CountryIsPicked -> {
+                    viewModel.loadRegionsList(it.country.id)
+                }
+                WorkplaceState.NothingIsPicked -> {
+                    viewModel.loadRegionsList(null)
+                }
+            }
         }
 
         viewModel.getRegionLiveData().observe(viewLifecycleOwner) {
@@ -63,7 +74,7 @@ class RegionFragment : Fragment() {
             }
 
             override fun onTextChanged(searchQuery: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                when (val areaFilterState = parent.workplaceViewModel.getWorkplaceStateLiveData().value) {
+                when (val areaFilterState = viewModel.getFilterState().value) {
                     is WorkplaceState.NothingIsPicked -> {
                         viewModel.filter(searchQuery.toString(), null)
                     }
@@ -94,7 +105,6 @@ class RegionFragment : Fragment() {
 
         binding.searchFrame.setEndIconOnClickListener {
             binding.inputEditText.setText(getString(R.string.empty_string))
-            loadFullList()
         }
     }
 
@@ -105,27 +115,7 @@ class RegionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        loadFullList()
-    }
-
-    private fun loadFullList() {
-        when (val areaFilterState = parent.workplaceViewModel.getWorkplaceStateLiveData().value) {
-            is WorkplaceState.NothingIsPicked -> {
-                viewModel.loadRegionsList(null)
-            }
-
-            is WorkplaceState.CountryAndRegionIsPicked -> {
-                viewModel.loadRegionsList(areaFilterState.country.id)
-            }
-
-            is WorkplaceState.CountryIsPicked -> {
-                viewModel.loadRegionsList(areaFilterState.country.id)
-            }
-
-            else -> {
-                viewModel.loadRegionsList(null)
-            }
-        }
+        viewModel.defineCurrentFilterState()
     }
 
     private fun prepareRegionsList(regionsList: List<Area>) {
@@ -134,11 +124,8 @@ class RegionFragment : Fragment() {
         binding.errorText.isVisible = false
 
         val adapter = AreaAdapter {
-            lifecycleScope.launch {
-                val country = parent.workplaceViewModel.loadCountryByRegion(it)
-                parent.workplaceViewModel.setCountryAndRegion(country, it)
-                findNavController().navigateUp()
-            }
+            viewModel.setCountryAndRegion(it)
+            findNavController().navigateUp()
         }
 
         adapter.setItems(regionsList)

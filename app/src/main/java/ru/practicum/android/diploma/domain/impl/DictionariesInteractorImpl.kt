@@ -11,7 +11,7 @@ class DictionariesInteractorImpl(private val repository: DictionariesRepository)
 
     override fun getAreas(): Flow<Resource<List<Area>>> = repository.getAreas()
 
-    override fun getAreasById(areaId: String): Flow<Resource<List<Area>>> =
+    override fun getAreasById(areaId: String): Flow<Resource<Area>> =
         repository.getAreasById(areaId)
 
     override fun getIndustries(): Flow<Resource<List<Industry>>> = repository.getIndustries()

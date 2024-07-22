@@ -54,7 +54,7 @@ class RetrofitNetworkClient(
     private suspend fun getAreasById(request: AreasByIdRequest): Response {
         return withContext(Dispatchers.IO) {
             try {
-                AreaResponse(hhService.getAreasById(request.areaId))
+                AreasByIdResponse(hhService.getAreasById(request.areaId))
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }

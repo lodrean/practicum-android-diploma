@@ -5,11 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.presentation.workplace.WorkplaceState
 import ru.practicum.android.diploma.util.Resource
 
 class RegionViewModel(
+    private val filterInteractor: FilterInteractor,
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
 
@@ -17,6 +20,9 @@ class RegionViewModel(
     fun getRegionLiveData(): LiveData<RegionState> = regionLiveData
 
     private val filteredList: MutableList<Area> = ArrayList()
+
+    private val filterState = MutableLiveData<WorkplaceState>()
+    fun getFilterState(): MutableLiveData<WorkplaceState> = filterState
 
     fun loadRegionsList(countryId: String?) {
         if (countryId != null) {
@@ -27,7 +33,7 @@ class RegionViewModel(
                     when (it) {
                         is Resource.Success -> {
                             if (it.data != null) {
-                                listOfRegions.addAll(collectAllRegions(it.data))
+                                listOfRegions.addAll(collectAllRegions(it.data.areas!!))
                                 regionLiveData.postValue(RegionState.Content(listOfRegions))
                             } else {
                                 regionLiveData.postValue(RegionState.Empty)
@@ -40,6 +46,41 @@ class RegionViewModel(
                     }
                 }
             }
+        } else {
+            viewModelScope.launch {
+                val listOfRegions = mutableListOf<Area>()
+
+                dictionariesInteractor.getAreas().collect {
+                    when (it) {
+                        is Resource.Success -> {
+                            if (it.data != null) {
+                                listOfRegions.addAll(collectAllCountries(it.data))
+                                regionLiveData.postValue(RegionState.Content(listOfRegions))
+                            } else {
+                                regionLiveData.postValue(RegionState.Empty)
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            regionLiveData.postValue(RegionState.Error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectAllCountries(listOfCountries: List<Area>): List<Area> {
+        val result = mutableListOf<Area>()
+
+        for (country in listOfCountries) {
+            if (!country.areas.isNullOrEmpty()) {
+                result.addAll(country.areas)
+            }
+        }
+
+        return result.sortedBy {
+            it.name
         }
     }
 
@@ -74,5 +115,39 @@ class RegionViewModel(
             }
             regionLiveData.postValue(RegionState.Content(filteredList))
         }
+    }
+
+    fun defineCurrentFilterState() {
+        val filterArea = filterInteractor.currentFilter().area
+
+        if (filterArea == null) {
+            filterState.postValue(WorkplaceState.NothingIsPicked)
+        } else {
+            if (filterArea.parentId.isNullOrEmpty()) {
+                filterState.postValue(WorkplaceState.CountryIsPicked(filterArea))
+            } else {
+                viewModelScope.launch {
+                    val country = loadCountryByRegion(filterArea)
+                    filterState.postValue(WorkplaceState.CountryAndRegionIsPicked(country, filterArea))
+                }
+            }
+        }
+    }
+
+    private suspend fun loadCountryByRegion(region: Area): Area {
+        var newArea: Area = region
+
+        while (!newArea.parentId.isNullOrEmpty()) {
+            dictionariesInteractor.getAreasById(newArea.parentId!!).collect {
+                newArea = (it as Resource.Success).data!!
+            }
+        }
+
+        return newArea
+    }
+
+    fun setCountryAndRegion(region: Area) {
+        filterInteractor.setArea(region)
+        filterInteractor.apply()
     }
 }

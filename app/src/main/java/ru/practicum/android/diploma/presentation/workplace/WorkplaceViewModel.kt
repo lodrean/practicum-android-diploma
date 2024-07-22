@@ -35,12 +35,12 @@ class WorkplaceViewModel(
         }
     }
 
-    suspend fun loadCountryByRegion(region: Area): Area {
+    private suspend fun loadCountryByRegion(region: Area): Area {
         var newArea: Area = region
 
         while (!newArea.parentId.isNullOrEmpty()) {
             dictionariesInteractor.getAreasById(newArea.parentId!!).collect {
-                newArea = (it as Resource.Success).data!![0]
+                newArea = (it as Resource.Success).data!!
             }
         }
 
@@ -64,17 +64,5 @@ class WorkplaceViewModel(
             filterInteractor.setArea(null)
             filterInteractor.apply()
         }
-    }
-
-    fun setCountry(country: Area) {
-        workplaceStateLiveData.postValue(WorkplaceState.CountryIsPicked(country))
-        filterInteractor.setArea(country)
-        filterInteractor.apply()
-    }
-
-    fun setCountryAndRegion(country: Area, region: Area) {
-        workplaceStateLiveData.postValue(WorkplaceState.CountryAndRegionIsPicked(country, region))
-        filterInteractor.setArea(region)
-        filterInteractor.apply()
     }
 }

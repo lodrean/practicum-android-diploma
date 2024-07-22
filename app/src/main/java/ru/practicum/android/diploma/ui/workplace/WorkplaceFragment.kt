@@ -57,6 +57,7 @@ class WorkplaceFragment : Fragment() {
             when (it) {
                 is WorkplaceState.CountryIsPicked -> {
                     showCountry(it.country.name)
+                    hideRegion()
                     binding.chooseButton.isVisible = true
                 }
 

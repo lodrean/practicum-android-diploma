@@ -39,7 +39,7 @@ interface HHApi {
     @GET("/areas/{areaId}")
     suspend fun getAreasById(
         @Path("areaId") areaId: String
-    ): List<AreaDto>
+    ): AreaDto
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",

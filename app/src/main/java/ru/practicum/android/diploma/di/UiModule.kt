@@ -44,6 +44,6 @@ val uiModule = module {
     }
 
     viewModel<RegionViewModel> {
-        RegionViewModel(get())
+        RegionViewModel(get(), get())
     }
 }
