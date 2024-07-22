@@ -16,6 +16,8 @@ import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 
@@ -30,6 +32,9 @@ class RootActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Пример использования фильтра
+        testFilter()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
@@ -58,7 +63,7 @@ class RootActivity : AppCompatActivity() {
 
         // Пример использования интерактора вакансий
         // testApi()
-        testFilter()
+
 
     }
 
@@ -68,8 +73,16 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun testFilter() {
-        // filterInteractor.setSearchText("Android developer")
-        // filterInteractor.setArea(Area("113", "Moscow"))
+        val emptyFilter = Filter()
+        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter == Filter()}")
+        val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
+        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter == Filter()}")
+
+        filterInteractor.setArea(Area("2", "Питер"))
+        // filterInteractor.setSalary(200000)
+        filterInteractor.setOnlyWithSalary(true)
+        filterInteractor.setIndustry(Industry("7", "IT"))
+        filterInteractor.apply()
         Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
     }
 

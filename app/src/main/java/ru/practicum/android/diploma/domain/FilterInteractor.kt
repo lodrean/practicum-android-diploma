@@ -9,6 +9,7 @@ interface FilterInteractor {
     fun newFilter(): Filter
     fun setArea(area: Area?)
     fun setIndustry(industry: Industry?)
+    fun setSalary(salary: Int?)
     fun setOnlyWithSalary(onlyWithSalary: Boolean)
     fun apply()
     fun restore()
