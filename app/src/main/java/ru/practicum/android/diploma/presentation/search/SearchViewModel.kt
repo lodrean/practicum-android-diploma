@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.presentation.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,15 +7,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.SearchState
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterInteractor: FilterInteractor,
+    application: Application
+) :
     AndroidViewModel(application) {
-    private var isFiltered: Boolean = false // todo
+    private val filter: Filter = filterInteractor.currentFilter()
+
+    //private var isFiltered: Boolean = false // todo
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -58,6 +67,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             viewModelScope.launch {
                 vacanciesInteractor.searchVacancies(
                     searchText,
+                    filter,
                     currentPage,
                     PER_PAGE_SIZE
                 )
@@ -91,7 +101,12 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             errorType != null -> {
                 if (errorType == ErrorType.NoConnection) {
                     if (isNextPageLoading) {
-                        renderState(SearchState.Content(vacanciesList, null, isFiltered))
+                        renderState(
+                            SearchState.Content(
+                                vacanciesList, null,
+                                // isFiltered
+                            )
+                        )
                     } else {
                         renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
@@ -113,7 +128,12 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             }
 
             else -> {
-                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies, isFiltered))
+                renderState(
+                    SearchState.Content(
+                        vacanciesList.distinct(), countOfVacancies,
+                        // isFiltered
+                    )
+                )
                 isNextPageLoading = false
             }
         }
@@ -139,6 +159,14 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             return
         } else {
             searchVacancies(latestSearchText!!)
+        }
+    }
+
+    fun checkFilter() {
+        latestSearchText?.let { searchText ->
+            if (filter != filterInteractor.currentFilter()) {
+                searchRequest(searchText, currentPage)
+            }
         }
     }
 
