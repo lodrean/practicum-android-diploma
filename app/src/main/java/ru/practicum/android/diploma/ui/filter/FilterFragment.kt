@@ -245,7 +245,6 @@ class FilterFragment : Fragment() {
         return !s.isNullOrEmpty()
     }
 
-
     private fun onFocusChangeListener(s: CharSequence?) {
         binding.salaryValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
