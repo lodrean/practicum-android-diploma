@@ -125,6 +125,7 @@ class IndustryFragment : Fragment() {
 
         binding.selectButton.setOnClickListener {
             industryViewModel.setIndustryToFilter(industryAdapter.getSelectedIndustry())
+            findNavController().popBackStack()
         }
 
     }

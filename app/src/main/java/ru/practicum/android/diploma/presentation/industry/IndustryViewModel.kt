@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.industry.IndustryState
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
     val dictionariesInteractor: DictionariesInteractor,
+    val filterInteractor: FilterInteractor,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -72,7 +74,7 @@ class IndustryViewModel(
     }
 
     fun setIndustryToFilter(industry: Industry?) {
-        Log.d("DIPLOMA_DEBUG", "Industry filter = $industry")
+        filterInteractor.setIndustry(industry)
     }
 
     companion object {
