@@ -13,10 +13,6 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
     override fun currentFilter(): Filter = currentFilter
     override fun newFilter(): Filter = newFilter
 
-    override fun setSearchText(text: String) {
-        newFilter = newFilter.copy(text = text)
-    }
-
     override fun setArea(area: Area?) {
         newFilter = newFilter.copy(area = area)
     }

@@ -7,7 +7,6 @@ import ru.practicum.android.diploma.domain.models.Industry
 interface FilterInteractor {
     fun currentFilter(): Filter
     fun newFilter(): Filter
-    fun setSearchText(text: String)
     fun setArea(area: Area?)
     fun setIndustry(industry: Industry?)
     fun setOnlyWithSalary(onlyWithSalary: Boolean)

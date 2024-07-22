@@ -10,7 +10,7 @@ class FilterRepostoryImpl(val context: Context) : FilterRepository {
     override fun loadFilter(): Filter = Gson().fromJson(
         sharedPreferences.getString(APP_PREFERENCES, ""),
         Filter::class.java
-    ) ?: Filter("")
+    ) ?: Filter()
 
     override fun saveFilter(filter: Filter) {
         sharedPreferences
