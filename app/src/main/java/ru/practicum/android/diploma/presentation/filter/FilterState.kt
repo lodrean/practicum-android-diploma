@@ -1,13 +1,13 @@
 package ru.practicum.android.diploma.presentation.filter
 
+import ru.practicum.android.diploma.domain.models.Filter
+
 sealed interface FilterState {
     data object Default : FilterState
 
     data class Filtered(
-        val area: String,
-        val industry: String,
-        val salary: String,
-        val isSalaryRequired: Boolean
+        val filter: Filter
     ) : FilterState
+
     data object readyToSave : FilterState
 }

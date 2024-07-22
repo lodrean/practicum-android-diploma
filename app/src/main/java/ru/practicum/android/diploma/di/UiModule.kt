@@ -29,6 +29,6 @@ val uiModule = module {
         FavoritesViewModel(get())
     }
     viewModel<FilterViewModel> {
-        FilterViewModel(get())
+        FilterViewModel(get(), get())
     }
 }

@@ -21,6 +21,10 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
         newFilter = newFilter.copy(industry = industry)
     }
 
+    override fun setSalary(salary: String?) {
+        newFilter = newFilter.copy(salary = salary)
+    }
+
     override fun setOnlyWithSalary(onlyWithSalary: Boolean) {
         newFilter = newFilter.copy(onlyWithSalary = onlyWithSalary)
     }

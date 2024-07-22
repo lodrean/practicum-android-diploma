@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 
@@ -37,9 +39,21 @@ class FilterFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+
         binding.topAppBar.setNavigationOnClickListener {
+            viewModel.resetTheChanges()
             findNavController().popBackStack()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.resetTheChanges()
+                    findNavController().popBackStack()
+                }
+            }
+        )
         binding.workPlaceValue.setOnClickListener {
             findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
         }
@@ -73,6 +87,7 @@ class FilterFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 onFocusChangeListener(s)
+                viewModel.setSalary(s.toString())
             }
         }
 
@@ -80,15 +95,12 @@ class FilterFragment : Fragment() {
         binding.salaryFrame.setEndIconOnClickListener {
             binding.salaryValue.setText(getString(R.string.empty_string))
             binding.salaryFrame.endIconDrawable = null
-
+            viewModel.clearSalary()
             it.hideKeyboard()
         }
         binding.resetButton.setOnClickListener {
-            binding.salaryValue.text = null
-            binding.salaryFrame.endIconDrawable = null
             viewModel.clearFilter()
             binding.salaryFrame.defaultHintTextColor = emptyHintColor
-            /*debounceEmptyColor("")*/
         }
 
         binding.salaryIsRequiredCheck.setOnClickListener {
@@ -107,6 +119,7 @@ class FilterFragment : Fragment() {
                 binding.salaryValue.text.toString(),
                 checkSalaryRequired()
             )
+            viewModel.saveNewFilter()
             findNavController().popBackStack()
         }
     }
@@ -118,7 +131,7 @@ class FilterFragment : Fragment() {
     private fun render(state: FilterState) {
         when (state) {
             FilterState.Default -> defaultScreen()
-            is FilterState.Filtered -> filterScreen(state.area, state.industry, state.salary, state.isSalaryRequired)
+            is FilterState.Filtered -> filterScreen(state.filter)
             FilterState.readyToSave -> showSaveButton()
         }
     }
@@ -128,16 +141,16 @@ class FilterFragment : Fragment() {
         binding.saveButton.isVisible = true
     }
 
-    private fun filterScreen(area: String, industry: String, salary: String, salaryRequired: Boolean) {
-        binding.workPlaceValue.setText(area)
-        binding.industryValue.setText(industry)
-        binding.salaryValue.setText(salary)
-        binding.salaryIsRequiredCheck.isChecked = salaryRequired
+    private fun filterScreen(filter: Filter) {
+        binding.workPlaceValue.setText(filter.area?.name)
+        binding.industryValue.setText(filter.industry?.name)
+        binding.salaryValue.setText(filter.salary)
+        binding.salaryIsRequiredCheck.isChecked = filter.onlyWithSalary
         fillWorkPlace()
         fillIndustry()
         binding.saveButton.isVisible = true
         binding.resetButton.isVisible = true
-        if (salary.isEmpty()) {
+        if (filter.salary?.isEmpty() == true) {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().first
         } else {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
@@ -257,5 +270,10 @@ class FilterFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkNewFilter()
     }
 }
