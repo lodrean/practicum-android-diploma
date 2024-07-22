@@ -13,7 +13,6 @@ import ru.practicum.android.diploma.presentation.vacancy.VacancyDetailsViewModel
 import ru.practicum.android.diploma.presentation.workplace.WorkplaceViewModel
 
 val uiModule = module {
-
     viewModel<SearchViewModel> {
         SearchViewModel(
             vacanciesInteractor = get(),
@@ -47,13 +46,16 @@ val uiModule = module {
 
     viewModel<RegionViewModel> {
         RegionViewModel(get(), get())
+    }
 
     viewModel<IndustryViewModel> {
         IndustryViewModel(
             dictionariesInteractor = get(),
+            filterInteractor = get(),
             application = get()
         )
     }
+
     viewModel<FilterViewModel> {
         FilterViewModel(get(), get())
     }
