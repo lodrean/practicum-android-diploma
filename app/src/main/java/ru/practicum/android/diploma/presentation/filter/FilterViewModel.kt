@@ -119,13 +119,16 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     fun checkSaveButton() {
         viewModelScope.launch {
-            if (area.isNullOrEmpty() && industry.isNullOrEmpty() && !onlyWithSalary && salary.isNullOrEmpty()) {
+            if (checkParameters()) {
                 showSaveButton(false)
             } else {
                 showSaveButton(true)
             }
         }
     }
+
+    private fun checkParameters() =
+        area.isNullOrEmpty() && industry.isNullOrEmpty() && !onlyWithSalary && salary.isNullOrEmpty()
 
     fun showSaveButton(showButton: Boolean) {
         renderState(FilterState.readyToSave(showButton))
