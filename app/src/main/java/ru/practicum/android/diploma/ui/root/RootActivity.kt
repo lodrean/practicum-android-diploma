@@ -70,7 +70,7 @@ class RootActivity : AppCompatActivity() {
     private fun testFilter() {
         // filterInteractor.setSearchText("Android developer")
         // filterInteractor.setArea(Area("113", "Moscow"))
-        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.filter()}")
+        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
     }
 
     private fun testApi() {

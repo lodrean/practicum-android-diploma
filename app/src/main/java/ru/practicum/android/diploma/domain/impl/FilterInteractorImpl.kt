@@ -7,27 +7,34 @@ import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 
 class FilterInteractorImpl(private val repository: FilterRepository) : FilterInteractor {
-    private var filter = repository.loadFilter()
+    private var currentFilter: Filter = repository.loadFilter()
+    private var newFilter: Filter = currentFilter
 
-    override fun filter(): Filter = filter
+    override fun currentFilter(): Filter = currentFilter
+    override fun newFilter(): Filter = newFilter
 
     override fun setSearchText(text: String) {
-        filter = filter.copy(text = text)
-        repository.saveFilter(filter)
+        newFilter = newFilter.copy(text = text)
     }
 
     override fun setArea(area: Area?) {
-        filter = filter.copy(area = area)
-        repository.saveFilter(filter)
+        newFilter = newFilter.copy(area = area)
     }
 
     override fun setIndustry(industry: Industry?) {
-        filter = filter.copy(industry = industry)
-        repository.saveFilter(filter)
+        newFilter = newFilter.copy(industry = industry)
     }
 
     override fun setOnlyWithSalary(onlyWithSalary: Boolean) {
-        filter = filter.copy(onlyWithSalary = onlyWithSalary)
-        repository.saveFilter(filter)
+        newFilter = newFilter.copy(onlyWithSalary = onlyWithSalary)
+    }
+
+    override fun apply() {
+        currentFilter = newFilter
+        repository.saveFilter(currentFilter)
+    }
+
+    override fun restore() {
+        newFilter = currentFilter
     }
 }
