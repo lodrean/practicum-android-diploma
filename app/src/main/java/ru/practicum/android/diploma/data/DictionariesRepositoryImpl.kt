@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.AreaResponse
+import ru.practicum.android.diploma.data.network.AreasByIdRequest
 import ru.practicum.android.diploma.data.network.AreasRequest
-import ru.practicum.android.diploma.data.network.CountriesRequest
-import ru.practicum.android.diploma.data.network.CountriesResponse
 import ru.practicum.android.diploma.data.network.IndustriesRequest
 import ru.practicum.android.diploma.data.network.IndustriesResponse
 import ru.practicum.android.diploma.data.network.Response
@@ -29,14 +28,16 @@ class DictionariesRepositoryImpl(
         return "$header : ${response.resultCode}"
     }
 
-    override fun getCountries(): Flow<Resource<List<Area>>> = flow {
-        val response = networkClient.doRequest(CountriesRequest())
+    override fun getAreas(): Flow<Resource<List<Area>>> = flow {
+        val response = networkClient.doRequest(AreasRequest())
         emit(
             when (response.resultCode) {
                 NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
-                    with(response as CountriesResponse) {
-                        Resource.Success(response.countries.map { it.toArea() })
+                    with(response as AreaResponse) {
+                        Resource.Success(response.area.map {
+                            it.toArea()
+                        })
                     }
                 }
 
@@ -48,14 +49,16 @@ class DictionariesRepositoryImpl(
         )
     }
 
-    override fun getRegionsByCountry(country: Area): Flow<Resource<List<Area>>> = flow {
-        val response = networkClient.doRequest(AreasRequest(country.id))
+    override fun getAreasById(areaId: String): Flow<Resource<List<Area>>> = flow {
+        val response = networkClient.doRequest(AreasByIdRequest(areaId))
         emit(
             when (response.resultCode) {
                 NetworkClient.HTTP_NO_CONNECTION -> Resource.Error(ErrorType.NoConnection)
                 NetworkClient.HTTP_SUCCESS -> {
                     with(response as AreaResponse) {
-                        Resource.Success(response.area.areas.map { it.toArea() })
+                        Resource.Success(response.area.map {
+                            it.toArea()
+                        })
                     }
                 }
 

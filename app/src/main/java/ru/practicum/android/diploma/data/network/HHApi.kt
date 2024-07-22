@@ -33,14 +33,13 @@ interface HHApi {
     @GET("/areas/countries")
     suspend fun getCountries(): ArrayList<CountryDto>
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
-    )
+    @GET("/areas")
+    suspend fun getAreas(): List<AreaDto>
+
     @GET("/areas/{areaId}")
-    suspend fun getAreas(
+    suspend fun getAreasById(
         @Path("areaId") areaId: String
-    ): AreaDto
+    ): List<AreaDto>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",

@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.network
 
-class AreasRequest
+data class AreasByIdRequest(val areaId: String)

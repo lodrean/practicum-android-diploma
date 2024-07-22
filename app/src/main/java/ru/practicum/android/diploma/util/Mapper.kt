@@ -79,12 +79,18 @@ fun IndustryDto.toIndustry() = Industry(
     name = name,
 )
 
-fun AreaDto.toArea() = Area(
+fun AreaDto.toArea(): Area = Area(
     id = id,
     name = name,
+    parentId = parentId,
+    areas = areas.map {
+        it.toArea()
+    }
 )
 
 fun CountryDto.toArea() = Area(
     id = id,
     name = name,
+    parentId = null,
+    areas = null
 )
