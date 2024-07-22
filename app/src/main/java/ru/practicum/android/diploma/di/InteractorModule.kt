@@ -36,7 +36,7 @@ val interactorModule = module {
         )
     }
 
-    factory<FilterInteractor> {
+    single<FilterInteractor> {
         FilterInteractorImpl(
             repository = get(),
         )
