@@ -87,6 +87,7 @@ class FilterFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 onFocusChangeListener(s)
                 viewModel.setSalary(s.toString())
+                viewModel.checkSaveButton()
             }
         }
 
@@ -95,10 +96,12 @@ class FilterFragment : Fragment() {
             binding.salaryValue.setText(getString(R.string.empty_string))
             binding.salaryFrame.endIconDrawable = null
             viewModel.clearSalary()
+            viewModel.checkSaveButton()
             it.hideKeyboard()
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
+
             binding.salaryFrame.defaultHintTextColor = emptyHintColor
         }
 
@@ -108,6 +111,7 @@ class FilterFragment : Fragment() {
             } else {
                 viewModel.setSalaryIsRequired(false)
             }
+            viewModel.checkSaveButton()
         }
 
         binding.saveButton.setOnClickListener {
@@ -124,13 +128,18 @@ class FilterFragment : Fragment() {
         when (state) {
             FilterState.Default -> defaultScreen()
             is FilterState.Filtered -> filterScreen(state.filter)
-            FilterState.readyToSave -> showSaveButton()
+            is FilterState.readyToSave -> showSaveButton(state.showButton)
         }
     }
 
-    private fun showSaveButton() {
-        binding.resetButton.isVisible = true
-        binding.saveButton.isVisible = true
+    private fun showSaveButton(showButton: Boolean) {
+        if (showButton) {
+            binding.resetButton.isVisible = true
+            binding.saveButton.isVisible = true
+        } else {
+            binding.resetButton.isVisible = false
+            binding.saveButton.isVisible = false
+        }
     }
 
     private fun filterScreen(filter: Filter) {
@@ -158,6 +167,7 @@ class FilterFragment : Fragment() {
                 binding.workPlaceValue.setText(getString(R.string.empty_string))
                 binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
                 binding.workPlace.defaultHintTextColor = setGrayColor()
+                viewModel.checkSaveButton()
                 binding.workPlace.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
                 }
@@ -178,6 +188,7 @@ class FilterFragment : Fragment() {
                 viewModel.clearIndustry()
                 binding.industryValue.setText(getString(R.string.empty_string))
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
+                viewModel.checkSaveButton()
                 binding.industry.defaultHintTextColor = setGrayColor()
                 binding.industry.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)

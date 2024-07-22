@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
@@ -14,6 +13,11 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     AndroidViewModel(application) {
     private var currentFilter = Filter()
     private var nextFilter = Filter()
+    private var area: String? = null
+    private var industry: String? = null
+    private var salary: String? = null
+    private var onlyWithSalary: Boolean = false
+
     private val stateLiveData = MutableLiveData<FilterState>()
     fun observeState(): LiveData<FilterState> = stateLiveData
 
@@ -21,7 +25,11 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         viewModelScope.launch {
             currentFilter = filterInteractor.currentFilter()
         }
-        fillData(currentFilter)
+        if (checkNull(currentFilter)) {
+            renderState(FilterState.Default)
+        } else {
+            fillData(currentFilter)
+        }
     }
 
     private fun renderState(state: FilterState) {
@@ -29,36 +37,41 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearFilter() {
-        viewModelScope.launch {
+        viewModelScope.launch() {
             filterInteractor.setOnlyWithSalary(false)
             filterInteractor.setIndustry(null)
             filterInteractor.setArea(null)
             filterInteractor.setSalary(null)
             filterInteractor.apply()
             currentFilter = filterInteractor.currentFilter()
-            fillData(currentFilter)
+            renderState(FilterState.Filtered(currentFilter))
+            renderState(FilterState.Default)
         }
     }
 
     fun setSalaryIsRequired(required: Boolean) {
+        onlyWithSalary = required
         viewModelScope.launch {
             filterInteractor.setOnlyWithSalary(required)
         }
     }
 
     fun setSalary(salary: String) {
+        this.salary = salary.ifEmpty { null }
         viewModelScope.launch {
             filterInteractor.setSalary(salary)
         }
     }
 
     fun clearWorkplace() {
+        area = null
         viewModelScope.launch {
             filterInteractor.setArea(null)
         }
     }
 
     fun clearIndustry() {
+        industry = null
         viewModelScope.launch {
             filterInteractor.setIndustry(null)
         }
@@ -71,6 +84,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearSalary() {
+        salary = null
         viewModelScope.launch {
             filterInteractor.setSalary(null)
         }
@@ -84,11 +98,11 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         if (currentFilter != nextFilter) {
             fillData(nextFilter)
         } else {
-            checkcurrentFilter(currentFilter)
+            checkCurrentFilter(currentFilter)
         }
     }
 
-    private fun checkcurrentFilter(filter: Filter) {
+    private fun checkCurrentFilter(filter: Filter) {
         if (checkNull(filter)) {
             renderState(FilterState.Default)
         } else {
@@ -104,18 +118,17 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun checkSaveButton() {
-        viewModelScope.launch(Dispatchers.Main) {
-            nextFilter = filterInteractor.newFilter()
-        }
-        if (checkNull(nextFilter)) {
-            renderState(FilterState.Default)
-        } else {
-            showSaveButton()
+        viewModelScope.launch {
+            if (area.isNullOrEmpty() && industry.isNullOrEmpty() && !onlyWithSalary && salary.isNullOrEmpty()) {
+                showSaveButton(false)
+            } else {
+                showSaveButton(true)
+            }
         }
     }
 
-    private fun showSaveButton() {
-        renderState(FilterState.readyToSave)
+    fun showSaveButton(showButton: Boolean) {
+        renderState(FilterState.readyToSave(showButton))
     }
 
     fun saveNewFilter() {
