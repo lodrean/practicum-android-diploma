@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.util.OnItemClickListener
 class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<VacancyViewHolder>() {
 
-    private val listData = mutableListOf<Vacancy>()
+    val listData = mutableListOf<Vacancy>()
 
     fun setData(newListData: List<Vacancy>) {
         listData.clear()
@@ -29,4 +29,5 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener) :
     override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
         holder.bind(listData[position])
     }
+
 }
