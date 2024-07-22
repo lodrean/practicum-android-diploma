@@ -146,11 +146,13 @@ class FilterFragment : Fragment() {
 
     private fun fillWorkPlace() {
         if (binding.workPlaceValue.text.toString().isNotEmpty()) {
+            binding.workPlace.defaultHintTextColor = setHintOnValueColor()
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
             binding.workPlace.setEndIconOnClickListener {
                 viewModel.clearWorkplace()
                 binding.workPlaceValue.setText(getString(R.string.empty_string))
                 binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
+                binding.workPlace.defaultHintTextColor = setGrayColor()
                 binding.workPlace.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
                 }
@@ -166,10 +168,12 @@ class FilterFragment : Fragment() {
     private fun fillIndustry() {
         if (binding.industryValue.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
+            binding.industry.defaultHintTextColor = setHintOnValueColor()
             binding.industry.setEndIconOnClickListener {
                 viewModel.clearIndustry()
                 binding.industryValue.setText(getString(R.string.empty_string))
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
+                binding.industry.defaultHintTextColor = setGrayColor()
                 binding.industry.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
                 }
@@ -216,6 +220,22 @@ class FilterFragment : Fragment() {
         _binding = null
     }
 
+    private fun setGrayColor(): ColorStateList {
+        val grayColor = ColorStateList(
+            arrayOf(intArrayOf(android.R.attr.state_enabled)),
+            intArrayOf(ContextCompat.getColor(requireContext(), R.color.gray))
+        )
+        return grayColor
+    }
+
+    private fun setHintOnValueColor(): ColorStateList {
+        val blackOrWhiteColor = ColorStateList(
+            arrayOf(intArrayOf(android.R.attr.state_enabled)),
+            intArrayOf(ContextCompat.getColor(requireContext(), R.color.text_hint_country_industry))
+        )
+        return blackOrWhiteColor
+    }
+
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
@@ -224,6 +244,7 @@ class FilterFragment : Fragment() {
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
         return !s.isNullOrEmpty()
     }
+
 
     private fun onFocusChangeListener(s: CharSequence?) {
         binding.salaryValue.setOnFocusChangeListener { _, hasFocus ->
