@@ -39,7 +39,7 @@
         app:prefixTextAppearance="@style/FontYSDisplay.Regular16">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/work_place_tv"
+            android:id="@+id/work_place_value"
 
             style="@style/AndroidDiploma.TextStyleFilter.EditText"
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         app:prefixTextAppearance="@style/FontYSDisplay.Regular16">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/industry_tv"
+            android:id="@+id/industry_value"
             style="@style/AndroidDiploma.TextStyleFilter.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         app:layout_constraintTop_toBottomOf="@id/industry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/salary_tv"
+            android:id="@+id/salary_value"
             style="@style/AndroidDiploma.SalaryInputTextStyle.EditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -103,7 +103,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/salary_is_required_CV"
+        android:id="@+id/salary_is_required_check"
         style="@style/AndroidDiploma.FilterButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_button"

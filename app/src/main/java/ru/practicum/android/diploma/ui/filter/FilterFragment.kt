@@ -12,14 +12,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
-import ru.practicum.android.diploma.util.debounce
 
 class FilterFragment : Fragment() {
 
@@ -35,16 +33,17 @@ class FilterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-        binding.workPlaceTv.setOnClickListener {
+        binding.workPlaceValue.setOnClickListener {
             findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
         }
-        binding.industryTv.setOnClickListener {
+        binding.workPlaceValue.setOnClickListener {
             findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
         binding.workPlace.setOnClickListener {
@@ -54,56 +53,45 @@ class FilterFragment : Fragment() {
             findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
 
-        val (emptyHintColor, blackHintColor, blueHintColor) = hintColorStates()
-
-        val (debounceBlackColor, debounceEmptyColor, debounceBlueColor) = hintDebouncers(
-            blackHintColor,
-            emptyHintColor,
-            blueHintColor
-        )
+        val (emptyHintColor, blueHintColor) = hintColorStates()
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.salaryTv.requestFocus()
-                if (binding.salaryTv.hasFocus() && s?.isNotEmpty() == true) {
-                    binding.salaryFrame.defaultHintTextColor = blackHintColor
-                    binding.salaryFrame.setEndIconDrawable(R.drawable.close_icon)
-                }
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 return
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                if (binding.salaryTv.hasFocus() && s?.isNotEmpty() == true) {
-                    binding.salaryFrame.defaultHintTextColor = blueHintColor
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (clearButtonVisibility(s)) {
                     binding.salaryFrame.setEndIconDrawable(R.drawable.close_icon)
-                    debounceBlackColor(s.toString())
-                } else if (s?.isEmpty() == true) {
-                    binding.salaryFrame.defaultHintTextColor = emptyHintColor
+                    binding.salaryFrame.defaultHintTextColor = blueHintColor
+                } else {
                     binding.salaryFrame.endIconDrawable = null
-                    debounceEmptyColor(s.toString())
+                    binding.salaryFrame.defaultHintTextColor = emptyHintColor
                 }
+                onFocusChangeListener(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                onFocusChangeListener(s)
             }
         }
 
-        binding.salaryTv.addTextChangedListener(textWatcher!!)
+        binding.salaryValue.addTextChangedListener(textWatcher!!)
         binding.salaryFrame.setEndIconOnClickListener {
-            binding.salaryTv.setText(getString(R.string.empty_string))
-            binding.salaryFrame.defaultHintTextColor = emptyHintColor
-            debounceEmptyColor("")
+            binding.salaryValue.setText(getString(R.string.empty_string))
+            binding.salaryFrame.endIconDrawable = null
+
             it.hideKeyboard()
         }
         binding.resetButton.setOnClickListener {
-            binding.salaryTv.text = null
+            binding.salaryValue.text = null
             binding.salaryFrame.endIconDrawable = null
             viewModel.clearFilter()
             binding.salaryFrame.defaultHintTextColor = emptyHintColor
-            debounceEmptyColor("")
+            /*debounceEmptyColor("")*/
         }
 
-        binding.salaryIsRequiredCV.setOnClickListener {
+        binding.salaryIsRequiredCheck.setOnClickListener {
             if (checkSalaryRequired()) {
                 viewModel.setSalaryIsRequired(true)
                 viewModel.showSaveButton()
@@ -114,9 +102,9 @@ class FilterFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             viewModel.saveFilter(
-                binding.workPlaceTv.text.toString(),
-                binding.industryTv.text.toString(),
-                binding.salaryTv.text.toString(),
+                binding.workPlaceValue.text.toString(),
+                binding.workPlaceValue.text.toString(),
+                binding.salaryValue.text.toString(),
                 checkSalaryRequired()
             )
             findNavController().popBackStack()
@@ -124,7 +112,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun checkSalaryRequired(): Boolean {
-        return binding.salaryIsRequiredCV.isChecked
+        return binding.salaryIsRequiredCheck.isChecked
     }
 
     private fun render(state: FilterState) {
@@ -141,23 +129,28 @@ class FilterFragment : Fragment() {
     }
 
     private fun filterScreen(area: String, industry: String, salary: String, salaryRequired: Boolean) {
-        binding.workPlaceTv.setText(area)
-        binding.industryTv.setText(industry)
-        binding.salaryTv.setText(salary)
-        binding.salaryIsRequiredCV.isChecked = salaryRequired
+        binding.workPlaceValue.setText(area)
+        binding.industryValue.setText(industry)
+        binding.salaryValue.setText(salary)
+        binding.salaryIsRequiredCheck.isChecked = salaryRequired
         fillWorkPlace()
         fillIndustry()
         binding.saveButton.isVisible = true
         binding.resetButton.isVisible = true
+        if (salary.isEmpty()) {
+            binding.salaryFrame.defaultHintTextColor = hintColorStates().first
+        } else {
+            binding.salaryFrame.defaultHintTextColor = hintColorStates().second
+        }
     }
 
     private fun fillWorkPlace() {
-        if (binding.workPlaceTv.text.toString().isNotEmpty()) {
+        if (binding.workPlaceValue.text.toString().isNotEmpty()) {
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
             binding.workPlace.defaultHintTextColor = hintColorStates().second
             binding.workPlace.setEndIconOnClickListener {
                 viewModel.clearWorkplace()
-                binding.workPlaceTv.setText(getString(R.string.empty_string))
+                binding.workPlaceValue.setText(getString(R.string.empty_string))
                 binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
                 binding.workPlace.defaultHintTextColor = hintColorStates().first
                 binding.workPlace.setEndIconOnClickListener {
@@ -174,12 +167,12 @@ class FilterFragment : Fragment() {
     }
 
     private fun fillIndustry() {
-        if (binding.industryTv.text.toString().isNotEmpty()) {
+        if (binding.industryValue.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
             binding.industry.defaultHintTextColor = hintColorStates().second
             binding.industry.setEndIconOnClickListener {
                 viewModel.clearIndustry()
-                binding.industryTv.setText(getString(R.string.empty_string))
+                binding.industryValue.setText(getString(R.string.empty_string))
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
                 binding.industry.defaultHintTextColor = hintColorStates().first
                 binding.industry.setEndIconOnClickListener {
@@ -198,33 +191,14 @@ class FilterFragment : Fragment() {
     private fun defaultScreen() {
         binding.resetButton.isVisible = false
         binding.saveButton.isVisible = false
-        binding.workPlaceTv.setText(getString(R.string.empty_string))
-        binding.industryTv.setText(getString(R.string.empty_string))
-        binding.salaryTv.setText(getString(R.string.empty_string))
-        binding.salaryIsRequiredCV.isChecked = false
+        binding.workPlaceValue.setText(getString(R.string.empty_string))
+        binding.industryValue.setText(getString(R.string.empty_string))
+        binding.salaryValue.setText(getString(R.string.empty_string))
+        binding.salaryIsRequiredCheck.isChecked = false
         binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
         binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
     }
 
-    private fun hintDebouncers(
-        blackHintColor: ColorStateList,
-        emptyHintColor: ColorStateList,
-        blueHintColor: ColorStateList
-    ): Triple<(String?) -> Unit, (String?) -> Unit, (String?) -> Unit> {
-        val debounceBlackColor = debounceHint(blackHintColor)
-        val debounceEmptyColor = debounceHint(emptyHintColor)
-        val debounceBlueColor = debounceHint(blueHintColor)
-        return Triple(debounceBlackColor, debounceEmptyColor, debounceBlueColor)
-    }
-
-    private fun debounceHint(emptyHintColor: ColorStateList) = debounce<String?>(
-        SALARY_DEBOUNCE_DELAY,
-        viewLifecycleOwner.lifecycleScope,
-        true
-    ) { s ->
-        binding.salaryFrame.defaultHintTextColor = emptyHintColor
-
-    }
 
     private fun hintColorStates(): Triple<ColorStateList, ColorStateList, ColorStateList> {
         val emptyHintColor = ColorStateList(
@@ -254,13 +228,21 @@ class FilterFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    companion object {
-        const val SALARY_DEBOUNCE_DELAY = 300L
+    private fun clearButtonVisibility(s: CharSequence?): Boolean {
+        return !s.isNullOrEmpty()
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.salaryFrame.defaultHintTextColor = hintColorStates().first
+    private fun onFocusChangeListener(s: CharSequence?) {
+        binding.salaryValue.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.salaryFrame.defaultHintTextColor = hintColorStates().third
+            } else {
+                if (s?.isEmpty() == true) {
+                    binding.salaryFrame.defaultHintTextColor = hintColorStates().first
+                } else {
+                    binding.salaryFrame.defaultHintTextColor = hintColorStates().second
+                }
+            }
+        }
     }
 }
-
