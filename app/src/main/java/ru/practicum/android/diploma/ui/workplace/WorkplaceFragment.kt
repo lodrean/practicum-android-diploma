@@ -27,7 +27,6 @@ class WorkplaceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         workplaceViewModel.loadFilter()
 
         binding.topAppBar.setNavigationOnClickListener {

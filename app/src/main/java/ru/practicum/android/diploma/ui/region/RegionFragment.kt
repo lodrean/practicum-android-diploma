@@ -29,7 +29,7 @@ class RegionFragment : Fragment() {
 
     private val viewModel by viewModel<RegionViewModel>()
 
-    private val parent = (parentFragment as WorkplaceFragment)
+    private val parent = parentFragment as WorkplaceFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRegionBinding.inflate(inflater, container, false)
@@ -58,7 +58,9 @@ class RegionFragment : Fragment() {
         }
 
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                return
+            }
 
             override fun onTextChanged(searchQuery: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 when (val areaFilterState = parent.workplaceViewModel.getWorkplaceStateLiveData().value) {

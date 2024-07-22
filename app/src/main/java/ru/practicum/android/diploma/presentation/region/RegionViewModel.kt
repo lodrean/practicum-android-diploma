@@ -19,7 +19,6 @@ class RegionViewModel(
     private val filteredList: MutableList<Area> = ArrayList()
 
     fun loadRegionsList(countryId: String?) {
-
         if (countryId != null) {
             viewModelScope.launch {
                 val listOfRegions = mutableListOf<Area>()
@@ -66,7 +65,6 @@ class RegionViewModel(
         if (searchQuery.isNullOrEmpty()) {
             loadRegionsList(countryId)
         } else {
-
             val originalList = (regionLiveData.value as RegionState.Content).regionsList
 
             for (item in originalList) {

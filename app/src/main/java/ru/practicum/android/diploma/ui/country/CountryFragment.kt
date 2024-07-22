@@ -24,7 +24,7 @@ class CountryFragment : Fragment() {
 
     private val viewModel by viewModel<CountryViewModel>()
 
-    private val parent = (parentFragment as WorkplaceFragment)
+    private val parent = parentFragment as WorkplaceFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCountryBinding.inflate(inflater, container, false)
