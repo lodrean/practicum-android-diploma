@@ -53,7 +53,7 @@ class FilterFragment : Fragment() {
             findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
 
-        val (emptyHintColor, blueHintColor) = hintColorStates()
+        val (emptyHintColor, blackHintColor, blueHintColor) = hintColorStates()
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -147,19 +147,16 @@ class FilterFragment : Fragment() {
     private fun fillWorkPlace() {
         if (binding.workPlaceValue.text.toString().isNotEmpty()) {
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
-            binding.workPlace.defaultHintTextColor = hintColorStates().second
             binding.workPlace.setEndIconOnClickListener {
                 viewModel.clearWorkplace()
                 binding.workPlaceValue.setText(getString(R.string.empty_string))
                 binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
-                binding.workPlace.defaultHintTextColor = hintColorStates().first
                 binding.workPlace.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
                 }
             }
         } else {
             binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
-            binding.workPlace.defaultHintTextColor = hintColorStates().first
             binding.workPlace.setEndIconOnClickListener {
                 findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
             }
@@ -169,19 +166,16 @@ class FilterFragment : Fragment() {
     private fun fillIndustry() {
         if (binding.industryValue.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
-            binding.industry.defaultHintTextColor = hintColorStates().second
             binding.industry.setEndIconOnClickListener {
                 viewModel.clearIndustry()
                 binding.industryValue.setText(getString(R.string.empty_string))
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
-                binding.industry.defaultHintTextColor = hintColorStates().first
                 binding.industry.setEndIconOnClickListener {
                     findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
                 }
             }
         } else {
             binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
-            binding.industry.defaultHintTextColor = hintColorStates().first
             binding.industry.setEndIconOnClickListener {
                 findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
             }
