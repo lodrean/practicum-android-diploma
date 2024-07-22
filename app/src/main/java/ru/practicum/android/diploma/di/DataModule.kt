@@ -6,6 +6,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.practicum.android.diploma.data.FilterRepository
+import ru.practicum.android.diploma.data.FilterRepostoryImpl
 import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.network.HHApi
@@ -41,5 +43,11 @@ val dataModule = module {
 
     single {
         ExternalNavigator(get())
+    }
+
+    single<FilterRepository> {
+        FilterRepostoryImpl(
+            context = get(),
+        )
     }
 }

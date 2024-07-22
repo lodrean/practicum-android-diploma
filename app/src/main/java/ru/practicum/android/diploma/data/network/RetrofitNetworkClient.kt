@@ -94,6 +94,12 @@ class RetrofitNetworkClient(
         if (perPage > 0) {
             map["per_page"] = perPage.toString()
         }
+
+        filter.area?.let { map["area"] = it.id }
+        filter.industry?.let { map["industry"] = it.id }
+        filter.salary?.let { map["salary"] = it.toString() }
+        map["only_with_salary"] = filter.onlyWithSalary.toString()
+
         return map
     }
 

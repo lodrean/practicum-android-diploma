@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.network.VacancyRequest
 import ru.practicum.android.diploma.data.network.VacancyResponse
 import ru.practicum.android.diploma.domain.api.VacanciesRepository
 import ru.practicum.android.diploma.domain.api.VacanciesSearchResult
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
@@ -27,12 +28,14 @@ class VacanciesRepositoryImpl(
 
     override fun searchVacancies(
         expression: String,
+        filter: Filter,
         page: Int,
         perPage: Int,
     ): Flow<Resource<VacanciesSearchResult>> = flow {
         val response = networkClient.doRequest(
             VacanciesSearchRequest(
                 text = expression,
+                filter = filter,
                 page = page,
                 perPage = perPage,
             )

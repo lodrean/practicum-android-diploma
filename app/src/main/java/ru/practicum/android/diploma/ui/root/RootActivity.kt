@@ -9,12 +9,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.ui.industry.IndustryFragment
+import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 
@@ -23,11 +27,15 @@ class RootActivity : AppCompatActivity() {
     private var _binding: ActivityRootBinding? = null
     private val binding
         get() = _binding!!
+    private val filterInteractor: FilterInteractor by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Пример использования фильтра
+        testFilter()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
@@ -64,6 +72,20 @@ class RootActivity : AppCompatActivity() {
     private fun changeBottomNavigationVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.isVisible = isVisible
         binding.separator.isVisible = isVisible
+    }
+
+    private fun testFilter() {
+        val emptyFilter = Filter()
+        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter == Filter()}")
+        val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
+        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter == Filter()}")
+
+        filterInteractor.setArea(Area("2", "Питер"))
+        // filterInteractor.setSalary(200000)
+        filterInteractor.setOnlyWithSalary(true)
+        filterInteractor.setIndustry(Industry("7", "IT"))
+        filterInteractor.apply()
+        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
     }
 
     private fun testApi() {
