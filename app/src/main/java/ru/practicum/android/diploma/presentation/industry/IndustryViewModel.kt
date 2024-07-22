@@ -19,7 +19,7 @@ class IndustryViewModel(
 
     private val stateLiveData = MutableLiveData<IndustryState>()
     private var latestSearchText: String? = null
-    private lateinit var industriesList: List<Industry>
+    private var industriesList = listOf<Industry>()
     fun observeState(): LiveData<IndustryState> = stateLiveData
 
     init {
@@ -31,7 +31,7 @@ class IndustryViewModel(
                 }
                 if (it.data != null) {
                     industriesList = it.data
-                    stateLiveData.postValue(IndustryState.Content(industriesList))
+                    stateLiveData.postValue(IndustryState.Content(it.data))
                 }
             }
         }
