@@ -120,7 +120,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     private fun checkParameters(): Boolean {
         nextFilter = filterInteractor.newFilter()
-        return nextFilter.area == null && nextFilter.industry == null && !nextFilter.onlyWithSalary && nextFilter.salary == null
+        return checkNull(nextFilter)
     }
 
 
