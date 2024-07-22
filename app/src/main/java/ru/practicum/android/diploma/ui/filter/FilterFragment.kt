@@ -82,7 +82,6 @@ class FilterFragment : Fragment() {
                     binding.salaryFrame.endIconDrawable = null
                     binding.salaryFrame.defaultHintTextColor = emptyHintColor
                 }
-                onFocusChangeListener(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -106,7 +105,6 @@ class FilterFragment : Fragment() {
         binding.salaryIsRequiredCheck.setOnClickListener {
             if (checkSalaryRequired()) {
                 viewModel.setSalaryIsRequired(true)
-                viewModel.showSaveButton()
             } else {
                 viewModel.setSalaryIsRequired(false)
             }

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
@@ -83,15 +84,37 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         if (currentFilter != nextFilter) {
             fillData(nextFilter)
         } else {
-            fillData(currentFilter)
+            checkcurrentFilter(currentFilter)
         }
     }
+
+    private fun checkcurrentFilter(filter: Filter) {
+        if (checkNull(filter)) {
+            renderState(FilterState.Default)
+        } else {
+            renderState(FilterState.Filtered(filter))
+        }
+    }
+
+    private fun checkNull(filter: Filter) =
+        filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
 
     private fun fillData(filter: Filter) {
         renderState(FilterState.Filtered(filter))
     }
 
-    fun showSaveButton() {
+    fun checkSaveButton() {
+        viewModelScope.launch(Dispatchers.Main) {
+           nextFilter = filterInteractor.newFilter()
+        }
+        if (checkNull(nextFilter)) {
+            renderState(FilterState.Default)
+        } else {
+            showSaveButton()
+        }
+    }
+
+    private fun showSaveButton() {
         renderState(FilterState.readyToSave)
     }
 
@@ -100,5 +123,4 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
             filterInteractor.apply()
         }
     }
-
 }
