@@ -24,4 +24,6 @@
     <dimen name="progress_bar">36dp</dimen>
     <dimen name="progress_item_height">80dp</dimen>
 
+    <dimen name="area_item_height">60dp</dimen>
+
 </resources>

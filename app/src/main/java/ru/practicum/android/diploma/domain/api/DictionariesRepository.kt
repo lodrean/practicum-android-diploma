@@ -7,9 +7,9 @@ import ru.practicum.android.diploma.util.Resource
 
 interface DictionariesRepository {
 
-    fun getCountries(): Flow<Resource<List<Area>>>
+    fun getAreas(): Flow<Resource<List<Area>>>
 
-    fun getRegionsByCountry(country: Area): Flow<Resource<List<Area>>>
+    fun getAreasById(areaId: String): Flow<Resource<Area>>
 
     fun getIndustries(): Flow<Resource<List<Industry>>>
 

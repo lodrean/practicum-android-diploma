@@ -35,7 +35,7 @@ class RootActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Пример использования фильтра
-        testFilter()
+//        testFilter()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
@@ -74,19 +74,19 @@ class RootActivity : AppCompatActivity() {
         binding.separator.isVisible = isVisible
     }
 
-    private fun testFilter() {
-        val emptyFilter = Filter()
-        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter == Filter()}")
-        val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
-        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter == Filter()}")
-
-        filterInteractor.setArea(Area("2", "Питер"))
-        // filterInteractor.setSalary(200000)
-        filterInteractor.setOnlyWithSalary(true)
-        filterInteractor.setIndustry(Industry("7", "IT"))
-        filterInteractor.apply()
-        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
-    }
+//    private fun testFilter() {
+//        val emptyFilter = Filter()
+//        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter == Filter()}")
+//        val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
+//        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter == Filter()}")
+//
+//        filterInteractor.setArea(Area("2", "Питер"))
+//        // filterInteractor.setSalary(200000)
+//        filterInteractor.setOnlyWithSalary(true)
+//        filterInteractor.setIndustry(Industry("7", "IT"))
+//        filterInteractor.apply()
+//        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
+//    }
 
     private fun testApi() {
         val interactor: VacanciesInteractor = getKoin().get()
@@ -98,38 +98,38 @@ class RootActivity : AppCompatActivity() {
         lifecycleScope.launch {
             var regions: List<Area> = emptyList()
 
-            dictionaryInteractor.getCountries().collect { resource ->
-                if (resource is Resource.Error) {
-                    when (resource.errorType) {
-                        ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
-                        ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
-                        else -> error(wrongTypeStr)
-                    }
-                } else {
-                    regions = resource.data ?: emptyList()
-                }
-            }
+//            dictionaryInteractor.getCountries().collect { resource ->
+//                if (resource is Resource.Error) {
+//                    when (resource.errorType) {
+//                        ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
+//                        ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
+//                        else -> error(wrongTypeStr)
+//                    }
+//                } else {
+//                    regions = resource.data ?: emptyList()
+//                }
+//            }
 
             regions.forEach { country ->
                 Log.d(debugTag, "Country: ${country.name}")
             }
 
             // 113 - Россия
-            regions.find { it.id == "113" }?.let {
-                dictionaryInteractor.getRegionsByCountry(it).collect { resource ->
-                    if (resource is Resource.Error) {
-                        when (resource.errorType) {
-                            ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
-                            ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
-                            else -> error(wrongTypeStr)
-                        }
-                    } else {
-                        resource.data?.forEach { area ->
-                            Log.d(debugTag, "Region: ${area.name}")
-                        }
-                    }
-                }
-            }
+//            regions.find { it.id == "113" }?.let {
+//                dictionaryInteractor.getRegionsByCountry(it).collect { resource ->
+//                    if (resource is Resource.Error) {
+//                        when (resource.errorType) {
+//                            ErrorType.NoConnection -> Log.d(debugTag, noConnectionStr)
+//                            ErrorType.ServerError -> Log.d(debugTag, resource.message ?: "")
+//                            else -> error(wrongTypeStr)
+//                        }
+//                    } else {
+//                        resource.data?.forEach { area ->
+//                            Log.d(debugTag, "Region: ${area.name}")
+//                        }
+//                    }
+//                }
+//            }
 
             dictionaryInteractor.getIndustries().collect { resource ->
                 if (resource is Resource.Error) {
