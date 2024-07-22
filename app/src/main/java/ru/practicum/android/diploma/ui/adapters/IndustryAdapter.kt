@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +32,8 @@ class IndustryAdapter(private val onItemClickListener: (Industry) -> Unit) :
 
         holder.binding.industryRadioButton.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-                try {
+                if (!holder.isRecyclable) {
                     notifyItemChanged(selectedPosition)
-                } catch (e: IllegalStateException) {
-                    Log.d("IndustryAdapter", "Fail notifyItemChanged %s".format(e.toString()))
                 }
                 selectedPosition = holder.adapterPosition
                 onItemClickListener(listData[selectedPosition])
