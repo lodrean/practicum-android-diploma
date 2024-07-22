@@ -9,8 +9,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
@@ -22,6 +24,7 @@ class RootActivity : AppCompatActivity() {
     private var _binding: ActivityRootBinding? = null
     private val binding
         get() = _binding!!
+    private val filterInteractor: FilterInteractor by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +58,19 @@ class RootActivity : AppCompatActivity() {
 
         // Пример использования интерактора вакансий
         // testApi()
+        testFilter()
 
     }
 
     private fun changeBottomNavigationVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.isVisible = isVisible
         binding.separator.isVisible = isVisible
+    }
+
+    private fun testFilter() {
+        // filterInteractor.setSearchText("Android developer")
+        // filterInteractor.setArea(Area("113", "Moscow"))
+        Log.d("DIPLOMA_DEBUG", "Filter: ${filterInteractor.currentFilter()}")
     }
 
     private fun testApi() {
