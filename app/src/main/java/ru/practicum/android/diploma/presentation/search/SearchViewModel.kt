@@ -183,9 +183,13 @@ class SearchViewModel(
         latestSearchText?.let { searchText ->
             if (filter != newFilter) {
                 filter = newFilter
+                currentPage = 0
+                vacanciesList.clear()
                 searchRequest(searchText, currentPage)
             }
         }
+
+
     }
 
     companion object {
