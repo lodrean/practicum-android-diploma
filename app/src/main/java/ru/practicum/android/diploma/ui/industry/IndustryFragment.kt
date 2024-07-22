@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -16,6 +15,7 @@ import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.presentation.industry.IndustryViewModel
 import ru.practicum.android.diploma.ui.adapters.IndustryAdapter
+import ru.practicum.android.diploma.util.ErrorType
 
 class IndustryFragment : Fragment() {
     private val industryViewModel by viewModel<IndustryViewModel>()
@@ -42,7 +42,7 @@ class IndustryFragment : Fragment() {
             }
 
             is IndustryState.Error -> {
-                showError(state.message)
+                showError(state.error)
             }
         }
     }
@@ -54,13 +54,11 @@ class IndustryFragment : Fragment() {
         binding.stateTextView.isVisible = false
         binding.selectButton.isVisible = false
         binding.recyclerView.post {
-            kotlin.run {
-                industryAdapter?.listData?.apply {
-                    clear()
-                    addAll(industryList)
-                }
-                industryAdapter?.notifyDataSetChanged()
+            industryAdapter?.listData?.apply {
+                clear()
+                addAll(industryList)
             }
+            industryAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -78,10 +76,25 @@ class IndustryFragment : Fragment() {
         binding.stateTextView.text = message
     }
 
-    private fun showError(errorMessage: String) {
+    private fun showError(errorType: ErrorType) {
         showImageAndTextState()
-        binding.centralImageHolder.setImageResource(R.drawable.error_image)
-        binding.stateTextView.text = errorMessage
+
+        when (errorType) {
+            ErrorType.NoConnection -> {
+                binding.stateTextView.text = getString(R.string.internet_is_not_available)
+                binding.centralImageHolder.setImageResource(R.drawable.no_internet_image)
+            }
+
+            ErrorType.ServerError -> {
+                binding.stateTextView.text = getString(R.string.server_error)
+                binding.centralImageHolder.setImageResource(R.drawable.server_error)
+            }
+
+            else -> {
+                binding.stateTextView.text = getString(R.string.favorites_error)
+                binding.centralImageHolder.setImageResource(R.drawable.favorites_empty_list_image)
+            }
+        }
     }
 
     private fun showImageAndTextState() {
@@ -118,29 +131,21 @@ class IndustryFragment : Fragment() {
         binding.recyclerView.adapter = industryAdapter
         binding.recyclerView.animation = null
 
-        binding.inputEditText.addTextChangedListener(onTextChanged = {
-                charSequence: CharSequence?,
-                i: Int,
-                i1: Int,
-                i2: Int ->
+        binding.inputEditText.addTextChangedListener(onTextChanged = { charSequence: CharSequence?,
+                                                                       i: Int,
+                                                                       i1: Int,
+                                                                       i2: Int ->
             if (charSequence?.isNotEmpty() == true) {
                 binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
                 industryViewModel.searchDebounce(changedText = charSequence.toString())
-                binding.searchFrame.setEndIconOnClickListener {
-                    binding.inputEditText.setText(getString(R.string.empty_string))
-                    industryViewModel.loadIndustries()
-                }
             } else {
                 binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
-                binding.searchFrame.clearOnEndIconChangedListeners()
             }
         })
-        binding.inputEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                industryViewModel.searchDebounce(changedText = textView.text.toString())
-                true
-            }
-            false
+
+        binding.searchFrame.setEndIconOnClickListener {
+            binding.inputEditText.setText(getString(R.string.empty_string))
+            industryViewModel.loadIndustries()
         }
 
         industryViewModel.observeState().observe(viewLifecycleOwner) {

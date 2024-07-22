@@ -19,47 +19,53 @@ class IndustryViewModel(
 
     private val stateLiveData = MutableLiveData<IndustryState>()
     private var latestSearchText: String? = null
+    private lateinit var industriesList: List<Industry>
     fun observeState(): LiveData<IndustryState> = stateLiveData
+
+    init {
+        viewModelScope.launch {
+            dictionariesInteractor.getIndustries().collect {
+                if (it.errorType != null) {
+                    industriesList = emptyList()
+                    stateLiveData.postValue(IndustryState.Error(it.errorType))
+                }
+                if (it.data != null) {
+                    industriesList = it.data
+                    stateLiveData.postValue(IndustryState.Content(industriesList))
+                }
+            }
+        }
+    }
 
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
-            trackSearchDebounce(changedText)
+            industrySearchDebounce(changedText)
         }
     }
 
-    private val trackSearchDebounce =
+    private val industrySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             searchIndustries(changedText)
         }
 
     private fun searchIndustries(searchText: String) {
         stateLiveData.postValue(IndustryState.Loading)
-        viewModelScope.launch {
-            dictionariesInteractor.getIndustries().collect {
-                if (it.message != null) {
-                    stateLiveData.postValue(IndustryState.Error(message = it.message))
-                }
-                if (it.data != null) {
-                    it.data.let { industries: List<Industry> ->
-                        val filteredIndustries = industries.filter { industry: Industry ->
-                            industry.name.contains(searchText)
-                        }
 
-                        if (filteredIndustries.isEmpty()) {
-                            stateLiveData.postValue(
-                                IndustryState.Empty(
-                                    message = getApplication<Application>().getString(
-                                        R.string.industry_not_found
-                                    ),
-                                )
-                            )
-                        } else {
-                            stateLiveData.postValue(IndustryState.Content(filteredIndustries))
-                        }
-                    }
-                }
-            }
+        val filteredIndustries = industriesList.filter { industry: Industry ->
+            industry.name.contains(searchText)
+        }
+
+        if (filteredIndustries.isEmpty()) {
+            stateLiveData.postValue(
+                IndustryState.Empty(
+                    message = getApplication<Application>().getString(
+                        R.string.industry_not_found
+                    ),
+                )
+            )
+        } else {
+            stateLiveData.postValue(IndustryState.Content(filteredIndustries))
         }
     }
 
