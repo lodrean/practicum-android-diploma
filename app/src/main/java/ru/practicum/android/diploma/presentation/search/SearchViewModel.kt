@@ -23,8 +23,6 @@ class SearchViewModel(
 ) :
     AndroidViewModel(application) {
     private val filter: Filter = filterInteractor.currentFilter()
-
-    //private var isFiltered: Boolean = false // todo
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -101,12 +99,7 @@ class SearchViewModel(
             errorType != null -> {
                 if (errorType == ErrorType.NoConnection) {
                     if (isNextPageLoading) {
-                        renderState(
-                            SearchState.Content(
-                                vacanciesList, null,
-                                // isFiltered
-                            )
-                        )
+                        renderState(SearchState.Content(vacanciesList, null))
                     } else {
                         renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
@@ -128,12 +121,7 @@ class SearchViewModel(
             }
 
             else -> {
-                renderState(
-                    SearchState.Content(
-                        vacanciesList.distinct(), countOfVacancies,
-                        // isFiltered
-                    )
-                )
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
                 isNextPageLoading = false
             }
         }

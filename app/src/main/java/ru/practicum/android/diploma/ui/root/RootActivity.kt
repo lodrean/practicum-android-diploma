@@ -73,7 +73,7 @@ class RootActivity : AppCompatActivity() {
 
     private fun testFilter() {
         filterInteractor.setArea(Area("2", "Питер"))
-        filterInteractor.setSalary(200000)
+        // filterInteractor.setSalary(200000)
         filterInteractor.setOnlyWithSalary(true)
         filterInteractor.setIndustry(Industry("7", "IT"))
         filterInteractor.apply()
