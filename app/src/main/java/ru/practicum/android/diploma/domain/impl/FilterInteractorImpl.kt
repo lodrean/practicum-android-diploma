@@ -21,7 +21,7 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
         newFilter = newFilter.copy(industry = industry)
     }
 
-    override fun setSalary(salary: Int?) {
+    override fun setSalary(salary: String?) {
         newFilter = newFilter.copy(salary = salary)
     }
 

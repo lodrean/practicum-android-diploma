@@ -7,6 +7,9 @@ sealed interface SearchState {
     data object NextPageLoading : SearchState
     data object LoadingNewExpression : SearchState
     data object Default : SearchState
+    data class IsFiltered(
+        val isFiltered: Boolean,
+    ) : SearchState
 
     data class Content(
         val vacanciesList: List<Vacancy>,

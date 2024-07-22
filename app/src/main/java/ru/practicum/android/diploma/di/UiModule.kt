@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.country.CountryViewModel
 import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 import ru.practicum.android.diploma.presentation.industry.IndustryViewModel
+import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 import ru.practicum.android.diploma.presentation.search.SearchViewModel
 import ru.practicum.android.diploma.presentation.region.RegionViewModel
 import ru.practicum.android.diploma.presentation.vacancy.VacancyDetailsViewModel
@@ -52,5 +53,8 @@ val uiModule = module {
             dictionariesInteractor = get(),
             application = get()
         )
+    }
+    viewModel<FilterViewModel> {
+        FilterViewModel(get(), get())
     }
 }

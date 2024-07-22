@@ -55,6 +55,7 @@ class SearchFragment : Fragment() {
                     findNavController().navigate(R.id.action_search_fragment_to_filter_fragment)
                     true
                 }
+
                 else -> false
             }
         }
@@ -67,6 +68,9 @@ class SearchFragment : Fragment() {
         }
         onItemClickListener = OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
+        }
+        binding.topAppBar.menu.findItem(R.id.filter).setOnMenuItemClickListener { _ ->
+            launchFilter()
         }
 
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
@@ -116,16 +120,18 @@ class SearchFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.checkFilter()
-    }
-
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_search_fragment_to_vacancy_details_fragment,
             VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = true)
         )
+    }
+
+    private fun launchFilter(): Boolean {
+        findNavController().navigate(
+            R.id.action_search_fragment_to_filter_fragment,
+        )
+        return true
     }
 
     private fun render(state: SearchState) {
@@ -137,6 +143,15 @@ class SearchFragment : Fragment() {
             is SearchState.InternetNotAvailable -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
             is SearchState.NextPageLoading -> vacancyAdapter?.showLoading(true)
+            is SearchState.IsFiltered -> showIconFilterIsOn(state.isFiltered)
+        }
+    }
+
+    private fun showIconFilterIsOn(filtered: Boolean) {
+        if (filtered) {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_on_icon)
+        } else {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_off_icon)
         }
     }
 
@@ -214,6 +229,11 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilter()
     }
 
     companion object {
