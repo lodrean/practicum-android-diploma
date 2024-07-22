@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.ui.industry.IndustryFragment
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.util.ErrorType
@@ -68,6 +69,7 @@ class RootActivity : AppCompatActivity() {
         // Пример использования интерактора вакансий
         // testApi()
 
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, IndustryFragment()).commit()
 
     }
 
