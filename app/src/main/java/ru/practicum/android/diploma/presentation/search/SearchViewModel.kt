@@ -186,9 +186,10 @@ class SearchViewModel(
                 currentPage = 0
                 vacanciesList.clear()
                 searchRequest(searchText, currentPage)
+            } else {
+                searchRequest(searchText, currentPage)
             }
         }
-
     }
 
     companion object {
