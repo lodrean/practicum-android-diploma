@@ -82,12 +82,13 @@ class FilterFragment : Fragment() {
                     binding.salaryFrame.endIconDrawable = null
                     binding.salaryFrame.defaultHintTextColor = emptyHintColor
                 }
+                viewModel.checkSaveButton()
             }
 
             override fun afterTextChanged(s: Editable?) {
                 onFocusChangeListener(s)
                 viewModel.setSalary(s.toString())
-                viewModel.checkSaveButton()
+
             }
         }
 
@@ -101,7 +102,6 @@ class FilterFragment : Fragment() {
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
-
             binding.salaryFrame.defaultHintTextColor = emptyHintColor
         }
 

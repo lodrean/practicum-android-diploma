@@ -33,14 +33,13 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearFilter() {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             filterInteractor.setOnlyWithSalary(false)
             filterInteractor.setIndustry(null)
             filterInteractor.setArea(null)
             filterInteractor.setSalary(null)
             filterInteractor.apply()
             currentFilter = filterInteractor.currentFilter()
-            renderState(FilterState.Filtered(currentFilter))
             renderState(FilterState.Default)
         }
     }
@@ -123,8 +122,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         return checkNull(nextFilter)
     }
 
-
-    fun showSaveButton(showButton: Boolean) {
+    private fun showSaveButton(showButton: Boolean) {
         renderState(FilterState.readyToSave(showButton))
     }
 
