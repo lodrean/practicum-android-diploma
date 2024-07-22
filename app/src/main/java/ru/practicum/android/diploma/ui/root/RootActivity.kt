@@ -51,9 +51,6 @@ class RootActivity : AppCompatActivity() {
         binding.separator.isVisible = isVisible
     }
 
-// функция проверяет, находится ли точка касания внутри области видимости текстового поля.
-    // Если точка касания находится вне области видимости текстового поля,
-    // то функция снимает фокус с текстового поля и скрывает клавиатуру.
 //
 //    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
 //        if (event.action == MotionEvent.ACTION_DOWN) {
@@ -70,4 +67,5 @@ class RootActivity : AppCompatActivity() {
 //        }
 //        return super.dispatchTouchEvent(event)
 //    }
+
 }

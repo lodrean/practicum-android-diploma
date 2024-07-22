@@ -9,10 +9,10 @@ import ru.practicum.android.diploma.util.Resource
 
 class DictionariesInteractorImpl(private val repository: DictionariesRepository) : DictionariesInteractor {
 
-    override fun getCountries(): Flow<Resource<List<Area>>> = repository.getCountries()
+    override fun getAreas(): Flow<Resource<List<Area>>> = repository.getAreas()
 
-    override fun getRegionsByCountry(country: Area): Flow<Resource<List<Area>>> =
-        repository.getRegionsByCountry(country)
+    override fun getAreasById(areaId: String): Flow<Resource<Area>> =
+        repository.getAreasById(areaId)
 
     override fun getIndustries(): Flow<Resource<List<Industry>>> = repository.getIndustries()
 
