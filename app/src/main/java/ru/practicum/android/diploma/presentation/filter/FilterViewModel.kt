@@ -37,37 +37,30 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
             filterInteractor.apply()
             currentFilter = filterInteractor.currentFilter()
             renderState(FilterState.Default)
-
     }
 
     fun setSalaryIsRequired(required: Boolean) {
             filterInteractor.setOnlyWithSalary(required)
-
     }
 
     fun setSalary(salary: String) {
             filterInteractor.setSalary(salary)
-
     }
 
     fun clearWorkplace() {
             filterInteractor.setArea(null)
-
     }
 
     fun clearIndustry() {
             filterInteractor.setIndustry(null)
-
     }
 
     fun resetTheChanges() {
             filterInteractor.restore()
-
     }
 
     fun clearSalary() {
             filterInteractor.setSalary(null)
-
     }
 
     fun checkNewFilter() {
@@ -116,6 +109,5 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     fun saveNewFilter() {
             filterInteractor.apply()
-
     }
 }

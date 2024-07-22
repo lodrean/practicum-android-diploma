@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.presentation.search
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +23,7 @@ class SearchViewModel(
     application: Application
 ) :
     AndroidViewModel(application) {
-    private val filter: Filter = filterInteractor.currentFilter()
+    private var filter: Filter = Filter()
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -42,6 +43,23 @@ class SearchViewModel(
             latestSearchText = changedText
             trackSearchDebounce(changedText)
         }
+    }
+
+    init {
+        filter = filterInteractor.currentFilter()
+        if (checkFilterIsEmpty(filter)) {
+            renderState(SearchState.Default)
+        } else {
+            renderState(SearchState.IsFiltered(true))
+        }
+    }
+
+    fun checkFilterIsEmpty(filter: Filter): Boolean {
+        Log.d(
+            "search",
+            "checkFilterIsEmpty: ${filter.area}  , ${filter.industry}, ${filter.salary}, ${filter.onlyWithSalary}"
+        )
+        return filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
     }
 
     // Функция для пагинации
@@ -121,7 +139,12 @@ class SearchViewModel(
             }
 
             else -> {
-                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
+                renderState(
+                    SearchState.Content(
+                        vacanciesList.distinct(),
+                        countOfVacancies,
+                    )
+                )
                 isNextPageLoading = false
             }
         }
@@ -151,8 +174,15 @@ class SearchViewModel(
     }
 
     fun checkFilter() {
+        val newFilter = filterInteractor.currentFilter()
+        if (!checkFilterIsEmpty(newFilter)) {
+            renderState(SearchState.IsFiltered(true))
+        } else {
+            renderState(SearchState.IsFiltered(false))
+        }
         latestSearchText?.let { searchText ->
-            if (filter != filterInteractor.currentFilter()) {
+            if (filter != newFilter) {
+                filter = newFilter
                 searchRequest(searchText, currentPage)
             }
         }

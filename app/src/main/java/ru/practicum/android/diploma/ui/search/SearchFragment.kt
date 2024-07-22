@@ -55,6 +55,7 @@ class SearchFragment : Fragment() {
                     findNavController().navigate(R.id.action_search_fragment_to_filter_fragment)
                     true
                 }
+
                 else -> false
             }
         }
@@ -142,6 +143,15 @@ class SearchFragment : Fragment() {
             is SearchState.InternetNotAvailable -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
             is SearchState.NextPageLoading -> vacancyAdapter?.showLoading(true)
+            is SearchState.IsFiltered -> showIconFilterIsOn(state.isFiltered)
+        }
+    }
+
+    private fun showIconFilterIsOn(filtered: Boolean) {
+        if (filtered) {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_on_icon)
+        } else {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_off_icon)
         }
     }
 
