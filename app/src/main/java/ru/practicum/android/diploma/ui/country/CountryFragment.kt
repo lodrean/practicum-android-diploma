@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.presentation.country.CountryState
 import ru.practicum.android.diploma.presentation.country.CountryViewModel
 import ru.practicum.android.diploma.ui.adapters.AreaAdapter
-import ru.practicum.android.diploma.ui.workplace.WorkplaceFragment
 
 class CountryFragment : Fragment() {
 
@@ -23,8 +22,6 @@ class CountryFragment : Fragment() {
         get() = _binding!!
 
     private val viewModel by viewModel<CountryViewModel>()
-
-    private val parent = parentFragment as WorkplaceFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCountryBinding.inflate(inflater, container, false)
@@ -69,7 +66,7 @@ class CountryFragment : Fragment() {
         binding.errorText.isVisible = false
 
         val adapter = AreaAdapter {
-            parent.workplaceViewModel.setCountry(it)
+            viewModel.setCountry(it)
             findNavController().navigateUp()
         }
 

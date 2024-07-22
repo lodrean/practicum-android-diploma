@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.util.Resource
 
 class CountryViewModel(
+    private val filterInteractor: FilterInteractor,
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
 
@@ -33,5 +36,10 @@ class CountryViewModel(
                 }
             }
         }
+    }
+
+    fun setCountry(country: Area) {
+        filterInteractor.setArea(country)
+        filterInteractor.apply()
     }
 }

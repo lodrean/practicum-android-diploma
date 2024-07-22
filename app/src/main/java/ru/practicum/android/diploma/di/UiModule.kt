@@ -40,7 +40,7 @@ val uiModule = module {
     }
 
     viewModel<CountryViewModel> {
-        CountryViewModel(get())
+        CountryViewModel(get(), get())
     }
 
     viewModel<RegionViewModel> {
