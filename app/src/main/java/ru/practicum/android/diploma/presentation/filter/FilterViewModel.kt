@@ -4,8 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 
@@ -18,9 +16,8 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     fun observeState(): LiveData<FilterState> = stateLiveData
 
     init {
-        viewModelScope.launch {
             currentFilter = filterInteractor.currentFilter()
-        }
+
         if (checkNull(currentFilter)) {
             renderState(FilterState.Default)
         } else {
@@ -33,7 +30,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearFilter() {
-        viewModelScope.launch {
             filterInteractor.setOnlyWithSalary(false)
             filterInteractor.setIndustry(null)
             filterInteractor.setArea(null)
@@ -41,50 +37,43 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
             filterInteractor.apply()
             currentFilter = filterInteractor.currentFilter()
             renderState(FilterState.Default)
-        }
+
     }
 
     fun setSalaryIsRequired(required: Boolean) {
-        viewModelScope.launch {
             filterInteractor.setOnlyWithSalary(required)
-        }
+
     }
 
     fun setSalary(salary: String) {
-        viewModelScope.launch {
             filterInteractor.setSalary(salary)
-        }
+
     }
 
     fun clearWorkplace() {
-        viewModelScope.launch {
             filterInteractor.setArea(null)
-        }
+
     }
 
     fun clearIndustry() {
-        viewModelScope.launch {
             filterInteractor.setIndustry(null)
-        }
+
     }
 
     fun resetTheChanges() {
-        viewModelScope.launch {
             filterInteractor.restore()
-        }
+
     }
 
     fun clearSalary() {
-        viewModelScope.launch {
             filterInteractor.setSalary(null)
-        }
+
     }
 
     fun checkNewFilter() {
-        viewModelScope.launch {
             nextFilter = filterInteractor.newFilter()
             currentFilter = filterInteractor.currentFilter()
-        }
+
         if (currentFilter != nextFilter) {
             fillData(nextFilter)
         } else {
@@ -108,13 +97,12 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun checkSaveButton() {
-        viewModelScope.launch {
             if (checkParameters()) {
                 showSaveButton(false)
             } else {
                 showSaveButton(true)
             }
-        }
+
     }
 
     private fun checkParameters(): Boolean {
@@ -127,8 +115,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun saveNewFilter() {
-        viewModelScope.launch {
             filterInteractor.apply()
-        }
+
     }
 }
