@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/background_color"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:background="?attr/background_color">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/filter_title"
@@ -31,7 +29,6 @@
         style="@style/AndroidDiploma.TextStyleFilter"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_button"
-        android:clickable="true"
         android:gravity="center_vertical"
         android:hint="@string/work_place"
         app:hintTextAppearance="@style/HintTextApperiance"
@@ -44,7 +41,6 @@
             style="@style/AndroidDiploma.TextStyleFilter.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -56,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_button"
         android:background="@color/transparent"
-        android:clickable="true"
         android:gravity="center_vertical"
         android:hint="@string/industry"
         app:hintTextAppearance="@style/HintTextApperiance"
@@ -68,7 +63,6 @@
             style="@style/AndroidDiploma.TextStyleFilter.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:background="@color/transparent"
             android:text="" />
 
