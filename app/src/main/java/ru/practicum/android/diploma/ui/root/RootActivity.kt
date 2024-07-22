@@ -73,11 +73,10 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun testFilter() {
-
         val emptyFilter = Filter()
-        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter.isEmpty()}")
+        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter == Filter()}")
         val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
-        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter.isEmpty()}")
+        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter == Filter()}")
 
         filterInteractor.setArea(Area("2", "Питер"))
         // filterInteractor.setSalary(200000)
