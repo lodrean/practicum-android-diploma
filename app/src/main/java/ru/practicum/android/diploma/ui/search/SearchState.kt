@@ -11,7 +11,6 @@ sealed interface SearchState {
     data class Content(
         val vacanciesList: List<Vacancy>,
         val countOfVacancies: Int?,
-        val isFiltered: Boolean,
     ) : SearchState
 
     data class ServerError(

@@ -17,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.presentation.search.SearchViewModel
 import ru.practicum.android.diploma.ui.adapters.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
@@ -47,6 +48,17 @@ class SearchFragment : Fragment() {
         viewModel.observeShowToast().observe(viewLifecycleOwner) { toast ->
             showToast(toast)
         }
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.filter -> {
+                    findNavController().navigate(R.id.action_search_fragment_to_filter_fragment)
+                    true
+                }
+                else -> false
+            }
+        }
+
         defaultState()
         onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
@@ -105,6 +117,11 @@ class SearchFragment : Fragment() {
             binding.inputEditText.setText(getString(R.string.empty_string))
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilter()
     }
 
     private fun launchVacancyDetails(vacancy: Vacancy) {
