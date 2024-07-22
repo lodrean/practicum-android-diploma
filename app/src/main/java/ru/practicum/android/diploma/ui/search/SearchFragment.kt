@@ -119,11 +119,6 @@ class SearchFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.checkFilter()
-    }
-
     private fun launchVacancyDetails(vacancy: Vacancy) {
         findNavController().navigate(
             R.id.action_search_fragment_to_vacancy_details_fragment,
