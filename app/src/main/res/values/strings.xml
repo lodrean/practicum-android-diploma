@@ -64,10 +64,13 @@
     <string name="filter_icon">наличие фильтра</string>
     <string name="employment_schedule">%s, %s</string>
     <string name="phone">Телефон: </string>
-
     <string name="enter_region">Введите регион</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="unable_to_get_list">Не удалось получить список</string>
     <string name="choose">Выбрать</string>
+    <string name="enter_industry">Введите отрасль</string>
+    <string name="industry_not_found">Такой отрасли нет</string>
+    <string name="select">Выбрать</string>
+
 </resources>
