@@ -105,7 +105,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     fun checkSaveButton() {
         viewModelScope.launch(Dispatchers.Main) {
-           nextFilter = filterInteractor.newFilter()
+            nextFilter = filterInteractor.newFilter()
         }
         if (checkNull(nextFilter)) {
             renderState(FilterState.Default)
