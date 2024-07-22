@@ -44,7 +44,11 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun setSalary(salary: String) {
-        filterInteractor.setSalary(salary)
+        if (salary.isEmpty()) {
+            clearSalary()
+        } else {
+            filterInteractor.setSalary(salary)
+        }
     }
 
     fun clearWorkplace() {
