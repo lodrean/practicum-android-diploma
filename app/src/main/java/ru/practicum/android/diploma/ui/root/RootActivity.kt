@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
@@ -72,6 +73,12 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun testFilter() {
+
+        val emptyFilter = Filter()
+        Log.d("DIPLOMA_DEBUG", "Empty1: $emptyFilter ${emptyFilter.isEmpty()}")
+        val notEmptyFilter = emptyFilter.copy(area = Area("1", "test"))
+        Log.d("DIPLOMA_DEBUG", "Empty2: $notEmptyFilter ${notEmptyFilter.isEmpty()}")
+
         filterInteractor.setArea(Area("2", "Питер"))
         // filterInteractor.setSalary(200000)
         filterInteractor.setOnlyWithSalary(true)
