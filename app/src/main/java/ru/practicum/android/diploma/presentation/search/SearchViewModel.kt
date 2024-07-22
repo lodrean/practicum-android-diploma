@@ -189,7 +189,6 @@ class SearchViewModel(
             }
         }
 
-
     }
 
     companion object {
