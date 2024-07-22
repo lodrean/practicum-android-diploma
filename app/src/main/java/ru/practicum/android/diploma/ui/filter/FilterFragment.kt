@@ -43,7 +43,7 @@ class FilterFragment : Fragment() {
         binding.workPlaceValue.setOnClickListener {
             findNavController().navigate(R.id.action_filter_fragment_to_workplace_fragment)
         }
-        binding.workPlaceValue.setOnClickListener {
+        binding.industryValue.setOnClickListener {
             findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
         }
         binding.workPlace.setOnClickListener {
