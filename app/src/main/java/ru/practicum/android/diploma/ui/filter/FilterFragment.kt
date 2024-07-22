@@ -113,12 +113,6 @@ class FilterFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            viewModel.saveFilter(
-                binding.workPlaceValue.text.toString(),
-                binding.workPlaceValue.text.toString(),
-                binding.salaryValue.text.toString(),
-                checkSalaryRequired()
-            )
             viewModel.saveNewFilter()
             findNavController().popBackStack()
         }

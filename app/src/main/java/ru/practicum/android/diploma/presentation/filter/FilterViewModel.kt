@@ -13,11 +13,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     AndroidViewModel(application) {
     private var currentFilter = Filter()
     private var nextFilter = Filter()
-    private var workPlace: String? = null
-    private var area: String? = null
-    private var industry: String? = null
-    private var salary: String? = null
-    private var salaryIsRequired = true
     private val stateLiveData = MutableLiveData<FilterState>()
     fun observeState(): LiveData<FilterState> = stateLiveData
 
@@ -45,7 +40,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun setSalaryIsRequired(required: Boolean) {
-        salaryIsRequired = required
         viewModelScope.launch {
             filterInteractor.setOnlyWithSalary(required)
         }
@@ -55,30 +49,15 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         viewModelScope.launch {
             filterInteractor.setSalary(salary)
         }
-        this.salary = salary
-    }
-
-    fun saveFilter(
-        workPlace: String,
-        industry: String,
-        salary: String,
-        checkSalaryRequired: Boolean
-    ) {
-        this.workPlace = workPlace
-        this.industry = industry
-        this.salary = salary
-        this.salaryIsRequired = checkSalaryRequired
     }
 
     fun clearWorkplace() {
-        area = ""
         viewModelScope.launch {
             filterInteractor.setArea(null)
         }
     }
 
     fun clearIndustry() {
-        industry = ""
         viewModelScope.launch {
             filterInteractor.setIndustry(null)
         }
@@ -91,7 +70,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearSalary() {
-        salary = ""
         viewModelScope.launch {
             filterInteractor.setSalary(null)
         }
@@ -100,7 +78,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     fun checkNewFilter() {
         viewModelScope.launch {
             nextFilter = filterInteractor.newFilter()
-            currentFilter =filterInteractor.currentFilter()
+            currentFilter = filterInteractor.currentFilter()
         }
         if (currentFilter != nextFilter) {
             fillData(nextFilter)
