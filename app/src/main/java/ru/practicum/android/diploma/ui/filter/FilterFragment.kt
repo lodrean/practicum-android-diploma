@@ -199,7 +199,6 @@ class FilterFragment : Fragment() {
         binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
     }
 
-
     private fun hintColorStates(): Triple<ColorStateList, ColorStateList, ColorStateList> {
         val emptyHintColor = ColorStateList(
             arrayOf(intArrayOf(android.R.attr.state_enabled)),
