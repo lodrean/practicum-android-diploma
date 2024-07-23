@@ -69,6 +69,7 @@
         <item name="endIconDrawable">@drawable/arrow_forward</item>
         <item name="endIconTint">?attr/colorOnPrimary</item>
         <item name="endIconMode">custom</item>
+        <item name="android:textColorHint">@color/gray</item>
         <item name="prefixTextColor">@color/gray</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@color/transparent</item>
