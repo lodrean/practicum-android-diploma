@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.NetworkClient
+import java.util.concurrent.TimeoutException
 
 class RetrofitNetworkClient(
     private val context: Context,
@@ -36,6 +37,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
@@ -47,6 +50,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
@@ -58,6 +63,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
@@ -69,6 +76,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
@@ -80,6 +89,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
@@ -91,6 +102,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (e: TimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
             }
         }
     }
