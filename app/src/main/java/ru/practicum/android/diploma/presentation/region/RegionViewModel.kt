@@ -140,36 +140,34 @@ class RegionViewModel(
     }
 
     fun defineCurrentFilterState() {
+        val filterCountry = filterInteractor.currentFilter().country
         val filterArea = filterInteractor.currentFilter().area
 
-        if (filterArea == null) {
+        if (filterCountry == null) {
             filterState.postValue(WorkplaceState.NothingIsPicked)
         } else {
-            if (filterArea.parentId.isNullOrEmpty()) {
-                filterState.postValue(WorkplaceState.CountryIsPicked(filterArea))
+            if (filterArea?.parentId.isNullOrEmpty()) {
+                filterState.postValue(WorkplaceState.CountryIsPicked(filterCountry))
             } else {
-                viewModelScope.launch {
-                    val country = loadCountryByRegion(filterArea)
-                    filterState.postValue(WorkplaceState.CountryAndRegionIsPicked(country, filterArea))
-                }
+                filterState.postValue(
+                    WorkplaceState.CountryAndRegionIsPicked(filterCountry, filterArea!!)
+                )
             }
         }
-    }
-
-    private suspend fun loadCountryByRegion(region: Area): Area {
-        var newArea: Area = region
-
-        while (!newArea.parentId.isNullOrEmpty()) {
-            dictionariesInteractor.getAreasById(newArea.parentId!!).collect {
-                newArea = (it as Resource.Success).data!!
-            }
-        }
-
-        return newArea
     }
 
     fun setCountryAndRegion(region: Area) {
-        filterInteractor.setArea(region)
-        filterInteractor.apply()
+        if (region.parentId.isNullOrEmpty()) {
+            filterInteractor.setCountry(region)
+            filterInteractor.setArea(region)
+            filterInteractor.apply()
+        } else if (filterInteractor.currentFilter().country != null) {
+            filterInteractor.setArea(region)
+            filterInteractor.apply()
+        } else {
+            filterInteractor.setCountry(null)
+            filterInteractor.setArea(region)
+            filterInteractor.apply()
+        }
     }
 }

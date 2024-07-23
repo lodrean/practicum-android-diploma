@@ -41,10 +41,6 @@ class WorkplaceFragment : Fragment() {
             findNavController().navigate(R.id.action_workplace_fragment_to_region_fragment)
         }
 
-        binding.actionIconCountry.setOnClickListener {
-            workplaceViewModel.deleteCountry()
-        }
-
         binding.actionIconRegion.setOnClickListener {
             workplaceViewModel.deleteRegion()
         }
@@ -87,7 +83,10 @@ class WorkplaceFragment : Fragment() {
         binding.countryTitle.isVisible = true
 
         binding.actionIconCountry.setImageResource(R.drawable.close_icon)
-        binding.actionIconCountry.isEnabled = true
+
+        binding.actionIconCountry.setOnClickListener {
+            workplaceViewModel.deleteCountry()
+        }
 
         binding.countryName.text = country
     }
@@ -98,7 +97,10 @@ class WorkplaceFragment : Fragment() {
         binding.countryTitle.isVisible = false
 
         binding.actionIconCountry.setImageResource(R.drawable.arrow_forward)
-        binding.actionIconCountry.isEnabled = false
+
+        binding.actionIconCountry.setOnClickListener {
+            findNavController().navigate(R.id.action_workplace_fragment_to_country_fragment)
+        }
     }
 
     private fun showRegion(region: String) {
@@ -107,7 +109,10 @@ class WorkplaceFragment : Fragment() {
         binding.regionTitle.isVisible = true
 
         binding.actionIconRegion.setImageResource(R.drawable.close_icon)
-        binding.actionIconRegion.isEnabled = true
+
+        binding.actionIconRegion.setOnClickListener {
+            workplaceViewModel.deleteRegion()
+        }
 
         binding.regionName.text = region
     }
@@ -118,6 +123,9 @@ class WorkplaceFragment : Fragment() {
         binding.regionTitle.isVisible = false
 
         binding.actionIconRegion.setImageResource(R.drawable.arrow_forward)
-        binding.actionIconRegion.isEnabled = false
+
+        binding.actionIconRegion.setOnClickListener {
+            findNavController().navigate(R.id.action_workplace_fragment_to_region_fragment)
+        }
     }
 }
