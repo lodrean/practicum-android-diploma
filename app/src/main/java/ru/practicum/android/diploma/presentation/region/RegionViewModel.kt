@@ -16,7 +16,7 @@ class RegionViewModel(
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
 
-    private lateinit var originalList: List<Area>
+    private var originalList: List<Area>? = null
 
     private val regionLiveData = MutableLiveData<RegionState>()
     fun getRegionLiveData(): LiveData<RegionState> = regionLiveData
@@ -119,19 +119,23 @@ class RegionViewModel(
 
     fun filter(searchQuery: String?, countryId: String?) {
         filteredList.clear()
-        if (searchQuery.isNullOrEmpty()) {
-            loadRegionsList(countryId)
-        } else {
-            for (item in originalList) {
-                if (item.name.contains(searchQuery, true)) {
-                    filteredList.add(item)
+        if (!originalList.isNullOrEmpty()) {
+            if (searchQuery.isNullOrEmpty()) {
+                loadRegionsList(countryId)
+            } else {
+                for (item in originalList!!) {
+                    if (item.name.contains(searchQuery, true)) {
+                        filteredList.add(item)
+                    }
+                }
+                if (filteredList.isNotEmpty()) {
+                    regionLiveData.postValue(RegionState.Content(filteredList))
+                } else {
+                    regionLiveData.postValue(RegionState.NoRegion)
                 }
             }
-            if (filteredList.isNotEmpty()) {
-                regionLiveData.postValue(RegionState.Content(filteredList))
-            } else {
-                regionLiveData.postValue(RegionState.NoRegion)
-            }
+        } else {
+            regionLiveData.postValue(RegionState.Error)
         }
     }
 
