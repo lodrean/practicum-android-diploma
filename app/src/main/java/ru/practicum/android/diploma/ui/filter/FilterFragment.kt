@@ -102,7 +102,8 @@ class FilterFragment : Fragment() {
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
-            binding.salaryFrame.defaultHintTextColor = emptyHintColor
+            findNavController().popBackStack()
+            //binding.salaryFrame.defaultHintTextColor = emptyHintColor
         }
 
         binding.salaryIsRequiredCheck.setOnClickListener {

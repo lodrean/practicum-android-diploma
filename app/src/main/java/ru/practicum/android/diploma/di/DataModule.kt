@@ -45,9 +45,4 @@ val dataModule = module {
         ExternalNavigator(get())
     }
 
-    single<FilterRepository> {
-        FilterRepostoryImpl(
-            context = get(),
-        )
-    }
 }
