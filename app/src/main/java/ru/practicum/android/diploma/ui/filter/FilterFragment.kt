@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 
 class FilterFragment : Fragment() {
-    private var inputText: String? = null
+    private var inputText: String? = ""
     private var textWatcher: TextWatcher? = null
     private var _binding: FragmentFilterBinding? = null
     private val binding
@@ -80,16 +80,16 @@ class FilterFragment : Fragment() {
                     binding.salaryFrame.endIconDrawable = null
                     binding.salaryFrame.defaultHintTextColor = emptyHintColor
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
                 onFocusChangeListener(s)
                 if (s?.toString() != inputText) {
+                    inputText = s.toString()
                     binding.saveButton.isVisible = true
+                    binding.resetButton.isVisible = true
                     viewModel.setSalary(s.toString())
                 }
-
 
             }
         }
@@ -104,6 +104,7 @@ class FilterFragment : Fragment() {
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
+            inputText = ""
             binding.resetButton.isVisible = false
             binding.saveButton.isVisible = true
             //binding.salaryFrame.defaultHintTextColor = emptyHintColor
@@ -139,14 +140,16 @@ class FilterFragment : Fragment() {
     private fun filterScreen(filter: Filter) {
         binding.workPlaceValue.setText(filter.area?.name)
         binding.industryValue.setText(filter.industry?.name)
-        inputText = filter.salary
-        binding.salaryValue.setText(filter.salary)
         binding.salaryIsRequiredCheck.isChecked = filter.onlyWithSalary
         fillWorkPlace()
         fillIndustry()
-        if (filter.salary.isNullOrEmpty()) {
+        if (filter.salary.isNullOrEmpty() or (filter.salary == "")) {
+            inputText = ""
+            binding.salaryValue.setText(R.string.empty_string)
             binding.salaryFrame.defaultHintTextColor = hintColorStates().first
         } else {
+            inputText = filter.salary
+            binding.salaryValue.setText(filter.salary)
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
         }
         binding.resetButton.isVisible = true
@@ -280,6 +283,6 @@ class FilterFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkNewFilter()
+        viewModel.checkFilter()
     }
 }
