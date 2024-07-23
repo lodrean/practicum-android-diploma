@@ -133,7 +133,9 @@ class VacancyDetailsFragment : Fragment() {
                 }
             }
             contactsComment?.let {
-                binding.contactsPhoneComment.text = contactsComment
+                if (contactsComment != "null") {
+                    binding.contactsPhoneComment.text = contactsComment
+                }
             }
         }
     }
