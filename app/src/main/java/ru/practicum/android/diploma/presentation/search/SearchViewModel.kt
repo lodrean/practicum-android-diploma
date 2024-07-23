@@ -44,7 +44,6 @@ class SearchViewModel(
         }
     }
 
-
     init {
         checkFilter()
     }
