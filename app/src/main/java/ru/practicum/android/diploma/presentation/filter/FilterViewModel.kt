@@ -4,25 +4,28 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 
 class FilterViewModel(private val filterInteractor: FilterInteractor, application: Application) :
     AndroidViewModel(application) {
-    private var currentFilter = Filter()
-    private var nextFilter = Filter()
-
+    private var currentFilter = filterInteractor.currentFilter()
     private val stateLiveData = MutableLiveData<FilterState>()
     fun observeState(): LiveData<FilterState> = stateLiveData
 
     init {
         currentFilter = filterInteractor.currentFilter()
-
         if (checkNull(currentFilter)) {
             renderState(FilterState.Default)
         } else {
-            fillData(currentFilter)
+            viewModelScope.launch(Dispatchers.Main) {
+                fillData(currentFilter)
+            }
         }
+
     }
 
     private fun renderState(state: FilterState) {
@@ -35,12 +38,13 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         filterInteractor.setArea(null)
         filterInteractor.setSalary(null)
         filterInteractor.apply()
-        //currentFilter = filterInteractor.currentFilter()
-        //renderState(FilterState.Default)
+        currentFilter = filterInteractor.currentFilter()
+        renderState(FilterState.Filtered(currentFilter))
     }
 
     fun setSalaryIsRequired(required: Boolean) {
         filterInteractor.setOnlyWithSalary(required)
+        filterInteractor.apply()
     }
 
     fun setSalary(salary: String) {
@@ -48,6 +52,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
             clearSalary()
         } else {
             filterInteractor.setSalary(salary)
+            filterInteractor.apply()
         }
     }
 
@@ -59,6 +64,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     fun clearIndustry() {
         filterInteractor.setIndustry(null)
+        filterInteractor.apply()
     }
 
     fun resetTheChanges() {
@@ -67,17 +73,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
 
     fun clearSalary() {
         filterInteractor.setSalary(null)
-    }
-
-    fun checkNewFilter() {
-        nextFilter = filterInteractor.newFilter()
-        currentFilter = filterInteractor.currentFilter()
-
-        if (currentFilter != nextFilter) {
-            fillData(nextFilter)
-        } else {
-            checkCurrentFilter(currentFilter)
-        }
+        filterInteractor.apply()
     }
 
     private fun checkCurrentFilter(filter: Filter) {
@@ -95,25 +91,11 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         renderState(FilterState.Filtered(filter))
     }
 
-    fun checkSaveButton() {
-        if (checkParameters()) {
-            showSaveButton(false)
-        } else {
-            showSaveButton(true)
-        }
-
-    }
-
-    private fun checkParameters(): Boolean {
-        nextFilter = filterInteractor.newFilter()
-        return checkNull(nextFilter)
-    }
-
-    private fun showSaveButton(showButton: Boolean) {
-        renderState(FilterState.readyToSave(showButton))
-    }
-
     fun saveNewFilter() {
         filterInteractor.apply()
+    }
+
+    fun checkFilter() {
+        checkCurrentFilter(currentFilter)
     }
 }

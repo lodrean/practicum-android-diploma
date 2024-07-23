@@ -8,8 +8,9 @@ sealed interface FilterState {
     data class Filtered(
         val filter: Filter
     ) : FilterState
-
-    data class readyToSave(
-        val showButton: Boolean
-    ) : FilterState
+/*
+    data class showButtons(
+        val showSaveButton: Boolean,
+        val showResetButton: Boolean
+    ) : FilterState*/
 }
