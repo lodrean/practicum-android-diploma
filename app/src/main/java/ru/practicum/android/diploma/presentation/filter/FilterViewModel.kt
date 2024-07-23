@@ -12,9 +12,7 @@ import ru.practicum.android.diploma.domain.models.Filter
 
 class FilterViewModel(private val filterInteractor: FilterInteractor, application: Application) :
     AndroidViewModel(application) {
-    private var currentFilter = Filter()
-    private var nextFilter = Filter()
-
+    private var currentFilter = filterInteractor.currentFilter()
     private val stateLiveData = MutableLiveData<FilterState>()
     fun observeState(): LiveData<FilterState> = stateLiveData
 
@@ -41,9 +39,9 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         filterInteractor.setSalary(null)
         filterInteractor.apply()
         currentFilter = filterInteractor.currentFilter()
-viewModelScope.launch(Dispatchers.Main) {
-    renderState(FilterState.Filtered(currentFilter))
-}
+
+        renderState(FilterState.Filtered(currentFilter))
+
         /*renderState(FilterState.Filtered(currentFilter))*/
     }
 
@@ -80,17 +78,6 @@ viewModelScope.launch(Dispatchers.Main) {
         filterInteractor.apply()
     }
 
-    fun checkNewFilter() {
-        nextFilter = filterInteractor.newFilter()
-        currentFilter = filterInteractor.currentFilter()
-
-        if (currentFilter != nextFilter) {
-            fillData(nextFilter)
-        } else {
-            checkCurrentFilter(currentFilter)
-        }
-    }
-
     private fun checkCurrentFilter(filter: Filter) {
         if (checkNull(filter)) {
             renderState(FilterState.Default)
@@ -117,5 +104,9 @@ viewModelScope.launch(Dispatchers.Main) {
 
     fun saveNewFilter() {
         filterInteractor.apply()
+    }
+
+    fun checkFilter() {
+        checkCurrentFilter(currentFilter)
     }
 }
