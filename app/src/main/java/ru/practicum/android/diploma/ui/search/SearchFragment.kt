@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -15,14 +14,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.search.SearchViewModel
 import ru.practicum.android.diploma.ui.adapters.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
-import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment.Companion.VACANCY_NEED_TO_UPDATE_KEY
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
 
@@ -35,11 +32,7 @@ class SearchFragment : Fragment() {
     private val binding
         get() = _binding!!
     private var textWatcher: TextWatcher? = null
-    private val viewModel by viewModel<SearchViewModel>{
-        parametersOf(
-            requireArguments().getBoolean(SEARCH_WITH_FILTER)
-        )
-    }
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -241,14 +234,6 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        fun createArgs(searchWithFilter: Boolean): Bundle =
-            bundleOf(
-                SEARCH_WITH_FILTER to searchWithFilter
-            )
-
         const val CLICK_DEBOUNCE_DELAY = 300L
-        const val SEARCH_WITH_FILTER = "SEARCH_WITH_FILTER"
     }
-
-
 }

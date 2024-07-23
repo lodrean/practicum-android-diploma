@@ -14,9 +14,8 @@ import ru.practicum.android.diploma.presentation.workplace.WorkplaceViewModel
 
 val uiModule = module {
 
-    viewModel<SearchViewModel> {(searchWithFilter: Boolean) ->
+    viewModel<SearchViewModel> {
         SearchViewModel(
-            searchWithFilter = searchWithFilter,
             vacanciesInteractor = get(),
             filterInteractor = get(),
             application = get(),

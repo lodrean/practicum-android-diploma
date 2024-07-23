@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val searchWithFilter: Boolean,
     private val vacanciesInteractor: VacanciesInteractor,
     private val filterInteractor: FilterInteractor,
     application: Application
@@ -42,13 +41,6 @@ class SearchViewModel(
         if (latestSearchText != changedText) {
             latestSearchText = changedText
             vacancySearchDebounce(changedText)
-        }
-    }
-
-    init {
-        if (searchWithFilter) {
-            currentPage= 0
-            latestSearchText?.let { searchVacancies(it) }
         }
     }
 
@@ -172,6 +164,8 @@ class SearchViewModel(
     }
 
     fun filterNotEmpty() = filter != Filter()
+
+
 
     /* fun checkFilter() {
 
