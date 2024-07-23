@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AndroidDiploma"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/size_xxl"
@@ -9,23 +10,35 @@
     android:layout_marginEnd="@dimen/size_xxl"
     android:layout_marginBottom="@dimen/size_s">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/vacancy_icon_frame"
         android:layout_width="@dimen/image_l"
         android:layout_height="@dimen/image_l"
-        android:background="@drawable/vacancy_icon_frame"
-        android:padding="@dimen/size_4xs"
+        app:cardBackgroundColor="@color/light_gray_2"
+        app:cardCornerRadius="@dimen/size_l"
+        app:cardElevation="@dimen/size_zero"
+        app:contentPadding="@dimen/size_4xs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/vacancy_icon"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/vacancy_icon_frame2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:scaleType="centerInside"
-            tools:src="@tools:sample/avatars" />
-    </LinearLayout>
+            app:cardCornerRadius="@dimen/size_l"
+            app:cardElevation="@dimen/size_zero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/vacancy_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/background_color"
+                android:scaleType="centerInside"
+                android:src="@drawable/placeholder" />
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/vacancy_title"
