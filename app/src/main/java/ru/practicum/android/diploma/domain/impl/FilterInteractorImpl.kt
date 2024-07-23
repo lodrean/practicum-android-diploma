@@ -8,37 +8,53 @@ import ru.practicum.android.diploma.domain.models.Industry
 
 class FilterInteractorImpl(private val repository: FilterRepository) : FilterInteractor {
     private var currentFilter: Filter = repository.loadFilter()
-    private var newFilter: Filter = currentFilter
+    private var appliedFilter: Filter = repository.loadAppliedFilter()
 
     override fun currentFilter(): Filter = currentFilter
-    override fun newFilter(): Filter = newFilter
+    override fun appliedFilter(): Filter = appliedFilter
 
     override fun setCountry(country: Area?) {
-        newFilter = newFilter.copy(country = country)
+        currentFilter = currentFilter.copy(country = country)
+        saveCurrentFilter()
     }
 
     override fun setArea(area: Area?) {
-        newFilter = newFilter.copy(area = area)
+        currentFilter = currentFilter.copy(area = area)
+        saveCurrentFilter()
     }
 
     override fun setIndustry(industry: Industry?) {
-        newFilter = newFilter.copy(industry = industry)
+        currentFilter = currentFilter.copy(industry = industry)
+        saveCurrentFilter()
     }
 
     override fun setSalary(salary: String?) {
-        newFilter = newFilter.copy(salary = salary)
+        currentFilter = currentFilter.copy(salary = salary)
+        saveCurrentFilter()
     }
 
     override fun setOnlyWithSalary(onlyWithSalary: Boolean) {
-        newFilter = newFilter.copy(onlyWithSalary = onlyWithSalary)
+        currentFilter = currentFilter.copy(onlyWithSalary = onlyWithSalary)
+        saveCurrentFilter()
     }
 
-    override fun apply() {
-        currentFilter = newFilter
+    private fun saveCurrentFilter() {
         repository.saveFilter(currentFilter)
     }
 
-    override fun restore() {
-        newFilter = currentFilter
+    private fun saveAppliedFilter() {
+        repository.saveAppliedFilter(appliedFilter)
+    }
+
+    override fun apply() {
+        appliedFilter = currentFilter
+        repository.saveAppliedFilter(appliedFilter)
+    }
+
+    override fun flushFilters() {
+        currentFilter = Filter()
+        appliedFilter = Filter()
+        saveCurrentFilter()
+        saveAppliedFilter()
     }
 }

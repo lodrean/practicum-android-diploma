@@ -143,8 +143,8 @@ class SearchFragment : Fragment() {
             is SearchState.InternetNotAvailable -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
             is SearchState.NextPageLoading -> vacancyAdapter?.showLoading(true)
-            is SearchState.IsFiltered -> showIconFilterIsOn(state.isFiltered)
         }
+        showIconFilterIsOn(viewModel.hasFilter())
     }
 
     private fun showIconFilterIsOn(filtered: Boolean) {
@@ -238,6 +238,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkFilter()
+        viewModel.checkFilters()
+        showIconFilterIsOn(viewModel.hasFilter())
     }
 }
