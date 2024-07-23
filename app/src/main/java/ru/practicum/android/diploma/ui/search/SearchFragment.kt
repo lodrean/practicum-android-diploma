@@ -235,4 +235,9 @@ class SearchFragment : Fragment() {
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilter()
+    }
 }

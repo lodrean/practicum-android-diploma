@@ -44,6 +44,11 @@ class SearchViewModel(
         }
     }
 
+
+    init {
+        checkFilter()
+    }
+
 //    fun checkFilterIsEmpty(filter: Filter): Boolean {
 //        Log.d(
 //            "search",
@@ -164,6 +169,15 @@ class SearchViewModel(
     }
 
     fun filterNotEmpty() = filter != Filter()
+    fun checkFilter() {
+        filter = filterInteractor.currentFilter()
+        if (filterNotEmpty()) {
+            renderState(SearchState.IsFiltered(true))
+        } else {
+            renderState(SearchState.IsFiltered(false))
+        }
+
+    }
 
     /* fun checkFilter() {
 
