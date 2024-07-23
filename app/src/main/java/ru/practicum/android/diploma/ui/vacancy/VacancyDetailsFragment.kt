@@ -123,11 +123,17 @@ class VacancyDetailsFragment : Fragment() {
         vacancy.contactsPhones?.let { contactsPhone ->
             val regex = "\\+[0-9]{11}".toRegex()
             val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
+            val contactsComment =
+                vacancy.contactsPhones.substringAfter("comment=").substringBefore(",")
+
             contactsFormattedNumber?.let {
                 binding.contactsPhoneNumber.text = contactsFormattedNumber
                 binding.contactsPhoneNumber.setOnClickListener {
                     vacancyDetailsViewModel.callPhone(contactsFormattedNumber)
                 }
+            }
+            contactsComment?.let {
+                binding.contactsPhoneComment.text = contactsComment
             }
         }
     }
