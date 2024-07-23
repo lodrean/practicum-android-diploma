@@ -222,6 +222,7 @@ class SearchFragment : Fragment() {
         }
         vacancyAdapter?.showLoading(false)
         vacancyAdapter?.setData(vacanciesList)
+        showIconFilterIsOn(viewModel.filterNotEmpty())
 
     }
 

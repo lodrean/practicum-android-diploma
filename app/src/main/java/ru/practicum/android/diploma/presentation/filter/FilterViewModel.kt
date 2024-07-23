@@ -35,8 +35,8 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         filterInteractor.setArea(null)
         filterInteractor.setSalary(null)
         filterInteractor.apply()
-        currentFilter = filterInteractor.currentFilter()
-        renderState(FilterState.Default)
+        //currentFilter = filterInteractor.currentFilter()
+        //renderState(FilterState.Default)
     }
 
     fun setSalaryIsRequired(required: Boolean) {
