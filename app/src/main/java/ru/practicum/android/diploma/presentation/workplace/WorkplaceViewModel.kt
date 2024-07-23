@@ -26,7 +26,6 @@ class WorkplaceViewModel(
             viewModelScope.launch {
                 val country = loadCountryByRegion(filterArea)
                 filterInteractor.setCountry(country)
-                filterInteractor.apply()
                 workplaceStateLiveData.postValue(
                     WorkplaceState.CountryAndRegionIsPicked(country, filterArea)
                 )
@@ -69,7 +68,6 @@ class WorkplaceViewModel(
             val country = (workplaceStateLiveData.value as WorkplaceState.CountryAndRegionIsPicked).country
             workplaceStateLiveData.postValue(WorkplaceState.CountryIsPicked(country))
             filterInteractor.setArea(country)
-            filterInteractor.apply()
         }
     }
 
@@ -80,7 +78,6 @@ class WorkplaceViewModel(
             workplaceStateLiveData.postValue(WorkplaceState.NothingIsPicked)
             filterInteractor.setCountry(null)
             filterInteractor.setArea(null)
-            filterInteractor.apply()
         }
     }
 }

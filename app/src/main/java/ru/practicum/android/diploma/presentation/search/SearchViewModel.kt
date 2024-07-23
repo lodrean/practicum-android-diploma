@@ -20,9 +20,8 @@ class SearchViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
     private val filterInteractor: FilterInteractor,
     application: Application
-) :
-    AndroidViewModel(application) {
-    private var filter: Filter = filterInteractor.currentFilter()
+) : AndroidViewModel(application) {
+    private var appliedFilter: Filter = filterInteractor.appliedFilter()
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -44,16 +43,8 @@ class SearchViewModel(
         }
     }
 
-    init {
-        checkFilter()
-    }
-
-//    fun checkFilterIsEmpty(filter: Filter): Boolean {
-//        Log.d(
-//            "search",
-//            "checkFilterIsEmpty: ${filter.area}  , ${filter.industry}, ${filter.salary}, ${filter.onlyWithSalary}"
-//        )
-//        return filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
+//    init {
+//        checkFilters()
 //    }
 
     // Функция для пагинации
@@ -77,7 +68,7 @@ class SearchViewModel(
             viewModelScope.launch {
                 vacanciesInteractor.searchVacancies(
                     searchText,
-                    filter,
+                    appliedFilter,
                     currentPage,
                     PER_PAGE_SIZE
                 )
@@ -167,36 +158,20 @@ class SearchViewModel(
         }
     }
 
-    fun filterNotEmpty() = filter != Filter()
-    fun checkFilter() {
-        filter = filterInteractor.currentFilter()
-        if (filterNotEmpty()) {
-            renderState(SearchState.IsFiltered(true))
-        } else {
-            renderState(SearchState.IsFiltered(false))
+    fun filterNotEmpty() = appliedFilter != Filter()
+    fun checkFilters() {
+        val newFilter = filterInteractor.appliedFilter()
+        if (newFilter != appliedFilter) {
+            appliedFilter = newFilter
+            currentPage = 0
+            vacanciesList.clear()
+            latestSearchText?.let { searchText ->
+                searchRequest(searchText, currentPage)
+            }
         }
-
     }
 
-    /* fun checkFilter() {
-
-         val newFilter = filterInteractor.currentFilter()
- //        if (!checkFilterIsEmpty(newFilter)) {
- //            renderState(SearchState.IsFiltered(true))
- //        } else {
- //            renderState(SearchState.IsFiltered(false))
- //        }
-
-         if (filter != newFilter) {
-             filter = newFilter
-             currentPage = 0
-             vacanciesList.clear()
-             latestSearchText?.let { searchText ->
-                 searchRequest(searchText, currentPage)
-             }
-         }
-     }*/
-
+    fun hasFilter() = filterInteractor.currentFilter() != Filter()
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L

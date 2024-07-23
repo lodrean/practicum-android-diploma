@@ -160,14 +160,11 @@ class RegionViewModel(
         if (region.parentId.isNullOrEmpty()) {
             filterInteractor.setCountry(region)
             filterInteractor.setArea(region)
-            filterInteractor.apply()
         } else if (filterInteractor.currentFilter().country != null) {
             filterInteractor.setArea(region)
-            filterInteractor.apply()
         } else {
             filterInteractor.setCountry(null)
             filterInteractor.setArea(region)
-            filterInteractor.apply()
         }
     }
 }
