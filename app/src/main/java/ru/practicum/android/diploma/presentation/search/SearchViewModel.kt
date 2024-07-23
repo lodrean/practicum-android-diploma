@@ -118,7 +118,7 @@ class SearchViewModel(
                 )
             }
             else -> {
-                renderState(SearchState.Content(vacanciesList.distinct(),countOfVacancies))
+                renderState(SearchState.Content(vacanciesList.distinct(), countOfVacancies))
                 isNextPageLoading = false
             }
         }

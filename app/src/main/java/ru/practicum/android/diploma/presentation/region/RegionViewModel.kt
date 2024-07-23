@@ -123,7 +123,6 @@ class RegionViewModel(
         if (originalList.isNullOrEmpty()) {
             regionLiveData.postValue(RegionState.Error)
         } else {
-
             if (searchQuery.isNullOrEmpty()) {
                 loadRegionsList(countryId)
             } else {
