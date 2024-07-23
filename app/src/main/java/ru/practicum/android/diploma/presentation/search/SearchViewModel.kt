@@ -43,10 +43,6 @@ class SearchViewModel(
         }
     }
 
-//    init {
-//        checkFilters()
-//    }
-
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
         if (this.currentPage == maxPage) {
@@ -114,7 +110,6 @@ class SearchViewModel(
                 }
                 isNextPageLoading = false
             }
-
             vacanciesList.isEmpty() -> {
                 renderState(
                     SearchState.Empty(
@@ -122,14 +117,8 @@ class SearchViewModel(
                     )
                 )
             }
-
             else -> {
-                renderState(
-                    SearchState.Content(
-                        vacanciesList.distinct(),
-                        countOfVacancies,
-                    )
-                )
+                renderState(SearchState.Content(vacanciesList.distinct(),countOfVacancies))
                 isNextPageLoading = false
             }
         }

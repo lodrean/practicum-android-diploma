@@ -119,23 +119,21 @@ class RegionViewModel(
 
     fun filter(searchQuery: String?, countryId: String?) {
         filteredList.clear()
-        if (!originalList.isNullOrEmpty()) {
+
+        if (originalList.isNullOrEmpty()) {
+            regionLiveData.postValue(RegionState.Error)
+        } else {
+
             if (searchQuery.isNullOrEmpty()) {
                 loadRegionsList(countryId)
             } else {
-                for (item in originalList!!) {
-                    if (item.name.contains(searchQuery, true)) {
-                        filteredList.add(item)
-                    }
-                }
+                filteredList.addAll(originalList!!.filter { it.name.contains(searchQuery, true) })
                 if (filteredList.isNotEmpty()) {
                     regionLiveData.postValue(RegionState.Content(filteredList))
                 } else {
                     regionLiveData.postValue(RegionState.NoRegion)
                 }
             }
-        } else {
-            regionLiveData.postValue(RegionState.Error)
         }
     }
 
