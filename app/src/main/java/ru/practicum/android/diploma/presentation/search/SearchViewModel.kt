@@ -165,8 +165,6 @@ class SearchViewModel(
 
     fun filterNotEmpty() = filter != Filter()
 
-
-
     /* fun checkFilter() {
 
          val newFilter = filterInteractor.currentFilter()

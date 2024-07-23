@@ -43,7 +43,6 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeState().observe(viewLifecycleOwner) {
-
             render(it)
         }
         viewModel.observeShowToast().observe(viewLifecycleOwner) { toast ->
