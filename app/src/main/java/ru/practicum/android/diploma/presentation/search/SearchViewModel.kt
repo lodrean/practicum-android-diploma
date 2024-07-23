@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
+    private val searchWithFilter: Boolean,
     private val vacanciesInteractor: VacanciesInteractor,
     private val filterInteractor: FilterInteractor,
     application: Application
@@ -28,7 +29,7 @@ class SearchViewModel(
     private var maxPage: Int? = null
     private var latestSearchText: String? = null
     private var vacanciesList = mutableListOf<Vacancy>()
-    private val trackSearchDebounce =
+    private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             clearSearch()
             searchVacancies(changedText)
@@ -40,17 +41,15 @@ class SearchViewModel(
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
-            trackSearchDebounce(changedText)
+            vacancySearchDebounce(changedText)
         }
     }
 
     init {
-//        filter = filterInteractor.currentFilter()
-//        if (checkFilterIsEmpty(filter)) {
-//            renderState(SearchState.Default)
-//        } else {
-//            renderState(SearchState.IsFiltered(true))
-//        }
+        if (searchWithFilter) {
+            currentPage= 0
+            latestSearchText?.let { searchVacancies(it) }
+        }
     }
 
 //    fun checkFilterIsEmpty(filter: Filter): Boolean {
@@ -174,24 +173,24 @@ class SearchViewModel(
 
     fun filterNotEmpty() = filter != Filter()
 
-    fun checkFilter() {
+    /* fun checkFilter() {
 
-        val newFilter = filterInteractor.currentFilter()
-//        if (!checkFilterIsEmpty(newFilter)) {
-//            renderState(SearchState.IsFiltered(true))
-//        } else {
-//            renderState(SearchState.IsFiltered(false))
-//        }
+         val newFilter = filterInteractor.currentFilter()
+ //        if (!checkFilterIsEmpty(newFilter)) {
+ //            renderState(SearchState.IsFiltered(true))
+ //        } else {
+ //            renderState(SearchState.IsFiltered(false))
+ //        }
 
-        if (filter != newFilter) {
-            filter = newFilter
-            currentPage = 0
-            vacanciesList.clear()
-            latestSearchText?.let { searchText ->
-                searchRequest(searchText, currentPage)
-            }
-        }
-    }
+         if (filter != newFilter) {
+             filter = newFilter
+             currentPage = 0
+             vacanciesList.clear()
+             latestSearchText?.let { searchText ->
+                 searchRequest(searchText, currentPage)
+             }
+         }
+     }*/
 
 
     companion object {

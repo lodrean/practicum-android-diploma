@@ -18,8 +18,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
+import ru.practicum.android.diploma.ui.search.SearchFragment
+import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 
 class FilterFragment : Fragment() {
     private var inputText: String? = ""
@@ -122,7 +125,7 @@ class FilterFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             viewModel.saveNewFilter()
-            findNavController().popBackStack()
+            launchSearchWithFilter()
         }
     }
 
@@ -190,7 +193,6 @@ class FilterFragment : Fragment() {
                 viewModel.clearIndustry()
                 binding.industryValue.setText(getString(R.string.empty_string))
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
-
                 binding.industry.defaultHintTextColor = setGrayColor()
                 binding.industry.setEndIconOnClickListener {
                     binding.saveButton.isVisible = true
@@ -284,5 +286,12 @@ class FilterFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.checkFilter()
+    }
+
+    private fun launchSearchWithFilter() {
+        findNavController().navigate(
+            R.id.action_filter_fragment_to_search_fragment,
+            SearchFragment.createArgs(true)
+        )
     }
 }

@@ -39,10 +39,7 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         filterInteractor.setSalary(null)
         filterInteractor.apply()
         currentFilter = filterInteractor.currentFilter()
-
         renderState(FilterState.Filtered(currentFilter))
-
-        /*renderState(FilterState.Filtered(currentFilter))*/
     }
 
     fun setSalaryIsRequired(required: Boolean) {
@@ -92,15 +89,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     private fun fillData(filter: Filter) {
         renderState(FilterState.Filtered(filter))
     }
-
-    /* fun showSaveButton(showSaveButton: Boolean, showResetButton: Boolean) {
-         showSaveAndResetButtons(showSaveButton = showSaveButton, showResetButton = showResetButton)
-     }*/
-
-
-    /*private fun showSaveAndResetButtons(showSaveButton: Boolean, showResetButton: Boolean) {
-        renderState(FilterState.showButtons(showSaveButton, showResetButton))
-    }*/
 
     fun saveNewFilter() {
         filterInteractor.apply()

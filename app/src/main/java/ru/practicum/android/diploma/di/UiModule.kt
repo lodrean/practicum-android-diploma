@@ -13,8 +13,10 @@ import ru.practicum.android.diploma.presentation.vacancy.VacancyDetailsViewModel
 import ru.practicum.android.diploma.presentation.workplace.WorkplaceViewModel
 
 val uiModule = module {
-    viewModel<SearchViewModel> {
+
+    viewModel<SearchViewModel> {(searchWithFilter: Boolean) ->
         SearchViewModel(
+            searchWithFilter = searchWithFilter,
             vacanciesInteractor = get(),
             filterInteractor = get(),
             application = get(),
