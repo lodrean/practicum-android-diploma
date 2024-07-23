@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable
 
 @Entity(tableName = "favorite_vacancies_table", indices = [Index("vacancy_id")])
 data class FavoriteVacancyEntity(
-    @PrimaryKey @ColumnInfo(name = "vacancy_id") val vacancyId: Int,
+    @PrimaryKey @ColumnInfo(name = "vacancy_id") val vacancyId: String,
     @ColumnInfo(name = "call_tracking_enabled") @Nullable val callTrackingEnabled: Boolean?,
     @ColumnInfo(name = "contacts_email") @Nullable val contactsEmail: String?,
     @ColumnInfo(name = "contacts_name") @Nullable val contactsName: String?,
@@ -16,6 +16,8 @@ data class FavoriteVacancyEntity(
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "employer_name") val employerName: String,
     @ColumnInfo(name = "employer_logo_path") val employerLogoPath: String,
+    @ColumnInfo(name = "employer_city") val employerCity: String,
+    @ColumnInfo(name = "employment") val employment: String,
     @ColumnInfo(name = "experience_name") val experienceName: String,
     @ColumnInfo(name = "key_skills") val keySkills: String,
     @ColumnInfo(name = "name") val name: String,

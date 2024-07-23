@@ -12,7 +12,15 @@
     <dimen name="size_xxl">16dp</dimen>
     <dimen name="size_3xl">18dp</dimen>
     <dimen name="size_4xl">20dp</dimen>
+    <dimen name="size_5xl">46dp</dimen>
 
     <dimen name="image_m">24dp</dimen>
+    <dimen name="image_4xl">32dp</dimen>
+
+    <dimen name="image_l">48dp</dimen>
+
+    <dimen name="search_height">52dp</dimen>
+    <dimen name="progress_bar">36dp</dimen>
+    <dimen name="progress_item_height">80dp</dimen>
 
 </resources>

@@ -17,4 +17,41 @@
     <string name="vacancy_title">Вакансия</string>
     <string name="favorite_title">Избранное</string>
     <string name="workplace_choose_title">Выбор места работы</string>
+
+    <string name="salary_not_specified">Зарплата не указана</string>
+    <string name="salary_range_from_to">от %1$s до %2$s %3$s</string>
+    <string name="salary_range_from">от %1$s %2$s</string>
+    <string name="salary_range_to">до %1$s %2$s</string>
+
+    <string name="vacancy_title_template">%1$s, %2$s</string>
+    <string name="enter_request">"" Введите запрос</string>
+    <string name="no_region">Такого региона нет</string>
+    <string name="no_vacancies">Таких вакансий нет</string>
+    <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
+    <string name="internet_is_not_available">Нет интернета</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="Founded">Найдено </string>
+    <string name="empty_string" />
+    <string name="server_error_message">Ошибка сервера</string>
+    <string name="check_connection_message">Нет сети, проверьте подключение</string>
+    <string name="empty_pace">" "</string>
+
+    <plurals name="count_of_vacancies">
+        <item quantity="one">%d вакансия</item>
+        <item quantity="few">%d вакансии</item>
+        <item quantity="many">%d вакансий</item>
+        <item quantity="other">%d вакансий</item>
+    </plurals>
+
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
+
+    <string name="empty_favorites_list">Список пуст</string>
+    <string name="favorites_error">Не удалось получить список вакансий</string>
+    <string name="message_email">" "</string>
+    <string name="contacts">Контакты</string>
+    <string name="mail">Почта: %s</string>
+    <string name="unknown_view_type_requested">Unknown view type requested: %1$s</string>
 </resources>

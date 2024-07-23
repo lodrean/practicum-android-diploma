@@ -11,4 +11,7 @@
     <color name="light_gray_2">#FFE6E8EB</color>
     <color name="background">#801A1B22</color>
     <color name="edit_text_light">#FFFDFDFD</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="light_gray_3">#E5E7EA</color>
 </resources>
