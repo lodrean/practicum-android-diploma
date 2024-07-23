@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
@@ -64,6 +62,10 @@ class RegionFragment : Fragment() {
 
                 RegionState.Error -> {
                     showServerError()
+                }
+
+                RegionState.NoRegion -> {
+                    showNoRegion()
                 }
             }
         }
@@ -149,5 +151,14 @@ class RegionFragment : Fragment() {
 
         binding.errorImage.setImageResource(R.drawable.error_image)
         binding.errorText.text = getString(R.string.server_error)
+    }
+
+    private fun showNoRegion() {
+        binding.regionsList.isVisible = false
+        binding.errorImage.isVisible = true
+        binding.errorText.isVisible = true
+
+        binding.errorImage.setImageResource(R.drawable.empty_list_image)
+        binding.errorText.text = getString(R.string.no_region)
     }
 }
