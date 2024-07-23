@@ -89,7 +89,7 @@ class CountryFragment : Fragment() {
         binding.errorImage.isVisible = true
         binding.errorText.isVisible = true
 
-        binding.errorImage.setImageResource(R.drawable.error_image)
-        binding.errorText.text = getString(R.string.server_error)
+        binding.errorImage.setImageResource(R.drawable.empty_areas_list)
+        binding.errorText.text = getString(R.string.unable_to_get_list)
     }
 }

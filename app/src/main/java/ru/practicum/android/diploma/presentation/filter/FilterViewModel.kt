@@ -52,7 +52,9 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun clearWorkplace() {
+        filterInteractor.setCountry(null)
         filterInteractor.setArea(null)
+        filterInteractor.apply()
     }
 
     fun clearIndustry() {

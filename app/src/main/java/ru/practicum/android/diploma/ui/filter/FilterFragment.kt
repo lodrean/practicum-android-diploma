@@ -144,7 +144,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun filterScreen(filter: Filter) {
-        binding.workPlaceValue.setText(filter.area?.name)
+        showWorkplace(filter)
         binding.industryValue.setText(filter.industry?.name)
         binding.salaryValue.setText(filter.salary)
         binding.salaryIsRequiredCheck.isChecked = filter.onlyWithSalary
@@ -156,6 +156,22 @@ class FilterFragment : Fragment() {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().first
         } else {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
+        }
+    }
+
+    private fun showWorkplace(filter: Filter) {
+        if (filter.country == null) {
+            binding.workPlaceValue.setText(getString(R.string.empty_string))
+        } else if (filter.area?.parentId.isNullOrEmpty()) {
+            binding.workPlaceValue.setText(filter.country.name)
+        } else {
+            binding.workPlaceValue.setText(
+                String.format(
+                    getString(R.string.country_and_region_template),
+                    filter.country.name,
+                    filter.area?.name
+                )
+            )
         }
     }
 
