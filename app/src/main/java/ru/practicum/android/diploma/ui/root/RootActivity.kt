@@ -50,22 +50,4 @@ class RootActivity : AppCompatActivity() {
         binding.bottomNavigationView.isVisible = isVisible
         binding.separator.isVisible = isVisible
     }
-
-//
-//    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-//        if (event.action == MotionEvent.ACTION_DOWN) {
-//            val v = currentFocus
-//            if (v is TextInputEditText) {
-//                val outRect = Rect()
-//                v.getGlobalVisibleRect(outRect)
-//                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-//                    v.clearFocus()
-//                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
-//                }
-//            }
-//        }
-//        return super.dispatchTouchEvent(event)
-//    }
-
 }
