@@ -152,7 +152,7 @@ class FilterFragment : Fragment() {
         fillIndustry()
         binding.saveButton.isVisible = true
         binding.resetButton.isVisible = true
-        if (filter.salary?.isEmpty() == true) {
+        if (filter.salary.isNullOrEmpty()) {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().first
         } else {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
