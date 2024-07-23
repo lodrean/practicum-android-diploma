@@ -150,9 +150,7 @@ class RegionViewModel(
                 filterState.postValue(WorkplaceState.CountryIsPicked(filterCountry))
             } else {
                 filterState.postValue(
-                    WorkplaceState.CountryAndRegionIsPicked(
-                        filterCountry, filterArea!!
-                    )
+                    WorkplaceState.CountryAndRegionIsPicked(filterCountry, filterArea!!)
                 )
             }
         }

@@ -28,9 +28,7 @@ class WorkplaceViewModel(
                 filterInteractor.setCountry(country)
                 filterInteractor.apply()
                 workplaceStateLiveData.postValue(
-                    WorkplaceState.CountryAndRegionIsPicked(
-                        country, filterArea
-                    )
+                    WorkplaceState.CountryAndRegionIsPicked(country, filterArea)
                 )
             }
         } else if (filterCountry == null) {
@@ -40,9 +38,7 @@ class WorkplaceViewModel(
                 workplaceStateLiveData.postValue(WorkplaceState.CountryIsPicked(filterCountry))
             } else {
                 workplaceStateLiveData.postValue(
-                    WorkplaceState.CountryAndRegionIsPicked(
-                        filterCountry, filterArea!!
-                    )
+                    WorkplaceState.CountryAndRegionIsPicked(filterCountry, filterArea!!)
                 )
             }
         }
