@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.NetworkClient
-import java.util.concurrent.TimeoutException
+import java.net.SocketTimeoutException
 
 class RetrofitNetworkClient(
     private val context: Context,
@@ -37,8 +37,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -50,21 +50,22 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
 
     private suspend fun getAreasById(request: AreasByIdRequest): Response {
+
         return withContext(Dispatchers.IO) {
             try {
                 AreasByIdResponse(hhService.getAreasById(request.areaId))
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -76,8 +77,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -89,8 +90,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -102,8 +103,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
-            } catch (e: TimeoutException) {
-                Response().apply { resultCode = NetworkClient.HTTP_SERVER_TIMEOUT_ERROR }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -122,7 +123,7 @@ class RetrofitNetworkClient(
 
         filter.area?.let { map["area"] = it.id }
         filter.industry?.let { map["industry"] = it.id }
-        filter.salary?.let { map["salary"] = it.toString() }
+        filter.salary?.let { map["salary"] = it }
         map["only_with_salary"] = filter.onlyWithSalary.toString()
 
         return map
