@@ -12,4 +12,5 @@ sealed interface RegionState {
 
     data object Empty : RegionState
 
+    data object NoRegion: RegionState
 }

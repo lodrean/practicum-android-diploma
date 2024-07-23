@@ -16,6 +16,8 @@ class RegionViewModel(
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
 
+    private lateinit var originalList: List<Area>
+
     private val regionLiveData = MutableLiveData<RegionState>()
     fun getRegionLiveData(): LiveData<RegionState> = regionLiveData
 
@@ -26,44 +28,58 @@ class RegionViewModel(
 
     fun loadRegionsList(countryId: String?) {
         if (countryId != null) {
-            viewModelScope.launch {
-                val listOfRegions = mutableListOf<Area>()
+            getRegionListByCountryId(countryId)
+        } else {
+            getRegionList()
+        }
+    }
 
-                dictionariesInteractor.getAreasById(countryId).collect {
-                    when (it) {
-                        is Resource.Success -> {
-                            if (it.data != null) {
-                                listOfRegions.addAll(collectAllRegions(it.data.areas!!))
-                                regionLiveData.postValue(RegionState.Content(listOfRegions))
-                            } else {
-                                regionLiveData.postValue(RegionState.Empty)
-                            }
-                        }
+    private fun getRegionListByCountryId(countryId: String) {
+        viewModelScope.launch {
+            val listOfRegions = mutableListOf<Area>()
 
-                        is Resource.Error -> {
-                            regionLiveData.postValue(RegionState.Error)
+            dictionariesInteractor.getAreasById(countryId).collect {
+                when (it) {
+                    is Resource.Success -> {
+                        if (it.data != null) {
+                            listOfRegions.addAll(collectAllRegions(it.data.areas!!))
+                            regionLiveData.postValue(RegionState.Content(listOfRegions))
+                            originalList = listOfRegions
+                        } else {
+                            regionLiveData.postValue(RegionState.Empty)
+                            originalList = emptyList()
                         }
+                    }
+
+                    is Resource.Error -> {
+                        regionLiveData.postValue(RegionState.Error)
+                        originalList = emptyList()
                     }
                 }
             }
-        } else {
-            viewModelScope.launch {
-                val listOfRegions = mutableListOf<Area>()
+        }
+    }
 
-                dictionariesInteractor.getAreas().collect {
-                    when (it) {
-                        is Resource.Success -> {
-                            if (it.data != null) {
-                                listOfRegions.addAll(collectAllCountries(it.data))
-                                regionLiveData.postValue(RegionState.Content(listOfRegions))
-                            } else {
-                                regionLiveData.postValue(RegionState.Empty)
-                            }
-                        }
+    private fun getRegionList() {
+        viewModelScope.launch {
+            val listOfRegions = mutableListOf<Area>()
 
-                        is Resource.Error -> {
-                            regionLiveData.postValue(RegionState.Error)
+            dictionariesInteractor.getAreas().collect {
+                when (it) {
+                    is Resource.Success -> {
+                        if (it.data != null) {
+                            listOfRegions.addAll(collectAllCountries(it.data))
+                            regionLiveData.postValue(RegionState.Content(listOfRegions))
+                            originalList = listOfRegions
+                        } else {
+                            regionLiveData.postValue(RegionState.Empty)
+                            originalList = emptyList()
                         }
+                    }
+
+                    is Resource.Error -> {
+                        regionLiveData.postValue(RegionState.Error)
+                        originalList = emptyList()
                     }
                 }
             }
@@ -75,7 +91,7 @@ class RegionViewModel(
 
         for (country in listOfCountries) {
             if (!country.areas.isNullOrEmpty()) {
-                result.addAll(country.areas)
+                result.addAll(collectAllRegions(country.areas))
             }
         }
 
@@ -106,14 +122,16 @@ class RegionViewModel(
         if (searchQuery.isNullOrEmpty()) {
             loadRegionsList(countryId)
         } else {
-            val originalList = (regionLiveData.value as RegionState.Content).regionsList
-
             for (item in originalList) {
                 if (item.name.contains(searchQuery, true)) {
                     filteredList.add(item)
                 }
             }
-            regionLiveData.postValue(RegionState.Content(filteredList))
+            if (filteredList.isNotEmpty()) {
+                regionLiveData.postValue(RegionState.Content(filteredList))
+            } else {
+                regionLiveData.postValue(RegionState.NoRegion)
+            }
         }
     }
 
