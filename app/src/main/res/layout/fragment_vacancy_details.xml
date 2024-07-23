@@ -64,6 +64,7 @@
         android:id="@+id/vacancy_details_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/blue"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -232,7 +233,6 @@
                 android:id="@+id/phone_number_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_xxl"
                 android:orientation="horizontal">
 
                 <TextView
@@ -249,6 +249,13 @@
                     android:autoLink="phone"
                     android:clickable="true" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/contacts_phone_comment"
+                style="@style/FontYSDisplay.Regular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_xxl" />
         </LinearLayout>
     </ScrollView>
 

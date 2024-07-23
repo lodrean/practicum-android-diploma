@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:buttonTint="@color/blue"
         android:layoutDirection="rtl"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
