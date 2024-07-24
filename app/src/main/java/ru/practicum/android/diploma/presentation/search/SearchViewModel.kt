@@ -45,10 +45,6 @@ class SearchViewModel(
         }
     }
 
-//    init {
-//        checkFilters()
-//    }
-
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
         if (this.currentPage == maxPage) {
