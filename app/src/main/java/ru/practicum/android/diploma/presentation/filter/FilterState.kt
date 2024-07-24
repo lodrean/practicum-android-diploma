@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.domain.models.Filter
 sealed interface FilterState {
     data object Empty : FilterState
     data class Filled(
-        val filter: Filter
+        val filter: Filter,
+        val isFilterChanged: Boolean
     ) : FilterState
 }

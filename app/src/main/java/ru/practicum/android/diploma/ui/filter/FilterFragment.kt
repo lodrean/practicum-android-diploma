@@ -149,7 +149,8 @@ class FilterFragment : Fragment() {
 
     private fun showWorkplace(filter: Filter) {
         if (filter.country == null) {
-            binding.workPlaceValue.setText(getString(R.string.empty_string))
+            binding.workPlaceValue.text = null
+            binding.workPlace.defaultHintTextColor = setGrayColor()
         } else if (filter.area?.parentId.isNullOrEmpty()) {
             binding.workPlaceValue.setText(filter.country.name)
         } else {
@@ -187,6 +188,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun fillIndustry() {
+        binding.industry.defaultHintTextColor = setGrayColor()
         if (binding.industryValue.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
             binding.industry.defaultHintTextColor = setHintOnValueColor()
