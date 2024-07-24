@@ -166,6 +166,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun fillWorkPlace() {
+        binding.workPlace.defaultHintTextColor = setGrayColor()
         if (binding.workPlaceValue.text.toString().isNotEmpty()) {
             binding.workPlace.defaultHintTextColor = setHintOnValueColor()
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
@@ -221,6 +222,8 @@ class FilterFragment : Fragment() {
         binding.salaryIsRequiredCheck.isChecked = false
         binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
         binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
+        binding.industry.defaultHintTextColor = setGrayColor()
+        binding.workPlace.defaultHintTextColor = setGrayColor()
     }
 
     private fun hintColorStates(): Triple<ColorStateList, ColorStateList, ColorStateList> {
