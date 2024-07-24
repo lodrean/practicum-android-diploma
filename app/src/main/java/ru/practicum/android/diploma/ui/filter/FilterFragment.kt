@@ -83,8 +83,10 @@ class FilterFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                viewModel.setSalary(s.toString())
-                renderConfirmButtons()
+                if( inputText != s.toString()) {
+                    viewModel.setSalary(s.toString())
+                    renderConfirmButtons()
+                }
             }
         }
 
