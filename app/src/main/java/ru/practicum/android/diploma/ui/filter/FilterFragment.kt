@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 
 class FilterFragment : Fragment() {
-    private var inputText: String? = ""
+    private var inputText: String? = null
     private var textWatcher: TextWatcher? = null
     private var _binding: FragmentFilterBinding? = null
     private val binding
@@ -83,7 +83,7 @@ class FilterFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if( inputText != s.toString()) {
+                if (inputText != s.toString()) {
                     viewModel.setSalary(s.toString())
                     renderConfirmButtons()
                 }
@@ -101,7 +101,7 @@ class FilterFragment : Fragment() {
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
-            inputText = ""
+            inputText = getString(R.string.empty_string)
             binding.resetButton.isVisible = false
             binding.saveButton.isVisible = true
         }
@@ -118,8 +118,8 @@ class FilterFragment : Fragment() {
     }
 
     private fun renderConfirmButtons() {
-        binding.saveButton.isVisible = !viewModel.currentFilterIsEmpty()
-        binding.resetButton.isVisible = binding.saveButton.isVisible
+        binding.resetButton.isVisible = !viewModel.currentFilterIsEmpty()
+        binding.saveButton.isVisible = !viewModel.checkFilterIsApplied()
     }
 
     private fun render(state: FilterState) {
@@ -144,7 +144,7 @@ class FilterFragment : Fragment() {
             binding.salaryValue.setText(filter.salary)
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
         }
-        binding.resetButton.isVisible = true
+        renderConfirmButtons()
         binding.saveButton.isVisible = isFilterChanged
     }
 
@@ -201,6 +201,7 @@ class FilterFragment : Fragment() {
                 binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
                 binding.industry.defaultHintTextColor = setGrayColor()
                 binding.industry.setEndIconOnClickListener {
+                    renderConfirmButtons()
                     findNavController().navigate(R.id.action_filter_fragment_to_industry_fragment)
                 }
             }
@@ -214,8 +215,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun emptyScreen() {
-        binding.resetButton.isVisible = false
-        binding.saveButton.isVisible = false
+        renderConfirmButtons()
         binding.workPlaceValue.setText(getString(R.string.empty_string))
         binding.industryValue.setText(getString(R.string.empty_string))
         binding.salaryValue.setText(getString(R.string.empty_string))

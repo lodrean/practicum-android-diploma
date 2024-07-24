@@ -57,4 +57,8 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
         saveCurrentFilter()
         saveAppliedFilter()
     }
+
+    override fun resetCurrentFilter() {
+        currentFilter = Filter()
+    }
 }
