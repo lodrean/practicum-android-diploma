@@ -38,6 +38,8 @@ class SearchViewModel(
     fun observeShowToast(): LiveData<String> = showToast
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
+            filterInteractor.apply()
+            appliedFilter = filterInteractor.appliedFilter()
             latestSearchText = changedText
             vacancySearchDebounce(changedText)
         }
