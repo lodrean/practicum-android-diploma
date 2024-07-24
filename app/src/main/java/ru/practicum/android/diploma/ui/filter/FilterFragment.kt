@@ -125,11 +125,11 @@ class FilterFragment : Fragment() {
     private fun render(state: FilterState) {
         when (state) {
             FilterState.Empty -> emptyScreen()
-            is FilterState.Filled -> filterScreen(state.filter)
+            is FilterState.Filled -> filterScreen(state.filter, state.isFilterChanged)
         }
     }
 
-    private fun filterScreen(filter: Filter) {
+    private fun filterScreen(filter: Filter, isFilterChanged: Boolean) {
         showWorkplace(filter)
         binding.industryValue.setText(filter.industry?.name)
         binding.salaryIsRequiredCheck.isChecked = filter.onlyWithSalary
@@ -145,6 +145,7 @@ class FilterFragment : Fragment() {
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
         }
         binding.resetButton.isVisible = true
+        binding.saveButton.isVisible = isFilterChanged
     }
 
     private fun showWorkplace(filter: Filter) {

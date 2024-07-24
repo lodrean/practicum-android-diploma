@@ -21,7 +21,13 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
         if (currentFilter == Filter()) {
             stateLiveData.postValue(FilterState.Empty)
         } else {
-            stateLiveData.postValue(FilterState.Filled(currentFilter))
+            val appliedFilter = filterInteractor.appliedFilter()
+            if (appliedFilter == currentFilter) {
+                stateLiveData.postValue(FilterState.Filled(currentFilter, false))
+            } else {
+                stateLiveData.postValue(FilterState.Filled(currentFilter, true))
+            }
+
         }
     }
 
