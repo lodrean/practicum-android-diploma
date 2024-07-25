@@ -24,7 +24,6 @@ import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
 
 class SearchFragment : Fragment() {
-
     private var onItemClickListener: OnItemClickListener? = null
     private var onVacancyClickDebounce: (Vacancy) -> Unit = {}
     private var vacancyAdapter: SearchVacancyAdapter? = null
@@ -88,10 +87,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                viewModel.searchDebounce(changedText = s.toString())
                 if (s?.isNotEmpty() == true) {
                     binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
-                    viewModel.searchDebounce(changedText = s.toString())
                 } else {
+                    viewModel.clearSearch()
                     binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
                 }
             }
@@ -106,7 +106,7 @@ class SearchFragment : Fragment() {
                     val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = vacancyAdapter?.itemCount
                     itemsCount?.let {
-                        if (pos >= it - 1) {
+                        if (pos >= it - 2) {
                             viewModel.onLastItemReached()
                         }
                     }
@@ -116,6 +116,7 @@ class SearchFragment : Fragment() {
 
         binding.searchFrame.setEndIconOnClickListener {
             binding.inputEditText.setText(getString(R.string.empty_string))
+            viewModel.clearSearch()
         }
 
     }
