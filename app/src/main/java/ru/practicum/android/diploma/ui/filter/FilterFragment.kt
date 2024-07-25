@@ -102,8 +102,7 @@ class FilterFragment : Fragment() {
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
             inputText = getString(R.string.empty_string)
-            binding.resetButton.isVisible = false
-            binding.saveButton.isVisible = true
+            renderConfirmButtons()
         }
 
         binding.salaryIsRequiredCheck.setOnClickListener {
