@@ -171,6 +171,13 @@ class SearchViewModel(
 
     fun hasFilter() = filterInteractor.currentFilter() != Filter()
 
+    fun clearSearchRequest() {
+        latestSearchText = null
+        currentPage = 0
+        vacanciesList.clear()
+        renderState(SearchState.Default)
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PER_PAGE_SIZE = 20

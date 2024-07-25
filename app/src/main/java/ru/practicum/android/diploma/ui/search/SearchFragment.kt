@@ -93,6 +93,7 @@ class SearchFragment : Fragment() {
                     viewModel.searchDebounce(changedText = s.toString())
                 } else {
                     binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
+                    viewModel.clearSearchRequest()
                 }
             }
         }

@@ -19,31 +19,33 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             style="@style/AndroidDiploma.ToolBar"
-            app:title="@string/vacancy_search_title"
-            app:menu="@menu/top_search_app_bar">
+            app:menu="@menu/top_search_app_bar"
+            app:title="@string/vacancy_search_title">
 
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_frame"
-            style="@style/AndroidDiploma.EditTextStyleBoxed"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_height"
-            app:layout_constraintTop_toBottomOf="@id/search_title">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_frame"
+        style="@style/AndroidDiploma.EditTextStyleBoxed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_height"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@id/search_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_edit_text"
             style="@style/AndroidDiploma.EditTextStyleBoxed.Input"
             android:layout_width="match_parent"
             android:layout_height="@dimen/search_height"
-            android:padding="@dimen/size_zero"
             android:layout_marginHorizontal="@dimen/size_xxl"
-            android:hint="@string/enter_request"/>
+            android:hint="@string/enter_request"
+            android:padding="@dimen/size_zero" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/search_main_field"
@@ -87,10 +89,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_zero"
-        app:layout_constraintTop_toBottomOf="@id/search_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_frame"
         app:layout_constraintVertical_weight="1"
         tools:itemCount="20"
         tools:layout_editor_absoluteX="@dimen/size_zero"
