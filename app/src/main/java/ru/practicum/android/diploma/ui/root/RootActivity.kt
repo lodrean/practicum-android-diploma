@@ -43,7 +43,6 @@ class RootActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun changeBottomNavigationVisibility(isVisible: Boolean) {
