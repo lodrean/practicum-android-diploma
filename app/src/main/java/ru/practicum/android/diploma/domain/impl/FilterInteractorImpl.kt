@@ -14,31 +14,31 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
     override fun appliedFilter(): Filter = repository.loadAppliedFilter()
 
     override fun setCountry(country: Area?) {
-        currentFilter= repository.loadFilter()
+        currentFilter = repository.loadFilter()
         currentFilter = currentFilter.copy(country = country)
         saveCurrentFilter()
     }
 
     override fun setArea(area: Area?) {
-        currentFilter= repository.loadFilter()
+        currentFilter = repository.loadFilter()
         currentFilter = currentFilter.copy(area = area)
         saveCurrentFilter()
     }
 
     override fun setIndustry(industry: Industry?) {
-        currentFilter= repository.loadFilter()
+        currentFilter = repository.loadFilter()
         currentFilter = currentFilter.copy(industry = industry)
         saveCurrentFilter()
     }
 
     override fun setSalary(salary: String?) {
-        currentFilter= repository.loadFilter()
+        currentFilter = repository.loadFilter()
         currentFilter = currentFilter.copy(salary = salary)
         saveCurrentFilter()
     }
 
     override fun setOnlyWithSalary(onlyWithSalary: Boolean) {
-        currentFilter= repository.loadFilter()
+        currentFilter = repository.loadFilter()
         currentFilter = currentFilter.copy(onlyWithSalary = onlyWithSalary)
         saveCurrentFilter()
     }
