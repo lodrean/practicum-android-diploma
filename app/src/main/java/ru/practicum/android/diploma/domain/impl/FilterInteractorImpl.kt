@@ -10,30 +10,35 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
     private var currentFilter: Filter = repository.loadFilter()
     private var appliedFilter: Filter = repository.loadAppliedFilter()
 
-    override fun currentFilter(): Filter = currentFilter
-    override fun appliedFilter(): Filter = appliedFilter
+    override fun currentFilter(): Filter = repository.loadFilter()
+    override fun appliedFilter(): Filter = repository.loadAppliedFilter()
 
     override fun setCountry(country: Area?) {
+        currentFilter= repository.loadFilter()
         currentFilter = currentFilter.copy(country = country)
         saveCurrentFilter()
     }
 
     override fun setArea(area: Area?) {
+        currentFilter= repository.loadFilter()
         currentFilter = currentFilter.copy(area = area)
         saveCurrentFilter()
     }
 
     override fun setIndustry(industry: Industry?) {
+        currentFilter= repository.loadFilter()
         currentFilter = currentFilter.copy(industry = industry)
         saveCurrentFilter()
     }
 
     override fun setSalary(salary: String?) {
+        currentFilter= repository.loadFilter()
         currentFilter = currentFilter.copy(salary = salary)
         saveCurrentFilter()
     }
 
     override fun setOnlyWithSalary(onlyWithSalary: Boolean) {
+        currentFilter= repository.loadFilter()
         currentFilter = currentFilter.copy(onlyWithSalary = onlyWithSalary)
         saveCurrentFilter()
     }
@@ -43,10 +48,13 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
     }
 
     private fun saveAppliedFilter() {
+        appliedFilter = repository.loadFilter()
         repository.saveAppliedFilter(appliedFilter)
     }
 
     override fun apply() {
+        currentFilter = repository.loadFilter()
+        appliedFilter = repository.loadAppliedFilter()
         appliedFilter = currentFilter
         repository.saveAppliedFilter(appliedFilter)
     }
@@ -60,5 +68,6 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
 
     override fun resetCurrentFilter() {
         currentFilter = Filter()
+        saveCurrentFilter()
     }
 }

@@ -21,7 +21,7 @@ class SearchViewModel(
     private val filterInteractor: FilterInteractor,
     application: Application
 ) : AndroidViewModel(application) {
-    private var appliedFilter: Filter = filterInteractor.appliedFilter()
+    private var appliedFilter: Filter = Filter()
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
@@ -39,7 +39,6 @@ class SearchViewModel(
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             filterInteractor.apply()
-            appliedFilter = filterInteractor.appliedFilter()
             latestSearchText = changedText
             vacancySearchDebounce(changedText)
         }
@@ -64,6 +63,7 @@ class SearchViewModel(
     private fun searchRequest(searchText: String, currentPage: Int) {
         if (searchText.isNotEmpty()) {
             viewModelScope.launch {
+                appliedFilter = filterInteractor.appliedFilter()
                 vacanciesInteractor.searchVacancies(
                     searchText,
                     appliedFilter,
