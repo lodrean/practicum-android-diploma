@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
@@ -48,12 +49,16 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
+                            delay(1000)
+                            getRegionListByCountryId(countryId)
                         }
                     }
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
+                        delay(1000)
+                        getRegionListByCountryId(countryId)
                     }
                 }
             }
@@ -74,12 +79,16 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
+                            delay(1000)
+                            getRegionList()
                         }
                     }
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
+                        delay(1000)
+                        getRegionList()
                     }
                 }
             }
