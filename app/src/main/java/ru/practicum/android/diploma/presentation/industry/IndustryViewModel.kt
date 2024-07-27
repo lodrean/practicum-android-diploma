@@ -53,7 +53,7 @@ class IndustryViewModel(
         }
 
     private fun searchIndustries(searchText: String) {
-        if (stateLiveData.value !is IndustryState.Error) {
+        if (industriesList.isNotEmpty()) {
             stateLiveData.postValue(IndustryState.Loading)
 
             val filteredIndustries = industriesList.filter { industry: Industry ->
