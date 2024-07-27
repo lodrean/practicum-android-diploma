@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.presentation.region
 
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
@@ -13,6 +15,7 @@ import ru.practicum.android.diploma.presentation.workplace.WorkplaceState
 import ru.practicum.android.diploma.util.Resource
 
 class RegionViewModel(
+    connectivityManager: ConnectivityManager,
     private val filterInteractor: FilterInteractor,
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
@@ -26,6 +29,31 @@ class RegionViewModel(
 
     private val filterState = MutableLiveData<WorkplaceState>()
     fun getFilterState(): MutableLiveData<WorkplaceState> = filterState
+
+    init {
+        connectivityManager.registerDefaultNetworkCallback(object : NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                when (filterState.value) {
+                    is WorkplaceState.CountryAndRegionIsPicked -> {
+                        loadRegionsList((filterState.value as WorkplaceState.CountryAndRegionIsPicked).country.id)
+                    }
+
+                    is WorkplaceState.CountryIsPicked -> {
+                        loadRegionsList((filterState.value as WorkplaceState.CountryIsPicked).country.id)
+                    }
+
+                    WorkplaceState.NothingIsPicked -> {
+                        loadRegionsList(null)
+                    }
+
+                    null -> {
+                        loadRegionsList(null)
+                    }
+                }
+            }
+        })
+    }
 
     fun loadRegionsList(countryId: String?) {
         if (countryId != null) {
@@ -49,16 +77,12 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
-                            delay(RETRY_DELAY_TIME)
-                            getRegionListByCountryId(countryId)
                         }
                     }
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
-                        delay(RETRY_DELAY_TIME)
-                        getRegionListByCountryId(countryId)
                     }
                 }
             }
@@ -79,16 +103,12 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
-                            delay(RETRY_DELAY_TIME)
-                            getRegionList()
                         }
                     }
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
-                        delay(RETRY_DELAY_TIME)
-                        getRegionList()
                     }
                 }
             }
@@ -175,9 +195,5 @@ class RegionViewModel(
             filterInteractor.setCountry(null)
             filterInteractor.setArea(region)
         }
-    }
-
-    companion object {
-        private const val RETRY_DELAY_TIME = 1000L
     }
 }
