@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.presentation.industry
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -54,22 +53,24 @@ class IndustryViewModel(
         }
 
     private fun searchIndustries(searchText: String) {
-        stateLiveData.postValue(IndustryState.Loading)
+        if (industriesList.isNotEmpty()) {
+            stateLiveData.postValue(IndustryState.Loading)
 
-        val filteredIndustries = industriesList.filter { industry: Industry ->
-            industry.name.contains(searchText)
-        }
+            val filteredIndustries = industriesList.filter { industry: Industry ->
+                industry.name.contains(searchText, ignoreCase = true)
+            }
 
-        if (filteredIndustries.isEmpty()) {
-            stateLiveData.postValue(
-                IndustryState.Empty(
-                    message = getApplication<Application>().getString(
-                        R.string.industry_not_found
-                    ),
+            if (filteredIndustries.isEmpty()) {
+                stateLiveData.postValue(
+                    IndustryState.Empty(
+                        message = getApplication<Application>().getString(
+                            R.string.industry_not_found
+                        ),
+                    )
                 )
-            )
-        } else {
-            stateLiveData.postValue(IndustryState.Content(filteredIndustries))
+            } else {
+                stateLiveData.postValue(IndustryState.Content(filteredIndustries))
+            }
         }
     }
 
