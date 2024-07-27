@@ -49,7 +49,7 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
-                            delay(1000)
+                            delay(RETRY_DELAY_TIME)
                             getRegionListByCountryId(countryId)
                         }
                     }
@@ -57,7 +57,7 @@ class RegionViewModel(
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
-                        delay(1000)
+                        delay(RETRY_DELAY_TIME)
                         getRegionListByCountryId(countryId)
                     }
                 }
@@ -79,7 +79,7 @@ class RegionViewModel(
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
                             originalList = emptyList()
-                            delay(1000)
+                            delay(RETRY_DELAY_TIME)
                             getRegionList()
                         }
                     }
@@ -87,7 +87,7 @@ class RegionViewModel(
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
                         originalList = emptyList()
-                        delay(1000)
+                        delay(RETRY_DELAY_TIME)
                         getRegionList()
                     }
                 }
@@ -175,5 +175,9 @@ class RegionViewModel(
             filterInteractor.setCountry(null)
             filterInteractor.setArea(region)
         }
+    }
+
+    companion object {
+        private const val RETRY_DELAY_TIME = 1000L
     }
 }

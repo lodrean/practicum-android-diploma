@@ -28,14 +28,14 @@ class CountryViewModel(
                             countryLiveData.postValue(CountryState.Content(it.data))
                         } else {
                             countryLiveData.postValue(CountryState.Empty)
-                            delay(1000)
+                            delay(RETRY_DELAY_TIME)
                             loadCountriesList()
                         }
                     }
 
                     is Resource.Error -> {
                         countryLiveData.postValue(CountryState.Error)
-                        delay(1000)
+                        delay(RETRY_DELAY_TIME)
                         loadCountriesList()
                     }
                 }
@@ -46,5 +46,9 @@ class CountryViewModel(
     fun setCountry(country: Area) {
         filterInteractor.setCountry(country)
         filterInteractor.setArea(country)
+    }
+
+    companion object {
+        private const val RETRY_DELAY_TIME = 1000L
     }
 }
