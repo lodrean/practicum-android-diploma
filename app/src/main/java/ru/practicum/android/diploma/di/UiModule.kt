@@ -45,12 +45,18 @@ val uiModule = module {
     }
 
     viewModel<CountryViewModel> {
-        val connectivityManager = androidApplication().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            androidApplication().getSystemService(
+                Context.CONNECTIVITY_SERVICE
+            ) as ConnectivityManager
         CountryViewModel(connectivityManager, get(), get())
     }
 
     viewModel<RegionViewModel> {
-        val connectivityManager = androidApplication().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            androidApplication().getSystemService(
+                Context.CONNECTIVITY_SERVICE
+            ) as ConnectivityManager
         RegionViewModel(connectivityManager, get(), get())
     }
 
