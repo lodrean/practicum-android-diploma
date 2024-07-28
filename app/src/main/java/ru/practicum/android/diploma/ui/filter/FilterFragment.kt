@@ -99,9 +99,6 @@ class FilterFragment : Fragment() {
         }
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
-            inputText = ""
-            binding.resetButton.isVisible = false
-            binding.saveButton.isVisible = true
         }
 
         binding.salaryIsRequiredCheck.setOnClickListener {
@@ -116,15 +113,18 @@ class FilterFragment : Fragment() {
     }
 
     private fun renderConfirmButtons() {
-        binding.saveButton.isVisible = !viewModel.currentFilterIsEmpty()
-        binding.resetButton.isVisible = binding.saveButton.isVisible
+        binding.saveButton.isVisible = viewModel.currentFilterChanged()
+        binding.resetButton.isVisible = !viewModel.currentFilterIsEmpty()
     }
 
     private fun render(state: FilterState) {
+        textWatcher?.let { binding.salaryValue.removeTextChangedListener(it) }
         when (state) {
             FilterState.Empty -> emptyScreen()
             is FilterState.Filled -> filterScreen(state.filter)
         }
+        textWatcher?.let { binding.salaryValue.addTextChangedListener(it) }
+        renderConfirmButtons()
     }
 
     private fun filterScreen(filter: Filter) {

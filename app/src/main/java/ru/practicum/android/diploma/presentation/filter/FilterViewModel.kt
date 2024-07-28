@@ -71,4 +71,6 @@ class FilterViewModel(private val filterInteractor: FilterInteractor, applicatio
     }
 
     fun currentFilterIsEmpty() = currentFilter == Filter()
+
+    fun currentFilterChanged() = currentFilter != filterInteractor.appliedFilter()
 }
