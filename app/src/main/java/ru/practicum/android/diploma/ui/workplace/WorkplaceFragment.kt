@@ -27,8 +27,6 @@ class WorkplaceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        workplaceViewModel.loadFilter()
-
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -47,7 +45,7 @@ class WorkplaceFragment : Fragment() {
 
         binding.chooseButton.setOnClickListener {
             workplaceViewModel.setSelectedArea()
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
 
         workplaceViewModel.getWorkplaceStateLiveData().observe(viewLifecycleOwner) {
@@ -128,5 +126,10 @@ class WorkplaceFragment : Fragment() {
         binding.actionIconRegion.setOnClickListener {
             findNavController().navigate(R.id.action_workplace_fragment_to_region_fragment)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        workplaceViewModel.loadFilter()
     }
 }

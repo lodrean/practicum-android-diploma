@@ -18,6 +18,13 @@ class WorkplaceViewModel(
     private val workplaceStateLiveData = MutableLiveData<WorkplaceState>(WorkplaceState.NothingIsPicked)
     fun getWorkplaceStateLiveData(): LiveData<WorkplaceState> = workplaceStateLiveData
 
+    init {
+        with(filterInteractor.currentFilter()) {
+            filterInteractor.selectCountry(country)
+            filterInteractor.selectRegion(area)
+        }
+    }
+
     fun loadFilter() {
         val filterCountry = filterInteractor.selectedCountry()
         val filterArea = filterInteractor.selectedRegion()
