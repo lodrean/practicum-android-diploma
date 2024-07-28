@@ -17,6 +17,12 @@ import ru.practicum.android.diploma.presentation.workplace.WorkplaceViewModel
 
 val uiModule = module {
 
+    single<ConnectivityManager> {
+        androidApplication().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+    }
+
     viewModel<SearchViewModel> {
         SearchViewModel(
             vacanciesInteractor = get(),
@@ -45,19 +51,11 @@ val uiModule = module {
     }
 
     viewModel<CountryViewModel> {
-        val connectivityManager =
-            androidApplication().getSystemService(
-                Context.CONNECTIVITY_SERVICE
-            ) as ConnectivityManager
-        CountryViewModel(connectivityManager, get(), get())
+        CountryViewModel(get(), get(), get())
     }
 
     viewModel<RegionViewModel> {
-        val connectivityManager =
-            androidApplication().getSystemService(
-                Context.CONNECTIVITY_SERVICE
-            ) as ConnectivityManager
-        RegionViewModel(connectivityManager, get(), get())
+        RegionViewModel(get(), get(), get())
     }
 
     viewModel<IndustryViewModel> {
