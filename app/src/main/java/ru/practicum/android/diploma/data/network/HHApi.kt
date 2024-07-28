@@ -24,14 +24,14 @@ interface HHApi {
         "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
     )
     @GET("/industries")
-    suspend fun getIndustries(): ArrayList<IndustryDto>
+    suspend fun getIndustries(): List<IndustryDto>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
     )
     @GET("/areas/countries")
-    suspend fun getCountries(): ArrayList<CountryDto>
+    suspend fun getCountries(): List<CountryDto>
 
     @GET("/areas")
     suspend fun getAreas(): List<AreaDto>
