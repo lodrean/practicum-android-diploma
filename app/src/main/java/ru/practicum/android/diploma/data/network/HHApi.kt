@@ -7,6 +7,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.CountryDto
+import ru.practicum.android.diploma.data.dto.DictionariesDto
 import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacancyFullDto
 
@@ -50,4 +51,10 @@ interface HHApi {
         @Path("vacancyId") vacancyId: String
     ): VacancyFullDto
 
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
+    )
+    @GET("/dictionaries")
+    suspend fun getDictionaries(): DictionariesDto
 }
