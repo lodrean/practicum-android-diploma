@@ -26,6 +26,8 @@ class RegionViewModel(
     private val filterState = MutableLiveData<WorkplaceState>()
     fun getFilterState(): MutableLiveData<WorkplaceState> = filterState
 
+    private var filterString: String? = null
+
     fun loadRegionsList(countryId: String?) {
         if (countryId != null) {
             getRegionListByCountryId(countryId)
@@ -43,7 +45,7 @@ class RegionViewModel(
                     is Resource.Success -> {
                         if (it.data != null) {
                             listOfRegions.addAll(collectAllRegions(it.data.areas!!))
-                            regionLiveData.postValue(RegionState.Content(listOfRegions))
+                            postFilteredRegions(listOfRegions, filterString)
                             originalList = listOfRegions
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
@@ -53,7 +55,7 @@ class RegionViewModel(
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
-                        originalList = emptyList()
+                        originalList = null
                     }
                 }
             }
@@ -69,7 +71,7 @@ class RegionViewModel(
                     is Resource.Success -> {
                         if (it.data != null) {
                             listOfRegions.addAll(collectAllCountries(it.data))
-                            regionLiveData.postValue(RegionState.Content(listOfRegions))
+                            postFilteredRegions(listOfRegions, filterString)
                             originalList = listOfRegions
                         } else {
                             regionLiveData.postValue(RegionState.Empty)
@@ -79,7 +81,7 @@ class RegionViewModel(
 
                     is Resource.Error -> {
                         regionLiveData.postValue(RegionState.Error)
-                        originalList = emptyList()
+                        originalList = null
                     }
                 }
             }
@@ -119,23 +121,26 @@ class RegionViewModel(
 
     fun filter(searchQuery: String?, countryId: String?) {
         filteredList.clear()
-        if (!originalList.isNullOrEmpty()) {
-            if (searchQuery.isNullOrEmpty()) {
-                loadRegionsList(countryId)
-            } else {
-                for (item in originalList!!) {
-                    if (item.name.contains(searchQuery, true)) {
-                        filteredList.add(item)
-                    }
-                }
-                if (filteredList.isNotEmpty()) {
-                    regionLiveData.postValue(RegionState.Content(filteredList))
-                } else {
-                    regionLiveData.postValue(RegionState.NoRegion)
-                }
-            }
+        filterString = searchQuery
+
+        if (originalList != null) {
+            postFilteredRegions(originalList!!, searchQuery)
         } else {
-            regionLiveData.postValue(RegionState.Error)
+            loadRegionsList(countryId)
+        }
+    }
+
+    fun postFilteredRegions(regions: List<Area>, filterString: String?) {
+        var filtered = regions
+        if (filterString != null) {
+            filtered = filtered.filter {
+                it.name.contains(filterString, ignoreCase = true)
+            }
+        }
+        if (filtered.isEmpty()) {
+            regionLiveData.postValue(RegionState.NoRegion)
+        } else {
+            regionLiveData.postValue(RegionState.Content(filtered))
         }
     }
 
