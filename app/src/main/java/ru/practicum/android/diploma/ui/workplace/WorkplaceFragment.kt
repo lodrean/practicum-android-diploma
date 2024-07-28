@@ -46,6 +46,7 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.chooseButton.setOnClickListener {
+            workplaceViewModel.setSelectedArea()
             findNavController().navigateUp()
         }
 

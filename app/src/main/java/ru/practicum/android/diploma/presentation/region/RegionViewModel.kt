@@ -145,8 +145,8 @@ class RegionViewModel(
     }
 
     fun defineCurrentFilterState() {
-        val filterCountry = filterInteractor.currentFilter().country
-        val filterArea = filterInteractor.currentFilter().area
+        val filterCountry = filterInteractor.selectedCountry()
+        val filterArea = filterInteractor.selectedRegion()
 
         if (filterCountry == null) {
             filterState.postValue(WorkplaceState.NothingIsPicked)
@@ -163,13 +163,13 @@ class RegionViewModel(
 
     fun setCountryAndRegion(region: Area) {
         if (region.parentId.isNullOrEmpty()) {
-            filterInteractor.setCountry(region)
-            filterInteractor.setArea(region)
+            filterInteractor.selectCountry(region)
+            filterInteractor.selectRegion(region)
         } else if (filterInteractor.currentFilter().country != null) {
-            filterInteractor.setArea(region)
+            filterInteractor.selectRegion(region)
         } else {
-            filterInteractor.setCountry(null)
-            filterInteractor.setArea(region)
+            filterInteractor.selectCountry(null)
+            filterInteractor.selectRegion(region)
         }
     }
 }

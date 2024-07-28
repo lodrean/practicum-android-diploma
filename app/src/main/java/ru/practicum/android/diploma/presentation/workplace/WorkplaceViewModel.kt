@@ -19,13 +19,13 @@ class WorkplaceViewModel(
     fun getWorkplaceStateLiveData(): LiveData<WorkplaceState> = workplaceStateLiveData
 
     fun loadFilter() {
-        val filterCountry = filterInteractor.currentFilter().country
-        val filterArea = filterInteractor.currentFilter().area
+        val filterCountry = filterInteractor.selectedCountry()
+        val filterArea = filterInteractor.selectedRegion()
 
         if (filterCountry == null && filterArea != null) {
             viewModelScope.launch {
                 val country = loadCountryByRegion(filterArea)
-                filterInteractor.setCountry(country)
+                filterInteractor.selectCountry(country)
                 workplaceStateLiveData.postValue(
                     WorkplaceState.CountryAndRegionIsPicked(country, filterArea)
                 )
@@ -67,7 +67,7 @@ class WorkplaceViewModel(
         if (workplaceStateLiveData.value is WorkplaceState.CountryAndRegionIsPicked) {
             val country = (workplaceStateLiveData.value as WorkplaceState.CountryAndRegionIsPicked).country
             workplaceStateLiveData.postValue(WorkplaceState.CountryIsPicked(country))
-            filterInteractor.setArea(country)
+            filterInteractor.selectRegion(country)
         }
     }
 
@@ -76,8 +76,13 @@ class WorkplaceViewModel(
             workplaceStateLiveData.value is WorkplaceState.CountryAndRegionIsPicked
         ) {
             workplaceStateLiveData.postValue(WorkplaceState.NothingIsPicked)
-            filterInteractor.setCountry(null)
-            filterInteractor.setArea(null)
+            filterInteractor.selectCountry(null)
+            filterInteractor.selectRegion(null)
         }
+    }
+
+    fun setSelectedArea() {
+        filterInteractor.setCountry(filterInteractor.selectedCountry())
+        filterInteractor.setArea(filterInteractor.selectedRegion())
     }
 }
