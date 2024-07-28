@@ -23,6 +23,7 @@ class RetrofitNetworkClient(
             is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
             is AreasRequest -> getAreas(dto)
+            is DictionariesRequest -> getDictionaries()
             else -> Response().apply { resultCode = NetworkClient.HTTP_CLIENT_ERROR }
         }
     }
@@ -83,6 +84,17 @@ class RetrofitNetworkClient(
             map["per_page"] = perPage.toString()
         }
         return map
+    }
+
+    private suspend fun getDictionaries(): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                DictionariesResponse(hhService.getDictionaries())
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
     }
 
     private fun isConnected(): Boolean {
