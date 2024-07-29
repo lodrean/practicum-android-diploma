@@ -47,17 +47,21 @@ class SearchViewModel(
 
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
-        if (this.currentPage == maxPage) {
-            return
-        } else {
-            if (currentPage == 0) {
-                renderState(SearchState.LoadingNewExpression)
+        if (searchText.isNotBlank()) {
+            if (this.currentPage == maxPage) {
+                return
             } else {
-                isNextPageLoading = true
-                renderState(SearchState.NextPageLoading)
+                if (currentPage == 0) {
+                    renderState(SearchState.LoadingNewExpression)
+                } else {
+                    isNextPageLoading = true
+                    renderState(SearchState.NextPageLoading)
+                }
+                searchRequest(searchText, currentPage)
+                currentPage += 1
             }
-            searchRequest(searchText, currentPage)
-            currentPage += 1
+        } else {
+            renderState(SearchState.Default)
         }
     }
 

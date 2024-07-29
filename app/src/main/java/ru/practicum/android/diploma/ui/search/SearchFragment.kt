@@ -88,10 +88,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                viewModel.searchDebounce(changedText = s.toString())
                 if (s?.isNotEmpty() == true) {
                     binding.searchFrame.setEndIconDrawable(R.drawable.close_icon)
-                    viewModel.searchDebounce(changedText = s.toString())
                 } else {
+                    viewModel.clearSearch()
                     binding.searchFrame.setEndIconDrawable(R.drawable.search_icon)
                 }
             }
@@ -116,6 +117,7 @@ class SearchFragment : Fragment() {
 
         binding.searchFrame.setEndIconOnClickListener {
             binding.inputEditText.setText(getString(R.string.empty_string))
+            viewModel.clearSearch()
         }
 
     }
