@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.di
 
+import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 import ru.practicum.android.diploma.data.DictionariesRepositoryImpl
 import ru.practicum.android.diploma.data.FavoritesRepositoryImpl
@@ -29,7 +30,10 @@ val repositoryModule = module {
     }
 
     single<FavoritesRepository> {
-        FavoritesRepositoryImpl(get())
+        FavoritesRepositoryImpl(
+            database = get(),
+            defaultDispatcher = Dispatchers.IO,
+        )
     }
 
     single<SharingRepository> {
