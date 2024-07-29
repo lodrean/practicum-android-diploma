@@ -71,4 +71,8 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
         currentFilter = Filter()
         saveCurrentFilter()
     }
+
+    override fun checkRegionsAreSaved(): Boolean {
+        return selectedCountry == currentFilter.country && selectedRegion == currentFilter.area
+    }
 }

@@ -53,19 +53,16 @@ class WorkplaceFragment : Fragment() {
                 is WorkplaceState.CountryIsPicked -> {
                     showCountry(it.country.name)
                     hideRegion()
-                    binding.chooseButton.isVisible = true
                 }
 
                 is WorkplaceState.CountryAndRegionIsPicked -> {
                     showCountry(it.country.name)
                     showRegion(it.city.name)
-                    binding.chooseButton.isVisible = true
                 }
 
                 is WorkplaceState.NothingIsPicked -> {
                     hideCountry()
                     hideRegion()
-                    binding.chooseButton.isVisible = false
                 }
             }
         }
@@ -156,6 +153,10 @@ class WorkplaceFragment : Fragment() {
         }
     }
 
+    private fun showChooseButton() {
+        binding.chooseButton.isVisible = !workplaceViewModel.checkIfFilterIsSaved()
+    }
+
     private fun setCountryListener() {
         binding.countryName.setOnClickListener {
             findNavController().navigate(R.id.action_workplace_fragment_to_country_fragment)
@@ -171,5 +172,6 @@ class WorkplaceFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         workplaceViewModel.loadFilter()
+        showChooseButton()
     }
 }
