@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.domain.models.Industry
 
 class FilterInteractorImpl(private val repository: FilterRepository) : FilterInteractor {
     private var currentFilter: Filter = repository.loadFilter()
-    private var appliedFilter: Filter = repository.loadAppliedFilter()
+    private var appliedFilter: Filter = currentFilter
     private var selectedCountry: Area? = null
     private var selectedRegion: Area? = null
 
@@ -61,8 +61,10 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
     }
 
     override fun apply() {
-        appliedFilter = currentFilter
-        repository.saveAppliedFilter(appliedFilter)
+        if (appliedFilter != currentFilter) {
+            appliedFilter = currentFilter
+            repository.saveAppliedFilter(appliedFilter)
+        }
     }
 
     override fun flushFilters() {
