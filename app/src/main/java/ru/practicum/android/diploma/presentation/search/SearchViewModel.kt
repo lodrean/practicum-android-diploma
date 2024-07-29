@@ -164,7 +164,7 @@ class SearchViewModel(
             currentPage = 0
             vacanciesList.clear()
             latestSearchText?.let { searchText ->
-                searchRequest(searchText, currentPage)
+                searchVacancies(searchText)
             }
         }
     }
