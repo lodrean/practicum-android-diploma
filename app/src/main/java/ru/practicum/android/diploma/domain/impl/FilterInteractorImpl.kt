@@ -67,10 +67,8 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
         }
     }
 
-    override fun flushFilters() {
+    override fun flushCurrentFilter() {
         currentFilter = Filter()
-        appliedFilter = Filter()
         saveCurrentFilter()
-        saveAppliedFilter()
     }
 }

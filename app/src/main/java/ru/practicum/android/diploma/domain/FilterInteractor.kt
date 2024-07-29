@@ -17,5 +17,5 @@ interface FilterInteractor {
     fun setSalary(salary: String?)
     fun setOnlyWithSalary(onlyWithSalary: Boolean)
     fun apply()
-    fun flushFilters()
+    fun flushCurrentFilter()
 }
