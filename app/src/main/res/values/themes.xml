@@ -11,12 +11,19 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white_universal</item>
         <item name="edit_text_color">@color/light_gray_2</item>
-
         <item name="android:windowLightStatusBar">true</item>
         <item name="background_color">@color/white_universal</item>
         <item name="icon_color">@color/black_universal</item>
         <item name="text_hint_color">@color/gray</item>
+        <!--EditText hint color-->
+        <!-- TextInputLayout text color-->
+        <item name="colorControlActivated">@color/black_universal</item>
+        <!-- EditText line color when EditText on-focus-->
+        <item name="colorControlHighlight">@color/gray</item>
+        <!-- EditText line color when EditText  in un-focus-->
+        <item name="colorControlNormal">@color/gray</item>
+
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
+    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma"/>
 </resources>

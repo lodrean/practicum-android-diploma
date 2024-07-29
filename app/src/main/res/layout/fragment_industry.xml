@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/background_color">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/industry_title"
@@ -21,5 +23,93 @@
             app:title="@string/industry_choose_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_frame"
+        style="@style/AndroidDiploma.EditTextStyleBoxed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_height"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        app:layout_constraintTop_toBottomOf="@id/industry_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_edit_text"
+            style="@style/AndroidDiploma.EditTextStyleBoxed.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_height"
+            android:layout_marginHorizontal="@dimen/size_xxl"
+            android:hint="@string/enter_industry"
+            android:padding="@dimen/size_zero" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/search_main_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/select_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_frame">
+
+        <ImageView
+            android:id="@+id/central_image_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/empty_search_image"
+            android:visibility="invisible" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="@dimen/progress_bar"
+            android:layout_height="@dimen/progress_bar"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/state_text_view"
+            style="@style/FontYSDisplay.Medium22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/size_xxl"
+            android:gravity="center_horizontal"
+            android:text="@string/internet_is_not_available"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_zero"
+        android:layout_marginTop="@dimen/size_xxl"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_frame"
+        tools:itemCount="20"
+        tools:listitem="@layout/industry_list_item" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select_button"
+        style="@style/FontYSDisplay.Medium16"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/area_item_height"
+        android:layout_marginHorizontal="@dimen/size_xxl"
+        android:layout_marginBottom="@dimen/size_4xl"
+        android:background="@drawable/rounded_blue_rectangle"
+        android:text="@string/select"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

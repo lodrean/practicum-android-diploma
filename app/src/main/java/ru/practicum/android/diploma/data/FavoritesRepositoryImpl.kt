@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.domain.api.FavoritesRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.toEntity
 import ru.practicum.android.diploma.util.toVacancy
@@ -29,6 +30,7 @@ class FavoritesRepositoryImpl(
         } catch (e: SQLException) {
             emit(
                 Resource.Error(
+                    errorType = ErrorType.SQLError,
                     message = e.toString()
                 )
             )

@@ -12,7 +12,8 @@
     <style name="AndroidDiploma.ToolBar">
         <item name="android:layout_width">match_parent</item>
         <item name="contentInsetStartWithNavigation">@dimen/size_zero</item>
-        <item name="android:layout_height">64dp</item>
+        <item name="android:paddingEnd">@dimen/size_s</item>
+        <item name="android:layout_height">@dimen/image_max</item>
         <item name="buttonGravity">center_vertical</item>
         <item name="android:titleTextColor">?attr/colorOnPrimary</item>
         <item name="navigationIconTint">?attr/icon_color</item>
@@ -43,17 +44,16 @@
         <item name="android:textCursorDrawable">@drawable/cursor_blue</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">400</item>
-
     </style>
 
     <style name="AndroidDiploma.EditTextStyleBoxed">
-        <item name="boxBackgroundColor">@color/light_gray_3</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxStrokeWidth">0dp</item>
-        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundColor">?attr/edit_text_color</item>
+        <item name="boxCornerRadiusTopStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/size_s</item>
+        <item name="boxStrokeWidth">@dimen/size_zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/size_zero</item>
         <item name="hintEnabled">false</item>
         <item name="endIconDrawable">@drawable/search_icon</item>
         <item name="endIconTint">@color/black_universal</item>
@@ -62,16 +62,113 @@
         <item name="android:fontWeight">400</item>
     </style>
 
-    <style name="AndroidDiploma.EditTextStyleBoxed.Input">
-        <item name="android:textColor">@color/black_universal</item>
-        <item name="android:textColorHint">?attr/text_hint_color</item>
-        <item name="android:background"/>
+    <style name="AndroidDiploma.TextStyleFilter">
+        <item name="boxBackgroundColor">@color/light_gray_3</item>
+        <item name="boxStrokeWidth">@dimen/size_zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/size_zero</item>
+        <item name="endIconDrawable">@drawable/arrow_forward</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
+        <item name="endIconMode">custom</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="prefixTextColor">@color/gray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/transparent</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">400</item>
-        <item name="android:inputType">text|textCapSentences</item>
+    </style>
+
+    <style name="AndroidDiploma.TextStyleFilter.EditText">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">?attr/text_hint_color</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:inputType">number</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="AndroidDiploma.EditTextStyleBoxed.Input">
+        <item name="android:textColor">@color/black_universal</item>
+        <item name="android:textColorHint">?attr/text_hint_color</item>
+        <item name="android:background" />
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AndroidDiploma.SalaryInputTextStyle">
+        <item name="boxBackgroundColor">?attr/edit_text_color</item>
+        <item name="boxCornerRadiusTopStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/size_s</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/size_s</item>
+        <item name="android:focusable">true</item>
+        <item name="boxStrokeWidth">@dimen/size_zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/size_zero</item>
+        <item name="android:textSize">16sp</item>
+        <item name="endIconTint">@color/black_universal</item>
+        <item name="endIconMode">custom</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:textColor">@color/black_universal</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AndroidDiploma.FilterButton">
+        <item name="android:drawablePadding">@dimen/size_s</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="icon">@drawable/arrow_forward</item>
+        <item name="iconGravity">end</item>
+    </style>
+
+    <style name="AndroidDiploma.FilterButton.Accept">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/white_universal</item>
+        <item name="icon">@null</item>
+    </style>
+
+    <style name="AndroidDiploma.FilterButton.Reset">
+        <item name="android:gravity">center</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="icon">@null</item>
+    </style>
+
+    <style name="AndroidDiploma.SalaryInputTextStyle.EditText">
+
+        <item name="hintTextColor">@color/text_hint_color</item>
+        <item name="android:focusable">true</item>
+        <item name="android:contextClickable">true</item>
+        <item name="android:textColor">@color/black_universal</item>
+        <item name="android:textColorHint">?attr/text_hint_color</item>
+        <item name="android:background" />
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontWeight">400</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="HintTextApperiance" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColorHint">@color/text_hint_color</item>
+    </style>
+
 
     <style name="FontYSDisplay">
         <item name="android:textColor">?attr/colorOnSecondary</item>
@@ -79,6 +176,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">400</item>
     </style>
+
     <style name="FontYSDisplay.Bold32">
         <item name="android:fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">32sp</item>
@@ -96,6 +194,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">500</item>
     </style>
+
     <style name="FontYSDisplay.Regular16">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>

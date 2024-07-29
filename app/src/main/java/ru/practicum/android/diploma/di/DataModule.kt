@@ -42,4 +42,5 @@ val dataModule = module {
     single {
         ExternalNavigator(get())
     }
+
 }

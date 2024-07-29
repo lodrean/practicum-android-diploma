@@ -5,6 +5,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
@@ -51,6 +52,7 @@ class VacancyDetailsFragment : Fragment() {
             }
 
             is VacancyDetailsState.Loading -> {
+                binding.vacancyErrorImageView.isVisible = false
                 binding.contentScrollView.isVisible = false
                 binding.layoutError.isVisible = false
                 binding.vacancyDetailsProgressBar.isVisible = true
@@ -59,9 +61,12 @@ class VacancyDetailsFragment : Fragment() {
     }
 
     private fun showError() {
+        binding.vacancyErrorImageView.isVisible = true
         binding.contentScrollView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = true
+        binding.topAppBar.menu.findItem(R.id.favorite).setEnabled(false)
+        binding.topAppBar.menu.findItem(R.id.share).setEnabled(false)
     }
 
     private fun loadContentData(vacancy: Vacancy) {
@@ -70,7 +75,7 @@ class VacancyDetailsFragment : Fragment() {
         binding.employerCity.text = vacancy.employerCity
         binding.experienceTextView.text = vacancy.experienceName
         binding.employmentScheduleTextView.text =
-            "%s, %s".format(vacancy.employment, vacancy.schedule)
+            getString(R.string.employment_schedule).format(vacancy.employment, vacancy.schedule)
         binding.vacancyDescriptionTextView.text =
             Html.fromHtml(vacancy.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -83,14 +88,16 @@ class VacancyDetailsFragment : Fragment() {
             .centerInside()
             .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.size_l)))
             .into(binding.employerLogoImageView)
+        binding.vacancyErrorImageView.isVisible = false
         binding.vacancyDetailsProgressBar.isVisible = false
         binding.layoutError.isVisible = false
         binding.contentScrollView.isVisible = true
-
+        binding.topAppBar.menu.findItem(R.id.favorite).setEnabled(true)
+        binding.topAppBar.menu.findItem(R.id.share).setEnabled(true)
         if (vacancy.isFavorite) {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_on_icon)
+            binding.topAppBar.menu.findItem(R.id.favorite).setIcon(R.drawable.favorites_on_icon)
         } else {
-            binding.favoriteIcon.setImageResource(R.drawable.favorites_off_icon)
+            binding.topAppBar.menu.findItem(R.id.favorite).setIcon(R.drawable.favorites_off_icon)
         }
     }
 
@@ -105,21 +112,29 @@ class VacancyDetailsFragment : Fragment() {
     private fun fillContacts(vacancy: Vacancy) {
         binding.contactsTitle.isVisible =
             vacancy.contactsEmail?.isNotEmpty() ?: false || vacancy.contactsPhones?.isNotEmpty() ?: false
-        binding.contactsEmail.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
+        binding.emailField.isVisible = vacancy.contactsEmail?.isNotEmpty() ?: false
         vacancy.contactsEmail?.let {
-            binding.contactsEmail.text = getString(R.string.mail).format(it)
+            binding.contactsEmail.text = it
             binding.contactsEmail.setOnClickListener {
                 vacancyDetailsViewModel.openEmail(vacancy.contactsEmail, vacancy.name)
             }
         }
-        binding.contactsPhoneNumber.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
+        binding.phoneNumberField.isVisible = vacancy.contactsPhones?.isNotEmpty() ?: false
         vacancy.contactsPhones?.let { contactsPhone ->
             val regex = "\\+[0-9]{11}".toRegex()
             val contactsFormattedNumber = regex.find(vacancy.contactsPhones)?.value
+            val contactsComment =
+                vacancy.contactsPhones.substringAfter("comment=").substringBefore(",")
+
             contactsFormattedNumber?.let {
                 binding.contactsPhoneNumber.text = contactsFormattedNumber
                 binding.contactsPhoneNumber.setOnClickListener {
                     vacancyDetailsViewModel.callPhone(contactsFormattedNumber)
+                }
+            }
+            contactsComment?.let {
+                if (contactsComment != "null") {
+                    binding.contactsPhoneComment.text = contactsComment
                 }
             }
         }
@@ -142,13 +157,26 @@ class VacancyDetailsFragment : Fragment() {
         vacancyDetailsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+        vacancyDetailsViewModel.observeShowToast().observe(viewLifecycleOwner) { showToast(it) }
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.favorite -> {
+                    vacancyDetailsViewModel.makeVacancyFavorite()
+                    true
+                }
 
-        binding.shareVacancyIcon.setOnClickListener {
-            vacancyDetailsViewModel.shareVacancy()
+                R.id.share -> {
+                    vacancyDetailsViewModel.shareVacancy()
+                    true
+                }
+
+                else -> false
+            }
         }
-        binding.favoriteIcon.setOnClickListener {
-            vacancyDetailsViewModel.makeVacancyFavorite()
-        }
+    }
+
+    private fun showToast(toastMessage: String) {
+        Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

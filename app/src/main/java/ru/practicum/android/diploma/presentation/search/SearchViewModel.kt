@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.presentation.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,20 +7,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.domain.FilterInteractor
 import ru.practicum.android.diploma.domain.api.VacanciesInteractor
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.SearchState
+import ru.practicum.android.diploma.util.ErrorType
 import ru.practicum.android.diploma.util.SingleLiveEvent
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, application: Application) :
-    AndroidViewModel(application) {
-
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterInteractor: FilterInteractor,
+    application: Application
+) : AndroidViewModel(application) {
+    private var appliedFilter: Filter = filterInteractor.appliedFilter()
     private var isNextPageLoading: Boolean = false
     private var currentPage: Int = 0
     private var maxPage: Int? = null
     private var latestSearchText: String? = null
     private var vacanciesList = mutableListOf<Vacancy>()
-    private val trackSearchDebounce =
+    private val vacancySearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             clearSearch()
             searchVacancies(changedText)
@@ -32,7 +39,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
-            trackSearchDebounce(changedText)
+            vacancySearchDebounce(changedText)
         }
     }
 
@@ -42,7 +49,7 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             return
         } else {
             if (currentPage == 0) {
-                renderState(SearchState.Loading)
+                renderState(SearchState.LoadingNewExpression)
             } else {
                 isNextPageLoading = true
                 renderState(SearchState.NextPageLoading)
@@ -57,14 +64,16 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             viewModelScope.launch {
                 vacanciesInteractor.searchVacancies(
                     searchText,
+                    appliedFilter,
                     currentPage,
                     PER_PAGE_SIZE
                 )
                     .collect { resource ->
                         processResult(
                             resource.data?.vacancies,
-                            resource.message,
-                            resource.data?.found
+                            resource.data?.found,
+                            resource.errorType,
+                            resource.message
                         )
                         maxPage = resource.data?.count
                     }
@@ -72,7 +81,12 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorMessage: String?, countOfVacancies: Int?) {
+    private fun processResult(
+        foundVacancies: List<Vacancy>?,
+        countOfVacancies: Int?,
+        errorType: ErrorType?,
+        errorMessage: String?
+    ) {
         val messageServerError = getApplication<Application>().getString(R.string.server_error)
         val messageNoInternet = getApplication<Application>().getString(R.string.internet_is_not_available)
         val messageCheckConnection = getApplication<Application>().getString(R.string.check_connection_message)
@@ -81,18 +95,20 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             vacanciesList.addAll(foundVacancies)
         }
         when {
-            errorMessage != null -> {
-                when (errorMessage) {
-                    messageCheckConnection -> {
-                        when (isNextPageLoading) {
-                            true -> renderState(SearchState.Content(vacanciesList, null))
-                            false -> renderState(SearchState.NoInternet(messageNoInternet))
-                        }
+            errorType != null -> {
+                if (errorType == ErrorType.NoConnection) {
+                    if (isNextPageLoading) {
+                        renderState(SearchState.Content(vacanciesList, null))
+                    } else {
+                        renderState(SearchState.InternetNotAvailable(messageNoInternet))
                     }
-                    else -> renderState(SearchState.Error(messageServerError))
+
+                    showToast(messageCheckConnection)
+                } else {
+                    renderState(SearchState.ServerError(messageServerError))
+                    showToast(errorMessage ?: messageServerError)
                 }
                 isNextPageLoading = false
-                showToast(errorMessage)
             }
             vacanciesList.isEmpty() -> {
                 renderState(
@@ -130,6 +146,21 @@ class SearchViewModel(private val vacanciesInteractor: VacanciesInteractor, appl
             searchVacancies(latestSearchText!!)
         }
     }
+
+    fun filterNotEmpty() = appliedFilter != Filter()
+    fun checkFilters() {
+        val newFilter = filterInteractor.appliedFilter()
+        if (newFilter != appliedFilter) {
+            appliedFilter = newFilter
+            currentPage = 0
+            vacanciesList.clear()
+            latestSearchText?.let { searchText ->
+                searchRequest(searchText, currentPage)
+            }
+        }
+    }
+
+    fun hasFilter() = filterInteractor.currentFilter() != Filter()
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L

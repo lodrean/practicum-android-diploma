@@ -27,11 +27,11 @@
     <string name="enter_request">"" Введите запрос</string>
     <string name="no_region">Такого региона нет</string>
     <string name="no_vacancies">Таких вакансий нет</string>
-    <string name="not_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
+    <string name="not_get_a_list_of_vacancies">Не удалось получить\n список вакансий</string>
     <string name="internet_is_not_available">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="Founded">Найдено</string>
-    <string name="empty_string"/>
+    <string name="empty_string" />
     <string name="server_error_message">Server error</string>
     <string name="check_connection_message">No Internet connection</string>
     <string name="empty_pace">" "</string>
@@ -51,13 +51,34 @@
     <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
 
     <string name="empty_favorites_list">Список пуст</string>
-    <string name="favorites_error">Не удалось получить список вакансий</string>
+    <string name="favorites_error">Не удалось получить\n список вакансий</string>
 
     <string name="share_app_text_plain" translatable="false">text/plain</string>
     <string name="message_email">" "</string>
     <string name="share_vacancy_url" translatable="false">https://hh.ru/vacancy/%s</string>
     <string name="contacts">Контакты</string>
     <string name="mailto" translatable="false">mailto:%s</string>
-    <string name="mail">Почта: %s</string>
+    <string name="mail">Почта: </string>
     <string name="unknown_view_type_requested">Unknown view type requested: %1$s</string>
+    <string name="filter">фильтр</string>
+    <string name="filter_icon">наличие фильтра</string>
+    <string name="employment_schedule">%s, %s</string>
+    <string name="phone">Телефон: </string>
+    <string name="enter_region">"" Введите регион</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="unable_to_get_list">Не удалось получить список</string>
+    <string name="choose">Выбрать</string>
+    <string name="enter_industry">Введите отрасль</string>
+    <string name="industry_not_found">Такой отрасли нет</string>
+    <string name="select">Выбрать</string>
+    <string name="enter_sum"> Введите сумму</string>
+    <string name="work_place">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="salary_expected"> Ожидаемая зарплата</string>
+    <string name="save">Применить</string>
+    <string name="reset">Сбросить</string>
+
+    <string name="country_and_region_template">%s, %s</string>
 </resources>

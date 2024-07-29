@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.NetworkClient
+import java.net.SocketTimeoutException
 
 class RetrofitNetworkClient(
     private val context: Context,
@@ -22,7 +23,9 @@ class RetrofitNetworkClient(
             is VacanciesSearchRequest -> getVacancies(dto)
             is VacancyRequest -> getVacancyFull(dto)
             is CountriesRequest -> getCountries()
-            is AreasRequest -> getAreas(dto)
+            is AreasByIdRequest -> getAreasById(dto)
+            is AreasRequest -> getAreas()
+            is IndustriesRequest -> getIndustries()
             else -> Response().apply { resultCode = NetworkClient.HTTP_CLIENT_ERROR }
         }
     }
@@ -34,6 +37,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -45,17 +50,47 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
 
-    private suspend fun getAreas(request: AreasRequest): Response {
+    private suspend fun getAreasById(request: AreasByIdRequest): Response {
         return withContext(Dispatchers.IO) {
             try {
-                AreasResponse(hhService.getAreas(request.areaId))
+                AreasByIdResponse(hhService.getAreasById(request.areaId))
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
+            }
+        }
+    }
+
+    private suspend fun getAreas(): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                AreaResponse(hhService.getAreas())
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
+            }
+        }
+    }
+
+    private suspend fun getIndustries(): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                IndustriesResponse(hhService.getIndustries())
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -67,6 +102,8 @@ class RetrofitNetworkClient(
                     .apply { resultCode = NetworkClient.HTTP_SUCCESS }
             } catch (e: HttpException) {
                 Response().apply { resultCode = e.code() }
+            } catch (_: SocketTimeoutException) {
+                Response().apply { resultCode = NetworkClient.HTTP_SERVER_ERROR }
             }
         }
     }
@@ -82,6 +119,12 @@ class RetrofitNetworkClient(
         if (perPage > 0) {
             map["per_page"] = perPage.toString()
         }
+
+        filter.area?.let { map["area"] = it.id }
+        filter.industry?.let { map["industry"] = it.id }
+        filter.salary?.let { map["salary"] = it }
+        map["only_with_salary"] = filter.onlyWithSalary.toString()
+
         return map
     }
 

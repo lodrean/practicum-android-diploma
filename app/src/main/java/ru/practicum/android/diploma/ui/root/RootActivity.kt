@@ -43,11 +43,11 @@ class RootActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun changeBottomNavigationVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.isVisible = isVisible
         binding.separator.isVisible = isVisible
     }
-
 }

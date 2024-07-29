@@ -7,6 +7,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.CountryDto
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacancyFullDto
 
 interface HHApi {
@@ -22,15 +23,21 @@ interface HHApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
     )
-    @GET("/areas/countries")
-    suspend fun getCountries(): ArrayList<CountryDto>
+    @GET("/industries")
+    suspend fun getIndustries(): ArrayList<IndustryDto>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: FindNewJob/1.0 (freeman@blackmesa.ru)"
     )
+    @GET("/areas/countries")
+    suspend fun getCountries(): ArrayList<CountryDto>
+
+    @GET("/areas")
+    suspend fun getAreas(): List<AreaDto>
+
     @GET("/areas/{areaId}")
-    suspend fun getAreas(
+    suspend fun getAreasById(
         @Path("areaId") areaId: String
     ): AreaDto
 

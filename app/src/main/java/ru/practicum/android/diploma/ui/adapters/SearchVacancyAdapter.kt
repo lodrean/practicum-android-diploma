@@ -1,12 +1,12 @@
-package ru.practicum.android.diploma.ui
+package ru.practicum.android.diploma.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.viewholder.ListItemViewHolder
-import ru.practicum.android.diploma.ui.viewholder.VacancyViewHolder
+import ru.practicum.android.diploma.ui.viewholders.ListItemViewHolder
+import ru.practicum.android.diploma.ui.viewholders.VacancyViewHolder
 import ru.practicum.android.diploma.util.OnItemClickListener
 
 class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -23,13 +23,18 @@ class SearchVacancyAdapter(private val onItemClickListener: OnItemClickListener)
 
     fun showLoading(isShowLoading: Boolean) {
         showLoading = isShowLoading
-        notifyItemChanged(listData.size + 1)
+        notifyItemRangeChanged(listData.size + 1, 1, true)
     }
 
     override fun getItemViewType(position: Int) =
         when (position) {
             0 -> VIEW_TYPE_EMPTY
-            listData.size + 1 -> VIEW_TYPE_LOADING
+            listData.size + 1 -> if (showLoading) {
+                VIEW_TYPE_LOADING
+            } else {
+                VIEW_TYPE_EMPTY
+            }
+
             else -> VIEW_TYPE_VACANCY
         }
 

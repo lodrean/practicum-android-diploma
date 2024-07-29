@@ -17,7 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.SearchVacancyAdapter
+import ru.practicum.android.diploma.presentation.search.SearchViewModel
+import ru.practicum.android.diploma.ui.adapters.SearchVacancyAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsFragment
 import ru.practicum.android.diploma.util.OnItemClickListener
 import ru.practicum.android.diploma.util.debounce
@@ -47,6 +48,18 @@ class SearchFragment : Fragment() {
         viewModel.observeShowToast().observe(viewLifecycleOwner) { toast ->
             showToast(toast)
         }
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.filter -> {
+                    findNavController().navigate(R.id.action_search_fragment_to_filter_fragment)
+                    true
+                }
+
+                else -> false
+            }
+        }
+
         defaultState()
         onVacancyClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
@@ -56,10 +69,14 @@ class SearchFragment : Fragment() {
         onItemClickListener = OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
+        binding.topAppBar.menu.findItem(R.id.filter).setOnMenuItemClickListener { _ ->
+            launchFilter()
+        }
 
         vacancyAdapter = SearchVacancyAdapter(onItemClickListener!!)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = vacancyAdapter
+        binding.recyclerView.animation = null
 
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -110,15 +127,31 @@ class SearchFragment : Fragment() {
         )
     }
 
+    private fun launchFilter(): Boolean {
+        findNavController().navigate(
+            R.id.action_search_fragment_to_filter_fragment,
+        )
+        return true
+    }
+
     private fun render(state: SearchState) {
         when (state) {
             is SearchState.Content -> state.countOfVacancies?.let { showContent(state.vacanciesList, it) }
             is SearchState.Empty -> showEmpty(state.message)
-            is SearchState.Error -> showError(state.errorMessage)
-            is SearchState.Loading -> showLoading()
-            is SearchState.NoInternet -> showLooseInternetConnection(state.errorMessage)
+            is SearchState.ServerError -> showError(state.errorMessage)
+            is SearchState.LoadingNewExpression -> showLoading()
+            is SearchState.InternetNotAvailable -> showLooseInternetConnection(state.errorMessage)
             is SearchState.Default -> defaultState()
             is SearchState.NextPageLoading -> vacancyAdapter?.showLoading(true)
+        }
+        showIconFilterIsOn(viewModel.hasFilter())
+    }
+
+    private fun showIconFilterIsOn(filtered: Boolean) {
+        if (filtered) {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_on_icon)
+        } else {
+            binding.topAppBar.menu.findItem(R.id.filter).setIcon(R.drawable.filter_off_icon)
         }
     }
 
@@ -189,6 +222,7 @@ class SearchFragment : Fragment() {
         }
         vacancyAdapter?.showLoading(false)
         vacancyAdapter?.setData(vacanciesList)
+        showIconFilterIsOn(viewModel.filterNotEmpty())
 
     }
 
@@ -202,4 +236,9 @@ class SearchFragment : Fragment() {
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilters()
+        showIconFilterIsOn(viewModel.hasFilter())
+    }
 }
