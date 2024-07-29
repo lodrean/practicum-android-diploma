@@ -26,6 +26,7 @@ class RetrofitNetworkClient(
             is AreasByIdRequest -> getAreasById(dto)
             is AreasRequest -> getAreas()
             is IndustriesRequest -> getIndustries()
+            is DictionariesRequest -> getDictionaries()
             else -> Response().apply { resultCode = NetworkClient.HTTP_CLIENT_ERROR }
         }
     }
@@ -126,6 +127,17 @@ class RetrofitNetworkClient(
         map["only_with_salary"] = filter.onlyWithSalary.toString()
 
         return map
+    }
+
+    private suspend fun getDictionaries(): Response {
+        return withContext(Dispatchers.IO) {
+            try {
+                DictionariesResponse(hhService.getDictionaries())
+                    .apply { resultCode = NetworkClient.HTTP_SUCCESS }
+            } catch (e: HttpException) {
+                Response().apply { resultCode = e.code() }
+            }
+        }
     }
 
     private fun isConnected(): Boolean {
