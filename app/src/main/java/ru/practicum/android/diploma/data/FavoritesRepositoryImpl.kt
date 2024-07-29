@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import java.sql.SQLException
 
 class FavoritesRepositoryImpl(
     private val database: AppDatabase,
-    private val defaultDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FavoritesRepository {
     override fun getFavoriteVacancies(): Flow<Resource<List<Vacancy>>> = flow {
         try {

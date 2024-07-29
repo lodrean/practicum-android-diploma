@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.di
 
 import androidx.room.Room
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -37,7 +36,6 @@ val dataModule = module {
         RetrofitNetworkClient(
             context = get(),
             hhService = get(),
-            defaultDispatcher = Dispatchers.IO,
         )
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.NetworkClient
@@ -12,7 +13,7 @@ import java.net.SocketTimeoutException
 class RetrofitNetworkClient(
     private val context: Context,
     private val hhService: HHApi,
-    private val defaultDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
