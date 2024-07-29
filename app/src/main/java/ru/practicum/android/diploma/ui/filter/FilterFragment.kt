@@ -147,6 +147,7 @@ class FilterFragment : Fragment() {
 
     private fun showWorkplace(filter: Filter) {
         if (filter.country == null) {
+            binding.workPlaceValue.text = null
             binding.workPlaceValue.setText(getString(R.string.empty_string))
         } else if (filter.area?.parentId.isNullOrEmpty()) {
             binding.workPlaceValue.setText(filter.country.name)
@@ -162,6 +163,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun fillWorkPlace() {
+        binding.workPlace.defaultHintTextColor = setGrayColor()
         if (binding.workPlaceValue.text.toString().isNotEmpty()) {
             binding.workPlace.defaultHintTextColor = setHintOnValueColor()
             binding.workPlace.setEndIconDrawable(R.drawable.close_icon)
@@ -185,6 +187,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun fillIndustry() {
+        binding.industry.defaultHintTextColor = setGrayColor()
         if (binding.industryValue.text.toString().isNotEmpty()) {
             binding.industry.setEndIconDrawable(R.drawable.close_icon)
             binding.industry.defaultHintTextColor = setHintOnValueColor()
@@ -208,14 +211,18 @@ class FilterFragment : Fragment() {
     }
 
     private fun emptyScreen() {
-        binding.resetButton.isVisible = false
-        binding.saveButton.isVisible = false
-        binding.workPlaceValue.setText(getString(R.string.empty_string))
-        binding.industryValue.setText(getString(R.string.empty_string))
-        binding.salaryValue.setText(getString(R.string.empty_string))
-        binding.salaryIsRequiredCheck.isChecked = false
-        binding.workPlace.setEndIconDrawable(R.drawable.arrow_forward)
-        binding.industry.setEndIconDrawable(R.drawable.arrow_forward)
+        with(binding) {
+            workPlace.defaultHintTextColor = setGrayColor()
+            industry.defaultHintTextColor = setGrayColor()
+            resetButton.isVisible = false
+            saveButton.isVisible = false
+            workPlaceValue.setText(getString(R.string.empty_string))
+            industryValue.setText(getString(R.string.empty_string))
+            salaryValue.setText(getString(R.string.empty_string))
+            salaryIsRequiredCheck.isChecked = false
+            workPlace.setEndIconDrawable(R.drawable.arrow_forward)
+            industry.setEndIconDrawable(R.drawable.arrow_forward)
+        }
     }
 
     private fun hintColorStates(): Triple<ColorStateList, ColorStateList, ColorStateList> {
