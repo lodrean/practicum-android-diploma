@@ -111,7 +111,11 @@ class SearchViewModel(
 
                     showToast(messageCheckConnection)
                 } else {
-                    renderState(SearchState.ServerError(messageServerError))
+                    if (isNextPageLoading) {
+                        renderState(SearchState.Content(vacanciesList, null))
+                    } else {
+                        renderState(SearchState.ServerError(messageServerError))
+                    }
                     showToast(errorMessage ?: messageServerError)
                 }
                 isNextPageLoading = false

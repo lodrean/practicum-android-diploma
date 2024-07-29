@@ -14,7 +14,6 @@ class WorkplaceViewModel(
     private val filterInteractor: FilterInteractor,
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
-
     private val workplaceStateLiveData = MutableLiveData<WorkplaceState>(WorkplaceState.NothingIsPicked)
     fun getWorkplaceStateLiveData(): LiveData<WorkplaceState> = workplaceStateLiveData
 
@@ -91,5 +90,9 @@ class WorkplaceViewModel(
     fun setSelectedArea() {
         filterInteractor.setCountry(filterInteractor.selectedCountry())
         filterInteractor.setArea(filterInteractor.selectedRegion())
+    }
+
+    fun checkIfFilterIsSaved(): Boolean {
+        return filterInteractor.checkRegionsAreSaved()
     }
 }
