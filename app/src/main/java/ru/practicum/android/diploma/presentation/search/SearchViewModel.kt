@@ -39,13 +39,11 @@ class SearchViewModel(
     fun searchDebounce(changedText: String) {
         if (latestSearchText != changedText) {
             latestSearchText = changedText
+            filterInteractor.apply()
+            appliedFilter = filterInteractor.appliedFilter()
             vacancySearchDebounce(changedText)
         }
     }
-
-//    init {
-//        checkFilters()
-//    }
 
     // Функция для пагинации
     private fun searchVacancies(searchText: String) {
