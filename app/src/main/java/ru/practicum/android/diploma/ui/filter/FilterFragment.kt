@@ -22,7 +22,6 @@ import ru.practicum.android.diploma.presentation.filter.FilterState
 import ru.practicum.android.diploma.presentation.filter.FilterViewModel
 
 class FilterFragment : Fragment() {
-    private var inputText: String? = ""
     private var textWatcher: TextWatcher? = null
     private var _binding: FragmentFilterBinding? = null
     private val binding
@@ -134,12 +133,11 @@ class FilterFragment : Fragment() {
         fillWorkPlace()
         fillIndustry()
         if (filter.salary.isNullOrEmpty() or (filter.salary == "")) {
-            inputText = ""
             binding.salaryValue.setText(R.string.empty_string)
             binding.salaryFrame.defaultHintTextColor = hintColorStates().first
         } else {
-            inputText = filter.salary
             binding.salaryValue.setText(filter.salary)
+            binding.salaryFrame.setEndIconDrawable(R.drawable.close_icon)
             binding.salaryFrame.defaultHintTextColor = hintColorStates().second
         }
         binding.resetButton.isVisible = true
