@@ -11,14 +11,6 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
 
     override fun appliedFilter(): Filter = repository.appliedFilter()
 
-    override fun selectCountry(country: Area?) = repository.selectCountry(country)
-
-    override fun selectRegion(region: Area?) = repository.selectRegion(region)
-
-    override fun selectedCountry(): Area? = repository.selectedCountry()
-
-    override fun selectedRegion(): Area? = repository.selectedRegion()
-
     override fun setCountry(country: Area?) = repository.setCountry(country)
 
     override fun setArea(area: Area?) = repository.setArea(area)
@@ -33,5 +25,4 @@ class FilterInteractorImpl(private val repository: FilterRepository) : FilterInt
 
     override fun flushCurrentFilter() = repository.flushCurrentFilter()
 
-    override fun checkRegionsAreSaved() = repository.checkRegionsAreSaved()
 }

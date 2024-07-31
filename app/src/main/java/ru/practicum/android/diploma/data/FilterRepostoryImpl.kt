@@ -11,11 +11,10 @@ class FilterRepostoryImpl(val context: Context) : FilterRepository {
     private val sharedPreferences = context.getSharedPreferences("filter_storage", Context.MODE_PRIVATE)
     private var currentFilter: Filter = Filter()
     private var appliedFilter: Filter = Filter()
-    private var selectedCountry: Area? = null
-    private var selectedRegion: Area? = null
 
     init {
         loadCurrentFilter()
+        loadAppliedFilter()
         appliedFilter = currentFilter
     }
 
@@ -49,18 +48,6 @@ class FilterRepostoryImpl(val context: Context) : FilterRepository {
 
     override fun currentFilter(): Filter = currentFilter
     override fun appliedFilter(): Filter = appliedFilter
-
-    override fun selectCountry(country: Area?) {
-        selectedCountry = country
-    }
-
-    override fun selectRegion(region: Area?) {
-        selectedRegion = region
-    }
-
-    override fun selectedCountry() = selectedCountry
-
-    override fun selectedRegion() = selectedRegion
 
     override fun setCountry(country: Area?) {
         currentFilter = currentFilter.copy(country = country)
@@ -97,10 +84,6 @@ class FilterRepostoryImpl(val context: Context) : FilterRepository {
     override fun flushCurrentFilter() {
         currentFilter = Filter()
         saveCurrentFilter()
-    }
-
-    override fun checkRegionsAreSaved(): Boolean {
-        return selectedCountry == currentFilter.country && selectedRegion == currentFilter.area
     }
 
     companion object {

@@ -7,10 +7,6 @@ import ru.practicum.android.diploma.domain.models.Industry
 interface FilterRepository {
     fun currentFilter(): Filter
     fun appliedFilter(): Filter
-    fun selectCountry(country: Area?)
-    fun selectRegion(region: Area?)
-    fun selectedCountry(): Area?
-    fun selectedRegion(): Area?
     fun setCountry(country: Area?)
     fun setArea(area: Area?)
     fun setIndustry(industry: Industry?)
@@ -18,5 +14,4 @@ interface FilterRepository {
     fun setOnlyWithSalary(onlyWithSalary: Boolean)
     fun apply()
     fun flushCurrentFilter()
-    fun checkRegionsAreSaved(): Boolean
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
+import ru.practicum.android.diploma.domain.SelectedRegionInteractor
 import ru.practicum.android.diploma.domain.api.DictionariesInteractor
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.presentation.workplace.WorkplaceState
@@ -13,6 +14,7 @@ import ru.practicum.android.diploma.util.Resource
 
 class RegionViewModel(
     private val filterInteractor: FilterInteractor,
+    private val selectedRegionInteractor: SelectedRegionInteractor,
     private val dictionariesInteractor: DictionariesInteractor
 ) : ViewModel() {
 
@@ -145,8 +147,8 @@ class RegionViewModel(
     }
 
     fun defineCurrentFilterState() {
-        val filterCountry = filterInteractor.selectedCountry()
-        val filterArea = filterInteractor.selectedRegion()
+        val filterCountry = selectedRegionInteractor.selectedCountry()
+        val filterArea = selectedRegionInteractor.selectedRegion()
 
         if (filterCountry == null) {
             filterState.postValue(WorkplaceState.NothingIsPicked)
@@ -163,13 +165,13 @@ class RegionViewModel(
 
     fun setCountryAndRegion(region: Area) {
         if (region.parentId.isNullOrEmpty()) {
-            filterInteractor.selectCountry(region)
-            filterInteractor.selectRegion(region)
+            selectedRegionInteractor.selectCountry(region)
+            selectedRegionInteractor.selectRegion(region)
         } else if (filterInteractor.currentFilter().country != null) {
-            filterInteractor.selectRegion(region)
+            selectedRegionInteractor.selectRegion(region)
         } else {
-            filterInteractor.selectCountry(null)
-            filterInteractor.selectRegion(region)
+            selectedRegionInteractor.selectCountry(null)
+            selectedRegionInteractor.selectRegion(region)
         }
     }
 }
