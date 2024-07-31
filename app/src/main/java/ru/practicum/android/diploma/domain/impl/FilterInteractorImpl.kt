@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.domain.impl
 
-import ru.practicum.android.diploma.domain.FilterRepository
 import ru.practicum.android.diploma.domain.FilterInteractor
+import ru.practicum.android.diploma.domain.FilterRepository
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
